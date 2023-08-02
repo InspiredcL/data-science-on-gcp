@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#gs://ds-on-gcp-394717-dsongcp/ nombre del bucket de prueba
 if [ "$#" -ne 1 ]; then
     echo "Usage: ./ingest.sh  destination-bucket-name"
     exit
