@@ -1,15 +1,16 @@
 # 2. Ingesting data onto the Cloud on CLI
 
 ### Create a proyect
-gcloud projects create ds-on-gcp --set-as-default (el set es opcional)
-gcloud config set project NOMBRE_DEL_PROYECTO
+* gcloud projects create ds-on-gcp --set-as-default (el set es opcional)
+* gcloud config set project NOMBRE_DEL_PROYECTO
 
 ### Create a bucket
 * Go to the Storage section of the GCP web console and create a new bucket
+  
 * PROJECT=$(gcloud config get-value project)
-  BUCKET=${PROJECT}-dsongcp
-  REGION=southamerica-west1 #See https://cloud.google.com/storage/docs/locations
-  gsutil mb -l $REGION gs://$BUCKET
+* BUCKET=${PROJECT}-dsongcp
+* REGION=southamerica-west1 #See https://cloud.google.com/storage/docs/locations
+* gsutil mb -l $REGION gs://$BUCKET
 
 ### Populate your bucket with the data you will need for the book
 
