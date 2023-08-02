@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# gs://ds-on-gcp-394717-dsongcp/
 if [ "$#" -ne 1 ]; then
     echo "Usage: ./upload.sh  destination-bucket-name"
     exit
