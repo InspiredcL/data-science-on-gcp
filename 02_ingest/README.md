@@ -26,6 +26,7 @@
 * Go to the 02_ingest/monthlyupdate folder in the repo.
 * Run the command `pip3 install google-cloud-storage google-cloud-bigquery`
 * Run the command `gcloud auth application-default login`
+* gs://ds-on-gcp-394717-dsongcp/
 * Try ingesting one month using the Python script: `./ingest_flights.py --debug --bucket your-bucket-name --year 2015 --month 02` 
 * Set up a service account called svc-monthly-ingest by running `./01_setup_svc_acct.sh`
 * Now, try running the ingest script as the service account:
