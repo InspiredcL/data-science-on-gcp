@@ -22,35 +22,53 @@ import json
 DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
 
 
+# Definición de la función que agrega la zona horaria basada en coordenadas
 def addtimezone(lat, lon):
     try:
+        # Importar la librería timezonefinder
         import timezonefinder
+        # Crear una instancia de TimezoneFinder
         tf = timezonefinder.TimezoneFinder()
+        # Convertir las coordenadas a números de punto flotante
         lat = float(lat)
         lon = float(lon)
+        # Devolver las coordenadas y la zona horaria correspondiente
         return lat, lon, tf.timezone_at(lng=lon, lat=lat)
     except ValueError:
-        return lat, lon, 'TIMEZONE'  # header
+        # Manejo de excepción en caso de error de valor
+        return lat, lon, 'TIMEZONE'  # Encabezado
 
+
+
+# Definición de la función as_utc que convierte una fecha y hora en formato UTC
+# a la hora corregida para una zona horaria específica.
 
 def as_utc(date, hhmm, tzone):
     """
     Returns date corrected for timezone, and the tzoffset
     """
     try:
+        # Verificar si se proporcionó la hora y la zona horaria
         if len(hhmm) > 0 and tzone is not None:
             import datetime, pytz
+            # Crear un objeto de zona horaria local basado en la zona proporcionada
             loc_tz = pytz.timezone(tzone)
+            # Crear un objeto de fecha y hora local con la fecha proporcionada
             loc_dt = loc_tz.localize(datetime.datetime.strptime(date, '%Y-%m-%d'), is_dst=False)
-            # can't just parse hhmm because the data contains 2400 and the like ...
+            # Agregar la diferencia de horas y minutos proporcionada a la fecha y hora local
             loc_dt += datetime.timedelta(hours=int(hhmm[:2]), minutes=int(hhmm[2:]))
+            # Convertir la fecha y hora local a UTC
             utc_dt = loc_dt.astimezone(pytz.utc)
+            # Devolver la fecha y hora en formato UTC y el desplazamiento de la zona horaria
             return utc_dt.strftime(DATETIME_FORMAT), loc_dt.utcoffset().total_seconds()
         else:
-            return '', 0  # empty string corresponds to canceled flights
+            # Si no se proporciona la hora o la zona horaria, devolver valores predeterminados
+            return '', 0  # Una cadena vacía corresponde a vuelos cancelados
     except ValueError as e:
+        # Manejar excepciones y registrar detalles
         logging.exception('{} {} {}'.format(date, hhmm, tzone))
         raise e
+
 
 
 def add_24h_if_before(arrtime, deptime):
