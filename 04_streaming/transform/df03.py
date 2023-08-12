@@ -20,14 +20,22 @@ import csv
 import json
 
 
+# Definición de la función que agrega la zona horaria basada en coordenadas
 def addtimezone(lat, lon):
     try:
+        # Importar la librería timezonefinder
         import timezonefinder
+        # Crear una instancia de TimezoneFinder
         tf = timezonefinder.TimezoneFinder()
-        return lat, lon, tf.timezone_at(lng=float(lon), lat=float(lat))
-        # return (lat, lon, 'America/Los_Angeles') # FIXME
+        # Convertir las coordenadas a números de punto flotante
+        lat = float(lat)
+        lon = float(lon)
+        # Devolver las coordenadas y la zona horaria correspondiente
+        return lat, lon, tf.timezone_at(lng=lon, lat=lat)
     except ValueError:
-        return lat, lon, 'TIMEZONE'  # header
+        # Manejo de excepción en caso de error de valor
+        return lat, lon, 'TIMEZONE'  # Encabezado
+
 
 
 def as_utc(date, hhmm, tzone):
