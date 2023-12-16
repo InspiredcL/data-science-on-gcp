@@ -3,7 +3,7 @@
 SVC_ACCT=svc-monthly-ingest
 PROJECT_ID=$(gcloud config get-value project)
 BUCKET=${PROJECT_ID}-cf-staging
-REGION=us-central1
+REGION=southamerica-west1
 SVC_PRINCIPAL=serviceAccount:${SVC_ACCT}@${PROJECT_ID}.iam.gserviceaccount.com
 
 gsutil ls gs://$BUCKET || gsutil mb -l $REGION gs://$BUCKET
