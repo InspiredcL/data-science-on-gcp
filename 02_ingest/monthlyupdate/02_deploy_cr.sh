@@ -4,7 +4,7 @@
 NAME=ingest-flights-monthly
 SVC_ACCT=svc-monthly-ingest
 PROJECT_ID=$(gcloud config get-value project)
-REGION=us-central1
+REGION=southamerica-west1
 SVC_EMAIL=${SVC_ACCT}@${PROJECT_ID}.iam.gserviceaccount.com
 
 #gcloud functions deploy $URL \
