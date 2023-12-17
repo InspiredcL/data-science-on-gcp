@@ -36,7 +36,7 @@
 	```  
 * Read/write to Cloud:
 	```
-    	./stage_airports_file.sh BUCKETNAME
+ 	./stage_airports_file.sh BUCKETNAME
 	./df06.py --project PROJECT --bucket BUCKETNAME
 	``` 
     Look for new tables in BigQuery (flights_simevents)
