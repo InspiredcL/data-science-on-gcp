@@ -59,6 +59,7 @@
 	* Lee el archivo 'airports.csv.gz'
  	* Filtra los elementos de la fila que conciden con "United States"
   	* A las lineas devueltas por ReadFromText, les aplicamos "next(csv.reader([line]))"
+  	* *
   	* De las columnas devuelve la tupla (AIRPORT_SEQ_ID, adddtimezone(LATITUDE, LONGITUDE))
   	* Escribe al archivo "airports_wwith_tz"
 
@@ -81,6 +82,21 @@
 	./df03.py
 	head -3 all_flights-00000*
 	```
+
+	* Función que calcula la zona de tiempo dadas las coordenadas
+ 	* Función que calcula la hora en formato UTC
+  	* Función que realiza correcciones de zonas horarias 
+	* *
+ 	* airports:
+  		* Lee "airports.csv.gz"
+    		* Filtra "Estados Unidos"
+      		* Siguiente linea
+        	* tupla de (AIRPORT_SEQ_ID, adddtimezone(LATITUDE, LONGITUDE))
+         * flights:
+         	* Lee "flights_sample.json"
+          	* Aplica FlatMap a tz_correct y beam.pvalue.AsDict(airports)
+           	* Escribe al archivo "all_flights"
+  
 * Correcting dates:
 	```
 	./df04.py
