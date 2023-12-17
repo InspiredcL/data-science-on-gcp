@@ -1,10 +1,22 @@
 # 4. Streaming data: publication and ingest
 
 ### Batch processing transformation in DataFlow
+
+* Make a table definition for the federated source
+
+	```
+  	cd design; ./mktbl
+  	
+   	bq mk --table --external_table_definition=./airport_schemas.json@JSON=gs://data-science-on-gcp/edition2/raw/airports.csv dsongcp.airports_gcs
+  	```
+
+* 
+
 * Setup:
-    ```
+   
+    	```
 	cd transform; ./install_packages.sh
-    ```
+    	```
 	<ul>
     		<li> ``` --upgrade pip ``` </li> 
 		<li> ``` pip cache purge ``` </li> 
