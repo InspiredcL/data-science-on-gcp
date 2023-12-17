@@ -55,7 +55,7 @@
 	```
  	./bqsample.sh <bucket_name>
  	```
-
+  	* Crea un archivo llamado "flight_sample.json"
 
 * Converting times to UTC:
 	```
