@@ -26,10 +26,10 @@
 		<li> upgrade the packets: timezonefinder, pytz, 'apache-beam[gcp]' </li>
 	</ul>
  
- 	"If this script fails, please try installing it in a virtualenv"
-	"virtualenv ~/beam_env"
-	"source ~/beam_env/bin/activate"
-	"./install_packages.sh"
+ 	* "If this script fails, please try installing it in a virtualenv"
+	* "virtualenv ~/beam_env"
+	* "source ~/beam_env/bin/activate"
+	* "./install_packages.sh"
     
 * Parsing airports data:
 	```
@@ -76,7 +76,7 @@
 	```
  	./stage_airports_file.sh BUCKETNAME
  	```
- 	- Copia el archivo con las coordenadas en el bucked de nuestro proyecto
+ 	- Copia el archivo con las coordenadas en el bucket de nuestro proyecto
   	- Carga los datos en el archivo airports.csv, en la tabla dsongcp.airports
  	```
 	./df06.py --project PROJECT --bucket BUCKETNAME
