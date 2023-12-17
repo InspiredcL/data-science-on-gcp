@@ -55,7 +55,9 @@
 	```
  	./bqsample.sh <bucket_name>
  	```
-  	* Crea un archivo llamado "flight_sample.json"
+  	* Consulta que crea "dsongcp.flights_sample" a partir de "dsongcp.flights"
+  	* Exporta a un archivo json
+   	* Crea un archivo llamado "flight_sample.json" en el directorio actual
 
 * Converting times to UTC:
 	```
