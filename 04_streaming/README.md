@@ -25,7 +25,9 @@
 		<li> pip cache purge </li>
 		<li> upgrade the packets: timezonefinder, pytz, 'apache-beam[gcp]' </li>
 	</ul>
- 
+
+
+
  	* "If this script fails, please try installing it in a virtualenv"
 	* "virtualenv ~/beam_env"
 	* "source ~/beam_env/bin/activate"
