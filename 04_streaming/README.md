@@ -16,9 +16,9 @@
 
 * Setup:
    
-    	```
-  	cd transform; ./install_packages.sh
 	```
+  	cd transform; ./install_packages.sh
+ 	```
 
 <ul>
 	<li> upgrade pip </li>
