@@ -42,7 +42,9 @@
 	
 	* Lee el archivo 'airports.csv.gz'
  	* A las lineas devueltas por ReadFromText, les aplicamos "next(csv.reader([line]))"
-  	* Selecconamos las columnas de indices 0, 21 y 26 agrupadas de la siguiente manera (0,(21, 26)) 
+  	* Selecconamos las columnas de indices 0, 21 y 26 agrupadas de la siguiente manera (AIRPORT_SEQ_ID,(LATITUDE, LONGITUDE))
+  	* Selecciona las columnas, columna 1 y columna 2 y las separa por una coma
+  	* Dicha selección se extrae en un archiivo llamado "extracted_airports"
  
 * Adding timezone information:
 	```
