@@ -121,7 +121,17 @@
   	- Carga los datos en el archivo airports.csv, en la tabla dsongcp.airports
  	```
 	./df06.py --project PROJECT --bucket BUCKETNAME
-	``` 
+	```
+	* Funciones anteriores
+ 	* función para crear fila de evento
+  	* Función Run() para encapsular el pipeline y llamarlo de __main__
+  	* Se agrega a lo an terior, "flights_schema"
+  	* se escribe a "dsongcp.flights_tzcorr"
+  	* events:  se aplica a flights FlatMap(get_next_event), se agrega "events_schema"
+  	* Se crea una nueva fila de evento para finalmente escribir a "dsongcp.flights_simevents"
+  	* __main__ : analizador de argumentos, función run()
+
+  
     Look for new tables in BigQuery (flights_simevents)
 * Run on Cloud:
 	```
