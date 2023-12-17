@@ -105,7 +105,14 @@
 	./df05.py
 	head -3 all_events-00000*
 	rm all_events-*
-	```  
+	```
+	* Funciones anteriores
+ 	* Función que obtiene el siguiente evento dado el campo
+  	* Función Run() para encapsular el pipeline y llamarlo de __main__
+  	* airports: ...
+  	* flights: Lee y aplica "json.load(line)" antes de FlatMap, tostring "json.dumps(field)", se escribe a "all_flights"
+  	* events: events = flights | flatmap(get_next_event), se aplica json.dumps(fields) y se escribe a "all_events"
+ 
 * Read/write to Cloud:
 	```
  	./stage_airports_file.sh BUCKETNAME
