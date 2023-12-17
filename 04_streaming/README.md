@@ -46,9 +46,11 @@
 
 * BigQuery sample.sh
 
-  	*** "Usage: ./bqsample.sh bucket-name"
-  	*** "   eg: ./bqsample.sh cloud-training-demos-ml"
-  
+	<ul>
+	  	<li> "Usage: ./bqsample.sh bucket-name" </li>
+	  	<li> "   eg: ./bqsample.sh cloud-training-demos-ml" </li>
+	</ul>
+ 
 	```
  	./bqsample.sh <bucket_name>
  	```
