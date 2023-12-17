@@ -99,6 +99,21 @@
 	head -3 all_flights-00000*
 	rm all_flights-*
 	```
+
+ 	* Función que calcula la zona de tiempo dadas las coordenadas
+ 	* Función que calcula la hora en formato UTC
+  	* Función que agrega 24 horas, si la llegada ocurre antes que el embarque
+  	* Función que realiza correcciones de zonas horarias
+  	* airports :
+  		* Lee "airports.csv.gz"
+    		* Filtra "Estados Unidos"
+      		* Siguiente linea
+        	* tupla de (AIRPORT_SEQ_ID, adddtimezone(LATITUDE, LONGITUDE))
+  	* flights :
+         	* Lee "flights_sample.json"
+          	* Aplica FlatMap a tz_correct y beam.pvalue.AsDict(airports)
+           	* Escribe al archivo "all_flights"
+
 * Create events:
 	```
 	./df05.py
