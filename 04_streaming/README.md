@@ -80,15 +80,8 @@
 	* Función que calcula la zona de tiempo dadas las coordenadas
  	* Función que calcula la hora en formato UTC
   	* Función que realiza correcciones de zonas horarias
- 	* airports :
-  		* Lee "airports.csv.gz"
-    		* Filtra "Estados Unidos"
-      		* Siguiente linea
-        	* tupla de (AIRPORT_SEQ_ID, adddtimezone(LATITUDE, LONGITUDE))
-         * flights :
-         	* Lee "flights_sample.json"
-          	* Aplica FlatMap a tz_correct y beam.pvalue.AsDict(airports)
-           	* Escribe al archivo "all_flights"
+ 	* airports : Lee "airports.csv.gz", Filtra "Estados Unidos", Siguiente linea y tupla de (AIRPORT_SEQ_ID, adddtimezone(LATITUDE, LONGITUDE))
+        * flights : Lee "flights_sample.json", Aplica FlatMap a tz_correct y beam.pvalue.AsDict(airports) finalmente Escribe al archivo "all_flights"
 
 
 
