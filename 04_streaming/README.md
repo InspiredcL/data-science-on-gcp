@@ -5,7 +5,7 @@
 * Make a table definition for the federated source
 
 	```
-  	cd design; ./mktbl
+  	cd design; ./mktbl.sh
   	
    	bq mk --table --external_table_definition=./airport_schemas.json@JSON=gs://data-science-on-gcp/edition2/raw/airports.csv dsongcp.airports_gcs
   	```
