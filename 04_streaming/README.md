@@ -6,7 +6,9 @@
 
 	```
   	cd design; ./mktbl.sh
+ 	```
  	Los cuales ejecutan el siguiente comando:
+  	```
  	bq mk --table --external_table_definition=./airport_schemas.json@JSON=gs://data-science-on-gcp/edition2/raw/airports.csv dsongcp.airports_gcs
   	```
 
