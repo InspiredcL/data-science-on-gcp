@@ -13,7 +13,6 @@
   	```
 
   
-
 * Setup:
    
 	```
@@ -44,6 +43,17 @@
 	head airports_with_tz-00000*
 	rm airports_with_tz-*
 	```
+
+* BigQuery sample.sh
+
+	   echo "Usage: ./bqsample.sh bucket-name"
+   echo "   eg: ./bqsample.sh cloud-training-demos-ml"
+  
+	```
+ 	./bqsample.sh <bucket_name>
+ 	```
+
+
 * Converting times to UTC:
 	```
 	./df03.py
