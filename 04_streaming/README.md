@@ -18,13 +18,9 @@
 	```
   	cd transform; ./install_packages.sh
  	```
-
-
-	<ul>
-		<li> upgrade pip </li>
-		<li> pip cache purge </li>
-		<li> upgrade the packets: timezonefinder, pytz, 'apache-beam[gcp]' </li>
-	</ul>
+	* upgrade pip
+	* pip cache purge
+	* upgrade the packets: timezonefinder, pytz, 'apache-beam[gcp]' </li>
 
 	**
 
