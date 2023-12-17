@@ -66,9 +66,7 @@
  
 * BigQuery sample.sh
 
-	<ul>
-	  	<li> Es llamada en el script stage_airports_file </li>
-	</ul>
+	* Es llamada en el script stage_airports_file </li>
  
 	```
  	./bqsample.sh <bucket_name>
@@ -86,10 +84,10 @@
 	* Función que calcula la zona de tiempo dadas las coordenadas
  	* Función que calcula la hora en formato UTC
   	* Función que realiza correcciones de zonas horarias 
-	//
+
+	
  
  	* airports:
-
   		* Lee "airports.csv.gz"
     		* Filtra "Estados Unidos"
       		* Siguiente linea
