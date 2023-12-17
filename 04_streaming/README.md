@@ -86,8 +86,9 @@
 	* Función que calcula la zona de tiempo dadas las coordenadas
  	* Función que calcula la hora en formato UTC
   	* Función que realiza correcciones de zonas horarias 
-	* *
+	* //
  	* airports:
+
   		* Lee "airports.csv.gz"
     		* Filtra "Estados Unidos"
       		* Siguiente linea
