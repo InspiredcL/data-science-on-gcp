@@ -20,11 +20,12 @@
   	cd transform; ./install_packages.sh
  	```
 
-<ul>
-	<li> upgrade pip </li>
-	<li> pip cache purge </li>
-	<li> upgrade the packets: timezonefinder, pytz, 'apache-beam[gcp]' </li>
-</ul>
+
+	<ul>
+		<li> upgrade pip </li>
+		<li> pip cache purge </li>
+		<li> upgrade the packets: timezonefinder, pytz, 'apache-beam[gcp]' </li>
+	</ul>
     
 * Parsing airports data:
 	```
