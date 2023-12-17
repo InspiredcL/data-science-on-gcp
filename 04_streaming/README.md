@@ -55,6 +55,14 @@
 	rm airports_with_tz-*
 	```
 
+	* Función que calcula la zona de tiempo dadas las coordenadas
+	* Lee el archivo 'airports.csv.gz'
+ 	* Filtra los elementos de la fila que conciden con "United States"
+  	* A las lineas devueltas por ReadFromText, les aplicamos "next(csv.reader([line]))"
+  	* De las columnas devuelve la tupla (AIRPORT_SEQ_ID, adddtimezone(LATITUDE, LONGITUDE))
+  	* Escribe al archivo "airports_wwith_tz"
+
+ 
 * BigQuery sample.sh
 
 	<ul>
