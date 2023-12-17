@@ -4,6 +4,12 @@
 * Setup:
     ```
 	cd transform; ./install_packages.sh
+
+	<ul>
+    		<li> --upgrade pip </li> 
+		<li> cache purge </li> 
+		<li> --upgrade timezonefinder pytz 'apache-beam[gcp]' </li> 
+    	</ul>
     ```
 * Parsing airports data:
 	```
