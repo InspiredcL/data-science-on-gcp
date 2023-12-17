@@ -47,8 +47,7 @@
 * BigQuery sample.sh
 
 	<ul>
-	  	<li> "Usage: ./bqsample.sh bucket-name" </li>
-	  	<li> "   eg: ./bqsample.sh cloud-training-demos-ml" </li>
+	  	<li> Es llamada en el script stage_airports_file </li>
 	</ul>
  
 	```
@@ -76,6 +75,10 @@
 * Read/write to Cloud:
 	```
  	./stage_airports_file.sh BUCKETNAME
+ 	```
+ 	- Copia el archivo con las coordenadas en el bucked de nuestro proyecto
+  	- Carga los datos en el archivo airports.csv, en la tabla dsongcp.airports
+ 	```
 	./df06.py --project PROJECT --bucket BUCKETNAME
 	``` 
     Look for new tables in BigQuery (flights_simevents)
