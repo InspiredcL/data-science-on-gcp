@@ -229,6 +229,9 @@
 	```
 	./avg03.py --project PROJECT --bucket BUCKETNAME --region southamerica-west1
 	```
+
+	* Cambiamos solo --runner=DataflowRunner
+ 
 * Go to the GCP web console in the Dataflow section and monitor the job.
 * Once the job starts writing to BigQuery, run this query and save this as a view:
 	```
