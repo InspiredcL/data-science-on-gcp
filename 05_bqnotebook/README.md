@@ -45,5 +45,5 @@ If you didn't go through Chapters 2-4, the simplest way to catch up is to copy d
 
 * Create the trainday table BigQuery table and CSV file as you will need it later
     ```
-    ./create_trainday.sh
+    ./create_trainday_table.sh
     ```
