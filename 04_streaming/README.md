@@ -170,9 +170,16 @@
 ### Simulate event stream
 * In CloudShell, run
 	```
-    cd simulate
+    	cd simulate
 	python3 ./simulate.py --startTime '2015-05-01 00:00:00 UTC' --endTime '2015-05-04 00:00:00 UTC' --speedFactor=30 --project $DEVSHELL_PROJECT_ID
-    ```
+    	```
+
+ 	* Función publish(), para publicar
+ 	* Función notify(), la cual consiste en acumular las filas por lotes, publicando y durmienddo hasta que sea necesario publicar otro lote
+ 	* __main__ : analizador de argumentos, configuracion de bigquery, jitter, query EVENT_TYPE, TIMESTAMP_ADD, EVENT_DATA.
+ 	* Create one Pub/Sub notification topic for each type of event
+ 	* Notify about each row in the dataset
+
  
 ### Real-time Stream Processing
 * In another CloudShell tab, run avg01.py:
