@@ -200,6 +200,12 @@
 	```
 	./avg02.py --project PROJECT --bucket BUCKETNAME --region southamerica-west1
 	```
+
+	* Función: calcular estadísticas
+ 	* Función: por aeropuerto
+  	* Función run(): argumentos, Pipeline: eventos, para embarcado arribado leer desde Pub/Sub y analizar con json.loads, definir "all_events", stats como filtrar por aeropuerto, poner una sliding window, agrupar por xxxx y calcular las estadísticas, para así definir los esquemas de las estadísticas para finalmente escribirlo por Bigquery a "dsongcp.streaming_delays"
+  	* __main__ : analizador de argumentos, función run()
+  
 * In about 5 min, you can query from the BigQuery console:
 	```
 	SELECT * FROM dsongcp.streaming_delays
