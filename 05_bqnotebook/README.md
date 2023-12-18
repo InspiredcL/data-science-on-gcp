@@ -26,7 +26,7 @@ If you didn't go through Chapters 2-4, the simplest way to catch up is to copy d
 
 ## Try out queries
 * In BigQuery, query the time corrected files created in Chapter 4:
-    ```
+    ```SQL
     SELECT
        ORIGIN,
        AVG(DEP_DELAY) AS dep_delay,
