@@ -22,9 +22,8 @@
 	* pip cache purge
 	* upgrade the packets: timezonefinder, pytz, 'apache-beam[gcp]' </li>
 
-	**
-
- 	* "If this script fails, please try installing it in a virtualenv"
+	*If this script fails, please try installing it in a virtualenv*
+  
 	* "virtualenv ~/beam_env"
 	* "source ~/beam_env/bin/activate"
 	* "./install_packages.sh"
@@ -125,7 +124,7 @@
 	* Funciones anteriores
  	* función para crear fila de evento
   	* Función Run() para encapsular el pipeline y llamarlo de __main__
-  	* Se agrega a lo an terior, "flights_schema"
+  	* Se agrega a lo anterior, "flights_schema"
   	* se escribe a "dsongcp.flights_tzcorr"
   	* events:  se aplica a flights FlatMap(get_next_event), se agrega "events_schema"
   	* Se crea una nueva fila de evento para finalmente escribir a "dsongcp.flights_simevents"
@@ -136,7 +135,17 @@
 * Run on Cloud:
 	```
 	./df07.py --project PROJECT --bucket BUCKETNAME --region southamerica-west1
-	``` 
+	```
+	
+  	* Funciones anteriores
+  	* Función Run() para encapsular el pipeline y llamarlo de __main__
+	* airports:
+  	* flights: lee dsongcp.flights, FlatMap(), json.dumps(fields), escribe a "flights_output", flights_schema, escribe a "dsongcp.flights_tzcorr"
+	* events:  se aplica a flights FlatMap(get_next_event), se agrega "events_schema"
+  	* Se crea una nueva fila de evento para finalmente escribir a "dsongcp.flights_simevents"
+  	* __main__ : analizador de argumentos, función run()
+ 
+* Test the Data:  	  
 * Go to the GCP web console and wait for the Dataflow ch04timecorr job to finish. It might take between 30 minutes and 2+ hours depending on the quota associated with your project (you can change the quota by going to https://console.cloud.google.com/iam-admin/quotas).
 * Then, navigate to the BigQuery console and type in:
 	```
