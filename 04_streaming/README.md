@@ -176,9 +176,7 @@
  
  	* Función publish(), para publicar
  	* Función notify(), la cual consiste en acumular las filas por lotes, publicando y durmienddo hasta que sea necesario publicar otro lote
- 	* __main__ : analizador de argumentos, configuracion de bigquery, jitter, query EVENT_TYPE, TIMESTAMP_ADD, EVENT_DATA.
- 	* Create one Pub/Sub notification topic for each type of event
- 	* Notify about each row in the dataset
+ 	* __main__ : analizador de argumentos, configuracion de bigquery, jitter, query EVENT_TYPE, TIMESTAMP_ADD, EVENT_DATA, create one Pub/Sub notification topic for each type of event, notify about each row in the dataset
 
  
 ### Real-time Stream Processing
