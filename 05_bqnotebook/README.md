@@ -44,6 +44,8 @@ If you didn't go through Chapters 2-4, the simplest way to catch up is to copy d
 * Start a new managed notebook. Then, copy and paste cells from <a href="exploration.ipynb">exploration.ipynb</a> and click Run to execute the code.
 
 * Create the trainday table BigQuery table and CSV file as you will need it later
+
+    Usage: ./create_trainday_table.sh  destination-bucket-name
     ```
     ./create_trainday_table.sh
     ```
