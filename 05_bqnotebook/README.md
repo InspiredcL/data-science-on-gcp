@@ -46,6 +46,22 @@ If you didn't go through Chapters 2-4, the simplest way to catch up is to copy d
 * Create the trainday table BigQuery table and CSV file as you will need it later
 
     Usage: ./create_trainday_table.sh  destination-bucket-name
-    ```
+    ```SH
     ./create_trainday_table.sh
+    ```
+    CREATE TABLE dsongcp.trainday
+
+    ```SQL
+    CREATE OR REPLACE TABLE dsongcp.trainday AS
+    SELECT
+      FL_DATE,
+      IF(ABS(MOD(FARM_FINGERPRINT(CAST(FL_DATE AS STRING)), 100)) < 70,
+         'True', 'False') AS is_train_day
+    FROM (
+      SELECT
+        DISTINCT(FL_DATE) AS FL_DATE
+      FROM
+        dsongcp.flights_tzcorr)
+    ORDER BY
+      FL_DATE
     ```
