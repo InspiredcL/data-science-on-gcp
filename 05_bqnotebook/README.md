@@ -49,8 +49,11 @@ If you didn't go through Chapters 2-4, the simplest way to catch up is to copy d
     ```SH
     ./create_trainday_table.sh
     ```
+    * A traves de command line interface realizamos las instrucciones
+    : A partir del archivo de texto "traind_day_table.txt" genera una consulta en bigquery con la opcion --nouse_legacy_sql
+    : Extrae desde la tabla "dsongcp.trainday" y guarda en alguna dirección del bucket
+    
     CREATE TABLE dsongcp.trainday
-
     ```SQL
     CREATE OR REPLACE TABLE dsongcp.trainday AS
     SELECT
