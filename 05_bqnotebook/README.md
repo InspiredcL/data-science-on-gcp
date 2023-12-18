@@ -19,7 +19,7 @@ If you didn't go through Chapters 2-4, the simplest way to catch up is to copy d
     ./create_views.sh
     ```
 * Run:
-    ```
+    ```SH
     cd ../04_streaming
     ./ingest_from_crsbucket.sh
     ```
