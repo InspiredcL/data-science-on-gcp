@@ -172,7 +172,7 @@
 	```
  	cd simulate
 	python3 ./simulate.py --startTime '2015-05-01 00:00:00 UTC' --endTime '2015-05-04 00:00:00 UTC' --speedFactor=30 --project $DEVSHELL_PROJECT_ID
-    	```
+ 	```
  
  	* Función publish(), para publicar
  	* Función notify(), la cual consiste en acumular las filas por lotes, publicando y durmienddo hasta que sea necesario publicar otro lote
