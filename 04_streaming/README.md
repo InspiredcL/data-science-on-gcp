@@ -185,6 +185,10 @@
 	cd realtime
 	./avg01.py --project PROJECT --bucket BUCKETNAME --region southamerica-west1
 	```
+
+	* Función run() : argumentos, Pipeline: diccionario eventos, para cada tipo de evento asignarle un nombre de tópico, y a los eventos aplicamos ReadFromPubSub luego parseamos, definimos "all_events" y escribimos los resultados aa una tabla de BigQuery
+ 	* __main__  : analizamos argumentos, run()
+  
 * In about a minute, you can query events from the BigQuery console:
 	```
 	SELECT * FROM dsongcp.streaming_events
