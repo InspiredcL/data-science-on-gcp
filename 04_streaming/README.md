@@ -4,18 +4,18 @@
 
 * Make a table definition for the federated source
 
-	```
+	```SH
   	cd design; ./mktbl.sh
  	```
  	Los cuales ejecutan el siguiente comando:
-  	```
+  	```SH
  	bq mk --table --external_table_definition=./airport_schemas.json@JSON=gs://data-science-on-gcp/edition2/raw/airports.csv dsongcp.airports_gcs
   	```
 
   
 * Setup:
    
-	```
+	```SH
   	cd transform; ./install_packages.sh
  	```
 	* upgrade pip
@@ -29,7 +29,7 @@
 	* "./install_packages.sh"
     
 * Parsing airports data:
-	```
+	```SH
 	./df01.py
 	head extracted_airports-00000*
 	rm extracted_airports-*
@@ -44,7 +44,7 @@
   	* Dicha selección se extrae en un archiivo llamado "extracted_airports"
  
 * Adding timezone information:
-	```
+	```SH
 	./df02.py
 	head airports_with_tz-00000*
 	rm airports_with_tz-*
@@ -63,7 +63,7 @@
 
 	* Es llamada en el script stage_airports_file </li>
  
-	```
+	```SH
  	./bqsample.sh <bucket_name>
  	```
   	* Consulta que crea "dsongcp.flights_sample" a partir de "dsongcp.flights"
@@ -71,7 +71,7 @@
    	* Crea un archivo llamado "flight_sample.json" en el directorio actual
 
 * Converting times to UTC:
-	```
+	```SH
 	./df03.py
 	head -3 all_flights-00000*
 	```
@@ -100,7 +100,7 @@
 	* flights : Lee "flights_sample.json", Aplica FlatMap a tz_correct y beam.pvalue.AsDict(airports) finalmente Escribe al archivo "all_flights"
 
 * Create events:
-	```
+	```SH
 	./df05.py
 	head -3 all_events-00000*
 	rm all_events-*
@@ -113,12 +113,12 @@
   	* events: events = flights | flatmap(get_next_event), se aplica json.dumps(fields) y se escribe a "all_events"
  
 * Read/write to Cloud:
-	```
+	```SH
  	./stage_airports_file.sh BUCKETNAME
  	```
  	- Copia el archivo con las coordenadas en el bucket de nuestro proyecto
   	- Carga los datos en el archivo airports.csv, en la tabla dsongcp.airports
- 	```
+ 	```SH
 	./df06.py --project PROJECT --bucket BUCKETNAME
 	```
 	* Funciones anteriores
@@ -133,7 +133,7 @@
   
     Look for new tables in BigQuery (flights_simevents)
 * Run on Cloud:
-	```
+	```SH
 	./df07.py --project PROJECT --bucket BUCKETNAME --region southamerica-west1
 	```
 	
@@ -148,7 +148,7 @@
 * Test the Data:  	  
 * Go to the GCP web console and wait for the Dataflow ch04timecorr job to finish. It might take between 30 minutes and 2+ hours depending on the quota associated with your project (you can change the quota by going to https://console.cloud.google.com/iam-admin/quotas).
 * Then, navigate to the BigQuery console and type in:
-	```
+	```SQL
         SELECT
           ORIGIN,
           DEP_TIME,
@@ -169,7 +169,7 @@
  
 ### Simulate event stream
 * In CloudShell, run
-	```
+	```SH
  	cd simulate
 	python3 ./simulate.py --startTime '2015-05-01 00:00:00 UTC' --endTime '2015-05-04 00:00:00 UTC' --speedFactor=30 --project $DEVSHELL_PROJECT_ID
  	```
@@ -181,7 +181,7 @@
  
 ### Real-time Stream Processing
 * In another CloudShell tab, run avg01.py:
-	```
+	```SH
 	cd realtime
 	./avg01.py --project PROJECT --bucket BUCKETNAME --region southamerica-west1
 	```
@@ -190,14 +190,14 @@
  	* __main__  : analizamos argumentos, run()
   
 * In about a minute, you can query events from the BigQuery console:
-	```
+	```SQL
 	SELECT * FROM dsongcp.streaming_events
 	ORDER BY EVENT_TIME DESC
     LIMIT 5
 	```
 * Stop avg01.py by hitting Ctrl+C
 * Run avg02.py:
-	```
+	```SH
 	./avg02.py --project PROJECT --bucket BUCKETNAME --region southamerica-west1
 	```
 
@@ -207,13 +207,13 @@
   	* __main__ : analizador de argumentos, función run()
   
 * In about 5 min, you can query from the BigQuery console:
-	```
+	```SQL
 	SELECT * FROM dsongcp.streaming_delays
 	ORDER BY END_TIME DESC
     LIMIT 5
 	``` 
 * Look at how often the data is coming in:
-	```
+	```SQL
     SELECT END_TIME, num_flights
     FROM dsongcp.streaming_delays
     ORDER BY END_TIME DESC
@@ -222,11 +222,11 @@
 * It's likely that the pipeline will be stuck. You need to run this on Dataflow.
 * Stop avg02.py by hitting Ctrl+C
 * In BigQuery, truncate the table:
-	```
+	```SQL
 	TRUNCATE TABLE dsongcp.streaming_delays
 	``` 
 * Run avg03.py:
-	```
+	```SH
 	./avg03.py --project PROJECT --bucket BUCKETNAME --region southamerica-west1
 	```
 
@@ -234,13 +234,13 @@
  
 * Go to the GCP web console in the Dataflow section and monitor the job.
 * Once the job starts writing to BigQuery, run this query and save this as a view:
-	```
+	```SQL
 	SELECT * FROM dsongcp.streaming_delays
     WHERE AIRPORT = 'ATL'
     ORDER BY END_TIME DESC
 	```
 * Create a view of the latest arrival delay by airport:
-	```
+	```SQL
     CREATE OR REPLACE VIEW dsongcp.airport_delays AS
     WITH delays AS (
         SELECT d.*, a.LATITUDE, a.LONGITUDE
