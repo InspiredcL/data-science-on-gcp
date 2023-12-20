@@ -71,8 +71,8 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
 ### Cleanup
 * Delete the cluster either from the GCP web console or by typing in CloudShell, `../06_dataproc/delete_cluster.sh` \
 	Ejecuta el siguiente comando: ```sh
-                                  gcloud dataproc clusters delete ch6cluster --region $1
-   								  ```
+					gcloud dataproc clusters delete ch6cluster --region $1
+  				      ```
 
 Here are a few examples of backslash escapes:
 
