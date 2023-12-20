@@ -54,7 +54,7 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
     ```sh
     ./submit_spark.sh BUCKET logistic.py
     ```
-    * OUTDIR=gs://$BUCKET/flights/sparkmloutput
+    * \ OUTDIR=gs://$BUCKET/flights/sparkmloutput
 
 	gsutil -m rm -r $OUTDIR
 	
