@@ -12,7 +12,7 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
 * Go to the 04_streaming folder of the repo, run the program ./ingest_from_crsbucket.sh and specify your bucket name.
 * Go to the 05_bqnotebook folder of the repo, run the script to load data into BigQuery:
 	```sh
-	bash create_trainday.sh <BUCKET-NAME>
+	bash create_trainday.sh <BUCKET>
 	```
 	BUCKET=$1\
 	cat trainday_table.txt | bq query --nouse_legacy_sql\
