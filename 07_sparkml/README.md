@@ -41,8 +41,7 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
     ```
     ./submit_spark.sh BUCKET logistic.py
     ```
-    * \
-    * # create cluster
+* # create cluster
 	gcloud dataproc clusters create ch7cluster \
   		--enable-component-gateway \
   		--region ${REGION} --zone ${REGION}-a \
