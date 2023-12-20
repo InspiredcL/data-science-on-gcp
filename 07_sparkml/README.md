@@ -31,27 +31,27 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
 ## This Chapter
 ### Logistic regression using Spark
 * Launch a large Dataproc cluster:
-    ```
+    ```sh
     ./create_large_cluster.sh BUCKET ZONE
     ```
 * If it fails with quota issues, get increased quota. If you can't have more quota, 
   reduce the number of workers appropriately.
 
 * Submit a Spark job to run the full dataset (change the BUCKET appropriately).
-    ```
+    ```sh
     ./submit_spark.sh BUCKET logistic.py
     ```
 * # create cluster
-	gcloud dataproc clusters create ch7cluster \
-  		--enable-component-gateway \
-  		--region ${REGION} --zone ${REGION}-a \
-  		--master-machine-type n1-standard-4 \
-  		--master-boot-disk-size 500 \
-  		--num-workers 30 --num-secondary-workers 20 \
-  		--worker-machine-type n1-standard-8 \
-  		--worker-boot-disk-size 500 \
-  		--project $PROJECT \
-  		--scopes https://www.googleapis.com/auth/cloud-platform
+gcloud dataproc clusters create ch7cluster \
+	--enable-component-gateway \
+	--region ${REGION} --zone ${REGION}-a \
+	--master-machine-type n1-standard-4 \
+	--master-boot-disk-size 500 \
+	--num-workers 30 --num-secondary-workers 20 \
+	--worker-machine-type n1-standard-8 \
+	--worker-boot-disk-size 500 \
+	--project $PROJECT \
+	--scopes https://www.googleapis.com/auth/cloud-platform
 
   
 ### Feature engineering
