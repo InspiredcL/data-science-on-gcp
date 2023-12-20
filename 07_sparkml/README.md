@@ -34,14 +34,7 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
     ```sh
     ./create_large_cluster.sh BUCKET ZONE
     ```
-* If it fails with quota issues, get increased quota. If you can't have more quota, 
-  reduce the number of workers appropriately.
-
-* Submit a Spark job to run the full dataset (change the BUCKET appropriately).
-    ```sh
-    ./submit_spark.sh BUCKET logistic.py
-    ```
-* # create cluster
+    * # create cluster
 	 gcloud dataproc clusters create ch7cluster \
 		--enable-component-gateway \
 		--region ${REGION} --zone ${REGION}-a \
@@ -52,6 +45,15 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
 		--worker-boot-disk-size 500 \
 		--project $PROJECT \
 		--scopes https://www.googleapis.com/auth/cloud-platform
+
+    
+* If it fails with quota issues, get increased quota. If you can't have more quota, 
+  reduce the number of workers appropriately.
+
+* Submit a Spark job to run the full dataset (change the BUCKET appropriately).
+    ```sh
+    ./submit_spark.sh BUCKET logistic.py
+    ```
 
   
 ### Feature engineering
