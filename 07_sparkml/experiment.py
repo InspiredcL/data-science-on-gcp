@@ -161,10 +161,9 @@ def run_experiment(BUCKET, SCALE_AND_CLIP, WITH_TIME, WITH_ORIGIN):
         encoder = OneHotEncoder(inputCol='origin_index', outputCol='origin_onehot')
         return trained_model, encoder.fit(indexed).transform(indexed)
 
+    # train model
     if WITH_ORIGIN:
         index_model, traindata = add_origin(traindata)
-
-    # train model
     examples = traindata.rdd.map(to_example)
     lrmodel = LogisticRegressionWithLBFGS.train(examples, intercept=True)
     lrmodel.clearThreshold()  # return probabilities
