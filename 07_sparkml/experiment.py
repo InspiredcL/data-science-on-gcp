@@ -96,7 +96,6 @@ def run_experiment(BUCKET, SCALE_AND_CLIP, WITH_TIME, WITH_ORIGIN):
     #inputs = 'gs://{}/flights/tzcorr/all_flights-00000-*'.format(BUCKET) # 1/30th
     inputs = 'gs://{}/flights/tzcorr/all_flights-*'.format(BUCKET)  # FULL
     flights = spark.read.json(inputs)
-
     # this view can now be queried
     flights.createOrReplaceTempView('flights')
 
