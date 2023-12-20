@@ -34,7 +34,7 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
     ```sh
     ./create_large_cluster.sh BUCKET ZONE
     ```
-    * \ # create cluster \
+    * \# create cluster \
 	 gcloud dataproc clusters create ch7cluster \
 		--enable-component-gateway \
 		--region ${REGION} --zone ${REGION}-a \
