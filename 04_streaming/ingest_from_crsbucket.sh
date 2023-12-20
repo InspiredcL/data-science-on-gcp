@@ -5,6 +5,7 @@ if [ "$#" -ne 1 ]; then
     exit
 fi
 
+#gs://ds-on-gcp-394717-dsongcp/
 BUCKET=$1
 FROM=gs://data-science-on-gcp/edition2/flights/tzcorr
 TO=gs://$BUCKET/flights/tzcorr
