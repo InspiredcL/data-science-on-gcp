@@ -60,9 +60,9 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
 		--project $PROJECT \
 		--scopes https://www.googleapis.com/auth/cloud-platform \
     gcloud dataproc autoscaling-policies import experiment-policy \
-	        --source=autoscale.yaml --region=$REGION \
+        --source=autoscale.yaml --region=$REGION \
     gcloud dataproc clusters update ch7cluster \
-        --autoscaling-policy=experiment-policy --region=$REGION    
+        --autoscaling-policy=experiment-policy --region=$REGION
 
 * If it fails with quota issues, get increased quota. If you can't have more quota, 
   reduce the number of workers appropriately.
