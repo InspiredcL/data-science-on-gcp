@@ -72,17 +72,3 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
 * Delete the cluster either from the GCP web console or by typing in CloudShell, `../06_dataproc/delete_cluster.sh`\
 Delete cluster ejecuta el siguiente comando: `gcloud dataproc clusters delete ch6cluster --region $1`\
 Observación: la notacion de directorio relativo dice que vamos al directorio padre del directorio actual y de ahi a la ruta que continua
-
-> Use quote blocks to emulate reply text.
-> This line is part of the same quote.
-
-This line is not formatted and does not belong to the quote block.
-
-> This block spans multiple paragraphs.
->
-> The second paragraph is grouped with the previous paragraph in the same quote block.
-> Character formatting is _also_ supported inside the **quote block**.
-
-> Quote blocks can also be nested.
->> When you start a new line with additional > characters,
->>> it simulates a threaded conversation.
