@@ -69,7 +69,7 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
 * Submit a Spark job to do experimentation: `./submit_spark.sh BUCKET experiment.py`
 
 ### Cleanup
-* Delete the cluster either from the GCP web console or by typing in CloudShell, `../06_dataproc/delete_cluster.sh`
+* Delete the cluster either from the GCP web console or by typing in CloudShell, `../06_dataproc/delete_cluster.sh`\
 	gcloud dataproc clusters delete ch6cluster --region $1
 
 Here are a few examples of backslash escapes:
