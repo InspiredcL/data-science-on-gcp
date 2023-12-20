@@ -54,16 +54,15 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
     ```sh
     ./submit_spark.sh BUCKET logistic.py
     ```
-    * \ OUTDIR=gs://$BUCKET/flights/sparkmloutput \
-
-		gsutil -m rm -r $OUTDIR \
-		\# submit to existing cluster \
-		gsutil cp $PYSPARK $OUTDIR/$PYSPARK \
-		gcloud dataproc jobs submit pyspark \
-		    --cluster ch7cluster --region $REGION \
-		    $OUTDIR/$PYSPARK \
-		    -- \
-		    --bucket $BUCKET
+    * OUTDIR=gs://$BUCKET/flights/sparkmloutput \
+        gsutil -m rm -r $OUTDIR \
+			\# submit to existing cluster \
+			gsutil cp $PYSPARK $OUTDIR/$PYSPARK \
+			gcloud dataproc jobs submit pyspark \
+			    --cluster ch7cluster --region $REGION \
+			    $OUTDIR/$PYSPARK \
+			    -- \
+			    --bucket $BUCKET
 
   
 ### Feature engineering
