@@ -55,11 +55,12 @@ def eval(labelpred):
     '''
     cancel = labelpred.filter(lambda data: data[1] < 0.7)
     nocancel = labelpred.filter(lambda data: data[1] >= 0.7)
+    
     corr_cancel = cancel.filter(lambda data: data[0] == int(data[1] >= 0.7)).count()
     corr_nocancel = nocancel.filter(lambda data: data[0] == int(data[1] >= 0.7)).count()
-
     cancel_denom = cancel.count()
     nocancel_denom = nocancel.count()
+    
     if cancel_denom == 0:
         cancel_denom = 1
     if nocancel_denom == 0:
