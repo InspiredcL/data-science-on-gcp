@@ -69,4 +69,4 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
 * Submit a Spark job to do experimentation: `./submit_spark.sh BUCKET experiment.py`
 
 ### Cleanup
-* Delete the cluster either from the GCP web console or by typing in CloudShell, `../06_dataproc/delete_cluster.sh` \  Delete cluster ejecuta el siguiente comando: `gcloud dataproc clusters delete ch6cluster --region $1` \  Observación: la notacion de directorio relativo dice que vamos al directorio padre del directorio actual y de ahi a la ruta que continua \  
+* Delete the cluster either from the GCP web console or by typing in CloudShell, `../06_dataproc/delete_cluster.sh`\  Delete cluster ejecuta el siguiente comando: `gcloud dataproc clusters delete ch6cluster --region $1`\  Observación: la notacion de directorio relativo dice que vamos al directorio padre del directorio actual y de ahi a la ruta que continua\  
