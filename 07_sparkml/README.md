@@ -59,9 +59,8 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
 		--worker-boot-disk-size 500 \
 		--project $PROJECT \
 		--scopes https://www.googleapis.com/auth/cloud-platform\
-gcloud dataproc autoscaling-policies import experiment-policy \
-	        --source=autoscale.yaml --region=$REGION
-
+    gcloud dataproc autoscaling-policies import experiment-policy \
+	        --source=autoscale.yaml --region=$REGION \
     gcloud dataproc clusters update ch7cluster \
         --autoscaling-policy=experiment-policy --region=$REGION    
 
