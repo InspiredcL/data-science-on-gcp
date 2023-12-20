@@ -5,13 +5,13 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
 
 #### Catch up from Chapters 2-5
 * Open CloudShell and git clone this repo:
-    ```
+    ```sh
     git clone https://github.com/GoogleCloudPlatform/data-science-on-gcp
     ```
 * Go to the 02_ingest folder of the repo, run the program ./ingest_from_crsbucket.sh and specify your bucket name.
 * Go to the 04_streaming folder of the repo, run the program ./ingest_from_crsbucket.sh and specify your bucket name.
 * Go to the 05_bqnotebook folder of the repo, run the script to load data into BigQuery:
-	```
+	```sh
 	bash create_trainday.sh <BUCKET-NAME>
 	```
 
@@ -20,7 +20,7 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
   * launch a minimal Cloud Dataproc cluster with initialization actions for Jupyter (`./create_cluster.sh BUCKET ZONE`)
 
 * Start a new notebook and in a cell, download a read-only clone of this repository:
-    ```
+    ```bash
     %bash
     git clone https://github.com/GoogleCloudPlatform/data-science-on-gcp
     rm -rf data-science-on-gcp/.git
