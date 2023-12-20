@@ -41,7 +41,7 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
     ```
     ./submit_spark.sh BUCKET logistic.py
     ```
-    * 
+    * \
     * # create cluster
 	gcloud dataproc clusters create ch7cluster \
   		--enable-component-gateway \
@@ -53,6 +53,7 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
   		--worker-boot-disk-size 500 \
   		--project $PROJECT \
   		--scopes https://www.googleapis.com/auth/cloud-platform
+
   
 ### Feature engineering
 * Submit a Spark job to do experimentation: `./submit_spark.sh BUCKET experiment.py`
