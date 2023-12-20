@@ -1,4 +1,3 @@
-# 7. Machine Learning: Logistic regression on Spark
 
 ### Catch up from previous chapters if necessary
 If you didn't go through Chapters 2-6, the simplest way to catch up is to copy data from my bucket:
@@ -30,6 +29,8 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
     ```
 * Browse to data-science-on-gcp/07_sparkml_and_bqml/logistic_regression.ipynb
   and run the cells in the notebook (change the BUCKET appropriately).
+
+# 7. Machine Learning: Logistic regression on Spark
 
 ## This Chapter
 ### Logistic regression using Spark
