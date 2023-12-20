@@ -81,6 +81,7 @@ def eval(labelpred):
 
 
 def run_experiment(BUCKET, SCALE_AND_CLIP, WITH_TIME, WITH_ORIGIN):
+    
     # Create spark session
     sc = SparkContext('local', 'experimentation')
     spark = SparkSession \
@@ -180,10 +181,7 @@ def run_experiment(BUCKET, SCALE_AND_CLIP, WITH_TIME, WITH_ORIGIN):
         evaldata = add_origin(evaldata, index_model)
     examples = evaldata.rdd.map(to_example)
     labelpred = examples.map(lambda p: (p.label, lrmodel.predict(p.features)))
-
-
     logging.info(eval(labelpred))
-
 
 
 if __name__ == '__main__':
