@@ -14,8 +14,8 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
 	```sh
 	bash create_trainday.sh <BUCKET-NAME>
 	```
-	BUCKET=$1
-	cat trainday_table.txt | bq query --nouse_legacy_sql
+	BUCKET=$1\
+	cat trainday_table.txt | bq query --nouse_legacy_sql\
 	bq extract dsongcp.trainday gs://${BUCKET}/flights/trainday.csv
 
 #### [Optional] Catch up from Chapter 6
