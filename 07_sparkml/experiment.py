@@ -174,12 +174,13 @@ def run_experiment(BUCKET, SCALE_AND_CLIP, WITH_TIME, WITH_ORIGIN):
     lrmodel.save(sc, MODEL_FILE)
     logging.info("Saved trained model to {}".format(MODEL_FILE))
 
-    # Evaluate model on the heldout data
+    # Evaluate, model on the heldout data
     evalquery = trainquery.replace("t.holdout == False", "t.holdout == True")
     evaldata = spark.sql(evalquery).repartition(NUM_PARTITIONS)
     if WITH_ORIGIN:
         evaldata = add_origin(evaldata, index_model)
     examples = evaldata.rdd.map(to_example)
+    
     # Evaluate model
     labelpred = examples.map(lambda p: (p.label, lrmodel.predict(p.features)))
     logging.info(eval(labelpred))
