@@ -89,7 +89,7 @@ def run_experiment(BUCKET, SCALE_AND_CLIP, WITH_TIME, WITH_ORIGIN):
         .appName("Logistic regression w/ Spark ML") \
         .getOrCreate()
 
-    # read dataset
+    # Read dataset
     traindays = spark.read \
         .option("header", "true") \
         .csv('gs://{}/flights/trainday.csv'.format(BUCKET))
@@ -101,7 +101,7 @@ def run_experiment(BUCKET, SCALE_AND_CLIP, WITH_TIME, WITH_ORIGIN):
     # this view can now be queried
     flights.createOrReplaceTempView('flights')
 
-    # separate training and validation data
+    # Separate training and validation data
     from pyspark.sql.functions import rand
     SEED=13
     traindays = traindays.withColumn("holdout", rand(SEED) > 0.8)  # 80% of data is for training
@@ -162,24 +162,25 @@ def run_experiment(BUCKET, SCALE_AND_CLIP, WITH_TIME, WITH_ORIGIN):
         encoder = OneHotEncoder(inputCol='origin_index', outputCol='origin_onehot')
         return trained_model, encoder.fit(indexed).transform(indexed)
 
-    # train model
+    # Train model
     if WITH_ORIGIN:
         index_model, traindata = add_origin(traindata)
     examples = traindata.rdd.map(to_example)
     lrmodel = LogisticRegressionWithLBFGS.train(examples, intercept=True)
     lrmodel.clearThreshold()  # return probabilities
 
-    # save model
+    # Save model
     MODEL_FILE='gs://' + BUCKET + '/flights/sparkmloutput/model'
     lrmodel.save(sc, MODEL_FILE)
     logging.info("Saved trained model to {}".format(MODEL_FILE))
 
-    # evaluate model on the heldout data
+    # Evaluate model on the heldout data
     evalquery = trainquery.replace("t.holdout == False", "t.holdout == True")
     evaldata = spark.sql(evalquery).repartition(NUM_PARTITIONS)
     if WITH_ORIGIN:
         evaldata = add_origin(evaldata, index_model)
     examples = evaldata.rdd.map(to_example)
+    # Evaluate model
     labelpred = examples.map(lambda p: (p.label, lrmodel.predict(p.features)))
     logging.info(eval(labelpred))
 
