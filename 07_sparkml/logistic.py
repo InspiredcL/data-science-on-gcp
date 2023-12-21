@@ -64,7 +64,7 @@ def run_logistic(BUCKET):
                       fields['TAXI_OUT'], # TAXI_OUT \
                       fields['DISTANCE'], # DISTANCE \
                   ])
-
+    # train model
     examples = traindata.rdd.map(to_example)
     lrmodel = LogisticRegressionWithLBFGS.train(examples, intercept=True)
     lrmodel.setThreshold(0.7)
