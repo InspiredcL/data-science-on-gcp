@@ -28,7 +28,7 @@ def run_logistic(BUCKET):
         .appName("Logistic regression w/ Spark ML") \
         .getOrCreate()
 
-    # read dataset
+    # Read dataset
     traindays = spark.read \
         .option("header", "true") \
         .csv('gs://{}/flights/trainday.csv'.format(BUCKET))
@@ -37,7 +37,6 @@ def run_logistic(BUCKET):
     # inputs = 'gs://{}/flights/tzcorr/all_flights-00000-*'.format(BUCKET)  # 1/30th
     inputs = 'gs://{}/flights/tzcorr/all_flights-*'.format(BUCKET)  # FULL
     flights = spark.read.json(inputs)
-
     # this view can now be queried ...
     flights.createOrReplaceTempView('flights')
 
@@ -64,17 +63,17 @@ def run_logistic(BUCKET):
                       fields['TAXI_OUT'], # TAXI_OUT \
                       fields['DISTANCE'], # DISTANCE \
                   ])
-    # train model
+    # Train model
     examples = traindata.rdd.map(to_example)
     lrmodel = LogisticRegressionWithLBFGS.train(examples, intercept=True)
     lrmodel.setThreshold(0.7)
 
-    # save model
+    # Save model
     MODEL_FILE='gs://{}/flights/sparkmloutput/model'.format(BUCKET)
     lrmodel.save(sc, MODEL_FILE)
     logging.info('Logistic regression model saved in {}'.format(MODEL_FILE))
 
-    # evaluate
+    # Evaluate
     testquery = trainquery.replace("t.is_train_day == 'True'","t.is_train_day == 'False'")
     testdata = spark.sql(testquery)
     examples = testdata.rdd.map(to_example)
@@ -85,7 +84,7 @@ def run_logistic(BUCKET):
     logging.info('All flights: {}'.format(eval_model(labelpred)))
 
 
-    # keep only those examples near the decision threshold
+    # Keep only those examples near the decision threshold
     labelpred = labelpred.filter(lambda data: data[1] > 0.65 and data[1] < 0.75)
     logging.info('Flights near decision threshold: {}'.format(eval_model(labelpred)))
 
