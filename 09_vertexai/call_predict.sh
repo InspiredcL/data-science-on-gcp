@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REGION=us-central1
+REGION=southamerica-west1
 ENDPOINT_NAME=flights
 
 ENDPOINT_ID=$(gcloud ai endpoints list --region=$REGION \
