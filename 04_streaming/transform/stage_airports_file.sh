@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if test "$#" -ne 1; then
-   echo "Usage: ./bqsample.sh bucket-name"
-   echo "   eg: ./bqsample.sh cloud-training-demos-ml"
+   echo "Usage: ./stage_airports_file.sh bucket-name"
+   echo "   eg: ./stage_airports_file.sh cloud-training-demos-ml"
    exit
 fi
 
