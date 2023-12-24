@@ -63,6 +63,9 @@ def read_dataset(pattern, batch_size, mode=tf.estimator.ModeKeys.TRAIN, truncate
         column_names=CSV_COLUMNS,
         column_defaults=CSV_COLUMN_TYPES,
         sloppy=True,
+        # sloppy: If True, reading performance will be improved at the cost of non-deterministic ordering.
+        # If False, the order of elements produced is deterministic prior to shuffling (elements are still randomized if shuffle=True.
+        # Note that if the seed is set, then order of elements after shuffling is deterministic). Defaults to False.
         num_parallel_reads=2,
         ignore_errors=True,
         num_epochs=1)
