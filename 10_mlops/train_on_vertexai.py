@@ -201,7 +201,7 @@ def do_hyperparameter_tuning(data_set, timestamp, develop_mode, cpu_only_mode, t
 def main():
     aiplatform.init(project=PROJECT, location=REGION, staging_bucket='gs://{}'.format(BUCKET))
 
-    # create data set
+    # Crear el conjunto de datos (create data set)
     all_files = tf.io.gfile.glob('gs://{}/ch9/data/all*.csv'.format(BUCKET))
     logging.info("Training on {}".format(all_files))
     data_set = aiplatform.TabularDataset.create(
@@ -213,7 +213,7 @@ def main():
     else:
         tf_version = '2-' + tf.__version__[2:3]
 
-    # train
+    # Entrenar una de las tres opciones (Train one of the three options)
     if AUTOML:
         model = train_automl_model(data_set, TIMESTAMP, DEVELOP_MODE)
     elif NUM_HPARAM_TRIALS > 1:
@@ -221,7 +221,7 @@ def main():
     else:
         model = train_custom_model(data_set, TIMESTAMP, DEVELOP_MODE, CPU_ONLY_MODE, tf_version)
 
-    # create endpoint if it doesn't already exist
+    # Crear el Endpoint, si es que ya no existe (create endpoint if it doesn't already exist)
     endpoints = aiplatform.Endpoint.list(
         filter='display_name="{}"'.format(ENDPOINT_NAME),
         order_by='create_time desc',
@@ -235,7 +235,7 @@ def main():
             sync=DEVELOP_MODE
         )
 
-    # deploy
+    # Desplegar (deploy)
     model.deploy(
         endpoint=endpoint,
         traffic_split={"0": 100},
@@ -250,6 +250,7 @@ def main():
 
 
 def run_pipeline():
+    # Ejecutar como pipeline (Run as a pipeline)
     compiler.Compiler().compile(pipeline_func=main, package_path='flights_pipeline.json')
 
     job = aip.PipelineJob(
@@ -273,7 +274,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--region',
         help='Where to run the trainer',
-        default='us-central1'
+        default='southamerica-west1'
     )
     parser.add_argument(
         '--project',
@@ -313,7 +314,7 @@ if __name__ == '__main__':
         help='TensorFlow version to use'
     )
 
-    # parse args
+    # Analizar argumentos (parse args)
     logging.getLogger().setLevel(logging.INFO)
     args = parser.parse_args().__dict__
     BUCKET = args['bucket']
