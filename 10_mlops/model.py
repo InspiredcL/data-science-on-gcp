@@ -54,7 +54,7 @@ def read_dataset(pattern, batch_size, mode=tf.estimator.ModeKeys.TRAIN, truncate
     pattern: path
     batch_size: tamaño del lote (grupo de elementos)
     mode: El modo por deefcto es =tf.estimator.ModeKeys.TRAIN
-    truncate: El modo por defecto es =None
+    truncate: Si truncate es distinto de None, se aplica la funcion take (El modo por defecto es None)
     '''
 
     # En base en: el path y otras opciones, crea el dataset csv
@@ -74,9 +74,11 @@ def read_dataset(pattern, batch_size, mode=tf.estimator.ModeKeys.TRAIN, truncate
         dataset = dataset.repeat()
         
     dataset = dataset.prefetch(1) # Para precargar
-    
+
+    # Creates a Dataset with at most 'truncate' elements from this dataset.
     if truncate is not None:
-        dataset = dataset.take(truncate)
+        dataset = dataset.take(truncate) 
+        
     # Retornamos el dataset
     return dataset
 
