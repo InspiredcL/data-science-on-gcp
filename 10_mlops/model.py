@@ -30,23 +30,34 @@ NUM_EMBEDS = 3
 TRAIN_BATCH_SIZE = 64
 DNN_HIDDEN_UNITS = '64,32'
 
+# column_names
 CSV_COLUMNS = (
     'ontime,dep_delay,taxi_out,distance,origin,dest,dep_hour,is_weekday,carrier,' +
     'dep_airport_lat,dep_airport_lon,arr_airport_lat,arr_airport_lon,data_split'
 ).split(',')
 
+# column_defaults
 CSV_COLUMN_TYPES = [
     1.0, -3.0, 5.0, 1037.493622678299, 'OTH', 'DEN', 21, 1.0, 'OO',
     43.41694444, -124.24694444, 39.86166667, -104.67305556, 'TRAIN'
 ]
 
 
+# Separa las características de la etiqueta (split the dataset on features and labels)
 def features_and_labels(features):
     label = features.pop('ontime')  # this is what we will train for
     return features, label
 
-
+# Lee el conjunto de datos
 def read_dataset(pattern, batch_size, mode=tf.estimator.ModeKeys.TRAIN, truncate=None):
+    '''
+    pattern: path
+    batch_size: tamaño del lote (grupo de elementos)
+    mode: El modo por deefcto es =tf.estimator.ModeKeys.TRAIN
+    truncate: El modo por defecto es =None
+    '''
+
+    # En base en: el path y otras opciones, crea el dataset csv
     dataset = tf.data.experimental.make_csv_dataset(
         pattern, batch_size,
         column_names=CSV_COLUMNS,
@@ -55,17 +66,23 @@ def read_dataset(pattern, batch_size, mode=tf.estimator.ModeKeys.TRAIN, truncate
         num_parallel_reads=2,
         ignore_errors=True,
         num_epochs=1)
-    dataset = dataset.map(features_and_labels)
+    dataset = dataset.map(features_and_labels) # Le aplica la función features_and_labels
+    
+    # Modo Entrenamiento
     if mode == tf.estimator.ModeKeys.TRAIN:
         dataset = dataset.shuffle(batch_size * 10)
         dataset = dataset.repeat()
-    dataset = dataset.prefetch(1)
+        
+    dataset = dataset.prefetch(1) # Para precargar
+    
     if truncate is not None:
         dataset = dataset.take(truncate)
+    # Retornamos el dataset
     return dataset
 
-
+# Creamos la estructura del modelo y finalmente llamamos a wide_and_deep_classifier
 def create_model():
+    # Creamos por separado nuestros vectores de caracteristicas, para finalmente unirlos
     real = {
         colname: tf.feature_column.numeric_column(colname)
         for colname in
@@ -92,9 +109,10 @@ def create_model():
         for colname in sparse.keys()
     })
 
+    # Bucketize latitude and longitude:
     latbuckets = np.linspace(20.0, 50.0, NUM_BUCKETS).tolist()  # USA
     lonbuckets = np.linspace(-120.0, -70.0, NUM_BUCKETS).tolist()  # USA
-    disc = {}
+    disc = {} # Creo el diccionario  por partes
     disc.update({
         'd_{}'.format(key): tf.feature_column.bucketized_column(real[key], latbuckets)
         for key in ['dep_airport_lat', 'arr_airport_lat']
@@ -103,7 +121,6 @@ def create_model():
         'd_{}'.format(key): tf.feature_column.bucketized_column(real[key], lonbuckets)
         for key in ['dep_airport_lon', 'arr_airport_lon']
     })
-
     # cross columns that make sense in combination
     sparse['dep_loc'] = tf.feature_column.crossed_column(
         [disc['d_dep_airport_lat'], disc['d_dep_airport_lon']], NUM_BUCKETS * NUM_BUCKETS)
@@ -111,19 +128,20 @@ def create_model():
         [disc['d_arr_airport_lat'], disc['d_arr_airport_lon']], NUM_BUCKETS * NUM_BUCKETS)
     sparse['dep_arr'] = tf.feature_column.crossed_column([sparse['dep_loc'], sparse['arr_loc']], NUM_BUCKETS ** 4)
 
-    # embed all the sparse columns
+    # Embed all the sparse columns:
     embed = {
-        'embed_{}'.format(colname): tf.feature_column.embedding_column(col, NUM_EMBEDS)
+        'embed_{}'.format(colname): tf.feature_column.embedding_column(col, NUM_EMBEDS) # NUM_EMBEDS=3 original code
         for colname, col in sparse.items()
     }
     real.update(embed)
 
-    # one-hot encode the sparse columns
+    # One-hot encode the sparse columns:
     sparse = {
         colname: tf.feature_column.indicator_column(col)
         for colname, col in sparse.items()
     }
 
+    # Creamos el modelo con la función
     model = wide_and_deep_classifier(
         inputs,
         linear_feature_columns=sparse.values(),
@@ -132,27 +150,51 @@ def create_model():
 
     return model
 
-
+# Funcion para crear el modelo
 def wide_and_deep_classifier(inputs, linear_feature_columns, dnn_feature_columns, dnn_hidden_units):
+    '''
+    inputs: Entradas sin tratar para el modelo
+    linear_feature_columns: Columnas par ael modelo lineal
+    dnn_feature_columns : Columnas para el modelo Red neuronal profunda
+    dnn_hidden_units : Numero de capas ocultas
+    '''
+    # En base a (inputs) para heredar propiedades y 'dnn_feature_columns' para ver las columnas
     deep = tf.keras.layers.DenseFeatures(dnn_feature_columns, name='deep_inputs')(inputs)
+    
+    # De la familia 'deep' creamos las capas ocultas
     layers = [int(x) for x in dnn_hidden_units.split(',')]
     for layerno, numnodes in enumerate(layers):
         deep = tf.keras.layers.Dense(numnodes, activation='relu', name='dnn_{}'.format(layerno + 1))(deep)
+
+    # Desde la familia inputs, creamos la capa lineal
     wide = tf.keras.layers.DenseFeatures(linear_feature_columns, name='wide_inputs')(inputs)
+    # Unimos deep y wide
     both = tf.keras.layers.concatenate([deep, wide], name='both')
+    
+    # de la familia 'both', creamos la capa output con un solo nodo y función de activación sigmoide
     output = tf.keras.layers.Dense(1, activation='sigmoid', name='pred')(both)
+    # Creamos y compilamos (optimier, loss and metrics for example) el modelo
     model = tf.keras.Model(inputs, output)
     model.compile(optimizer='adam',
                   loss='binary_crossentropy',
                   metrics=['accuracy', rmse, tf.keras.metrics.AUC()])
     return model
 
-
+# RMSE function E[(\theta - \thetha\hat)^2]
 def rmse(y_true, y_pred):
     return tf.sqrt(tf.reduce_mean(tf.square(y_pred - y_true)))
 
-
+# Entrena y evalua
 def train_and_evaluate(train_data_pattern, eval_data_pattern, test_data_pattern, export_dir, output_dir):
+    '''
+    train_data_pattern: path al dataset train
+    eval_data_pattern: path al dataset eval
+    test_data_pattern: path al datasettest
+    export_dir: donde se guarda
+    output_dir: train_output dir
+    '''
+
+    # Train options:
     train_batch_size = TRAIN_BATCH_SIZE
     if DEVELOP_MODE:
         eval_batch_size = 100
@@ -164,7 +206,8 @@ def train_and_evaluate(train_data_pattern, eval_data_pattern, test_data_pattern,
         steps_per_epoch = NUM_EXAMPLES // train_batch_size
         epochs = NUM_EPOCHS
         num_eval_examples = eval_batch_size * 100
-
+        
+    # Read the train and eval dataset
     train_dataset = read_dataset(train_data_pattern, train_batch_size)
     eval_dataset = read_dataset(eval_data_pattern, eval_batch_size, tf.estimator.ModeKeys.EVAL, num_eval_examples)
 
@@ -215,14 +258,17 @@ def train_and_evaluate(train_data_pattern, eval_data_pattern, test_data_pattern,
 
 if __name__ == '__main__':
     logging.info("Tensorflow version " + tf.__version__)
+    # Create the parser element
     parser = argparse.ArgumentParser()
 
+    # 1
     parser.add_argument(
         '--bucket',
         help='Data will be read from gs://BUCKET/ch9/data and output will be in gs://BUCKET/ch9/trained_model',
         required=True
     )
 
+    # 2
     parser.add_argument(
         '--num_examples',
         help='Number of examples per epoch. Get order of magnitude correct.',
@@ -230,6 +276,7 @@ if __name__ == '__main__':
         default=5000000
     )
 
+    # 3
     # for hyper-parameter tuning
     parser.add_argument(
         '--train_batch_size',
@@ -237,35 +284,47 @@ if __name__ == '__main__':
         type=int,
         default=256  # originally 64
     )
+
+    # 4
     parser.add_argument(
         '--nbuckets',
         help='Number of bins into which to discretize lats and lons',
         type=int,
         default=10  # originally 5
     )
+
+    # 5
     parser.add_argument(
         '--nembeds',
         help='Embedding dimension for categorical variables',
         type=int,
         default=3
     )
+
+    # 6
     parser.add_argument(
         '--num_epochs',
         help='Number of epochs (used only if --develop is not set)',
         type=int,
         default=10
     )
+
+    # 7
     parser.add_argument(
         '--dnn_hidden_units',
         help='Architecture of DNN part of wide-and-deep network',
         default='64,64,64,8'  # originally '64,32'
     )
+
+    # 8
     parser.add_argument(
         '--develop',
         help='Train on a small subset in development',
         dest='develop',
         action='store_true')
     parser.set_defaults(develop=False)
+
+    # 9
     parser.add_argument(
         '--skip_full_eval',
         help='Just train. Do not evaluate on test dataset.',
