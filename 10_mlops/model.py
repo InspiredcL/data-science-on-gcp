@@ -72,8 +72,10 @@ def read_dataset(pattern, batch_size, mode=tf.estimator.ModeKeys.TRAIN, truncate
     if mode == tf.estimator.ModeKeys.TRAIN:
         dataset = dataset.shuffle(batch_size * 10)
         dataset = dataset.repeat()
-        
-    dataset = dataset.prefetch(1) # Para precargar
+
+    # This allows later elements to be prepared while the current element is being processed.
+    # This often improves latency and throughput, at the cost of using additional memory to store prefetched elements.
+    dataset = dataset.prefetch(1) # Para precargar un buffer size de 1
 
     # Creates a Dataset with at most 'truncate' elements from this dataset.
     if truncate is not None:
