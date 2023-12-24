@@ -39,7 +39,7 @@ def train_custom_model(data_set, timestamp, develop_mode, cpu_only_mode, tf_vers
     model_display_name = '{}-{}'.format(ENDPOINT_NAME, timestamp)
     job = aiplatform.CustomTrainingJob(
         display_name='train-{}'.format(model_display_name),
-        script_path="model.py",
+        script_path="model.py", # Usa el script model.py para crear el modelo
         container_uri=train_image,
         requirements=['cloudml-hypertune'],  # any extra Python packages
         model_serving_container_image_uri=deploy_image
