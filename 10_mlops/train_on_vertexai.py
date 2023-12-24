@@ -26,7 +26,7 @@ ENDPOINT_NAME = 'flights'
 
 
 def train_custom_model(data_set, timestamp, develop_mode, cpu_only_mode, tf_version, extra_args=None):
-    # Set up training and deployment infra
+    # Configurando la infraestructura para entrenamiento y despliegue
     
     if cpu_only_mode:
         train_image='us-docker.pkg.dev/vertex-ai/training/tf-cpu.{}:latest'.format(tf_version)
@@ -35,7 +35,7 @@ def train_custom_model(data_set, timestamp, develop_mode, cpu_only_mode, tf_vers
         train_image = "us-docker.pkg.dev/vertex-ai/training/tf-gpu.{}:latest".format(tf_version)
         deploy_image = "us-docker.pkg.dev/vertex-ai/prediction/tf2-cpu.{}:latest".format(tf_version)
 
-    # train
+    # Entrenamiento: Nombre del modelo, script_path, container_uri, requirements, deploy_image
     model_display_name = '{}-{}'.format(ENDPOINT_NAME, timestamp)
     job = aiplatform.CustomTrainingJob(
         display_name='train-{}'.format(model_display_name),
@@ -44,6 +44,7 @@ def train_custom_model(data_set, timestamp, develop_mode, cpu_only_mode, tf_vers
         requirements=['cloudml-hypertune'],  # any extra Python packages
         model_serving_container_image_uri=deploy_image
     )
+    # Opciones de desempeño
     model_args = [
         '--bucket', BUCKET,
     ]
@@ -81,7 +82,8 @@ def train_custom_model(data_set, timestamp, develop_mode, cpu_only_mode, tf_vers
 
 
 def train_automl_model(data_set, timestamp, develop_mode):
-    # train
+    
+    # Entrenar modelo AutoML
     model_display_name = '{}-{}'.format(ENDPOINT_NAME, timestamp)
     job = aiplatform.AutoMLTabularTrainingJob(
         display_name='train-{}'.format(model_display_name),
@@ -104,18 +106,25 @@ def train_automl_model(data_set, timestamp, develop_mode):
 
 
 def do_hyperparameter_tuning(data_set, timestamp, develop_mode, cpu_only_mode, tf_version):
+    '''
+    data_set: Conjunto de datos (A set of data)
+    timestamp: Marca de tiempo
+    develop_mode: Desarrollo o Producción
+    cpu_only_mode: cpu o gpu
+    tf_version: version de "TensorFlow" para la URI
+    '''
     # Vertex AI services require regional API endpoints.
     if cpu_only_mode:
         train_image='us-docker.pkg.dev/vertex-ai/training/tf-cpu.{}:latest'.format(tf_version)
     else: 
         train_image = "us-docker.pkg.dev/vertex-ai/training/tf-gpu.{}:latest".format(tf_version)
 
-    # a single trial job
+    # Un único trabajo de prueba (a single trial job)
     model_display_name = '{}-{}'.format(ENDPOINT_NAME, timestamp)
     if cpu_only_mode:
         trial_job = aiplatform.CustomJob.from_local_script(
             display_name='train-{}'.format(model_display_name),
-            script_path="model.py",
+            script_path="model.py", # el modelo: model.py
             container_uri=train_image,
             args=[
                 '--bucket', BUCKET,
@@ -146,7 +155,9 @@ def do_hyperparameter_tuning(data_set, timestamp, develop_mode, cpu_only_mode, t
             accelerator_count=1,
         )
 
-    # the tuning job
+    # Hyperparameters
+    # El trabajo de ajuste (the tuning job)
+    
     hparam_job = aiplatform.HyperparameterTuningJob(
         # See https://googleapis.dev/python/aiplatform/latest/aiplatform.html#
         display_name='hparam-{}'.format(model_display_name),
