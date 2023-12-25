@@ -22,7 +22,9 @@ If you didn't go through Chapters 2-9, the simplest way to catch up is to copy d
     ```bash
     bash create_sample_input.sh
     ```
-    #!/bin/bash
+    
+    ```bash
+    #!/bin/bash \
     bq query --nouse_legacy_sql --format=sparse \
         "SELECT EVENT_DATA FROM dsongcp.flights_simevents \
         WHERE EVENT_TYPE = 'wheelsoff' AND \
@@ -36,6 +38,7 @@ If you didn't go through Chapters 2-9, the simplest way to catch up is to copy d
         WHERE DEP_TIME BETWEEN '2015-03-10T10:00:00' AND '2015-03-10T14:00:00' " \
         | sed 's/\[//g' | sed 's/\]//g' | sed s'/\},/\}\n/g' \
         > alldata_sample.json
+    ```
 * [Optional] Run a local pipeline to create a training dataset:
     ```
     python3 create_traindata.py --input local
