@@ -2,6 +2,7 @@
 
 ### Create a proyect
 * gcloud projects create ds-on-gcp --set-as-default (el set es opcional)
+* gcloud projects list
 * gcloud config set project NOMBRE_DEL_PROYECTO
 
 ### Create a bucket
@@ -15,7 +16,7 @@
 ### Populate your bucket with the data you will need for the book
 
 * Open CloudShell and git clone this repo:
-    ```
+    ```git
     git clone https://github.com/GoogleCloudPlatform/data-science-on-gcp
     ```
 * Go to the 02_ingest folder of the repo
