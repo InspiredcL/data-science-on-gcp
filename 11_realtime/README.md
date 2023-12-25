@@ -65,7 +65,7 @@ If you didn't go through Chapters 2-9, the simplest way to catch up is to copy d
   ```
 * Train custom ML model on the enriched dataset:
   ```
-  python3 train_on_vertexai.py --project <PROJECT> --bucket <BUCKET> --region <REGION>
+  python3 train_on_vertexai_11.py --project <PROJECT> --bucket <BUCKET> --region <REGION>
   ```
   Look at the logs of the log to determine the final RMSE.
 * Run a local pipeline to invoke predictions:
