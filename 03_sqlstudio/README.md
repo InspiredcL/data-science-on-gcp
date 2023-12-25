@@ -3,7 +3,7 @@ If you have not already done so, load the raw data into a BigQuery dataset:
 * Go to the Storage section of the GCP web console and create a new bucket
 * Open CloudShell and git clone this repo:
     ```
-    git clone https://github.com/GoogleCloudPlatform/data-science-on-gcp
+    git clone https://github.com/InspiredcL/data-science-on-gcp
     ```
 * Then, run:
     ```
