@@ -1,5 +1,3 @@
-# 3. Creating compelling dashboards
-
 ### Catch up to Chapter 2
 If you have not already done so, load the raw data into a BigQuery dataset:
 * Go to the Storage section of the GCP web console and create a new bucket
@@ -54,6 +52,8 @@ If you have not already done so, load the raw data into a BigQuery dataset:
   ```
 * Add more months of CSV data and notice that the performance degrades.
 Once you are done, delete the Cloud SQL instance since you will not need it for the rest of the book.
+
+# 3. Creating compelling dashboards
 
 ### Creating view in BigQuery
 * Run the script 
