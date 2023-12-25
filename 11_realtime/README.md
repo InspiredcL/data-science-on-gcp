@@ -25,7 +25,8 @@ If you didn't go through Chapters 2-9, the simplest way to catch up is to copy d
     #!/bin/bash
     bq query --nouse_legacy_sql --format=sparse \
         "SELECT EVENT_DATA FROM dsongcp.flights_simevents \
-        WHERE EVENT_TYPE = 'wheelsoff' AND EVENT_TIME BETWEEN '2015-03-10T10:00:00' AND '2015-03-10T14:00:00' " \
+        WHERE EVENT_TYPE = 'wheelsoff' AND \
+        EVENT_TIME BETWEEN '2015-03-10T10:00:00' AND '2015-03-10T14:00:00' " \
         | grep FL_DATE \
         > simevents_sample.json
     
