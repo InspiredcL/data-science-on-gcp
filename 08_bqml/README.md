@@ -1,5 +1,3 @@
-# 8. Machine Learning with BigQuery ML
-
 ### Catch up from previous chapters if necessary
 If you didn't go through Chapters 2-7, the simplest way to catch up is to copy data from my bucket:
 
@@ -16,6 +14,7 @@ If you didn't go through Chapters 2-7, the simplest way to catch up is to copy d
 	```
  
 ## This Chapter
+# 8. Machine Learning with BigQuery ML 
 
 ### Vertex AI Workbench
 * Open a new notebook in Vertex AI Workbench from https://console.cloud.google.com/vertex-ai/workbench
