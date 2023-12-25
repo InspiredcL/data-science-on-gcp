@@ -21,8 +21,7 @@
     ```
 * Go to the 02_ingest folder of the repo
 * Edit ./ingest.sh to reflect the years you want to process (at minimum, you need 2015)
-* Execute ./ingest.sh bucketname
-* gs://ds-on-gcp-394717-dsongcp/
+* Execute ./ingest.sh "bucketname" o por ejemplo "gs://ds-on-gcp-394717-dsongcp/"
 
 ### [Optional] Scheduling monthly downloads
 * Go to the 02_ingest/monthlyupdate folder in the repo.
