@@ -1,5 +1,3 @@
-# 5. Interactive data exploration
-
 ### Catch up from previous chapters if necessary
 If you didn't go through Chapters 2-4, the simplest way to catch up is to copy data from my bucket:
 * Go to the Storage section of the GCP web console and create a new bucket
@@ -23,6 +21,8 @@ If you didn't go through Chapters 2-4, the simplest way to catch up is to copy d
     cd ../04_streaming
     ./ingest_from_crsbucket.sh
     ```
+    
+# 5. Interactive data exploration
 
 ## Try out queries
 * In BigQuery, query the time corrected files created in Chapter 4:
