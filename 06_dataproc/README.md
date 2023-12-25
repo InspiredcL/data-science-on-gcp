@@ -1,5 +1,3 @@
-# 6. Bayes Classifier on Cloud Dataproc
-
 To repeat the steps in this chapter, follow these steps.
 
 ### Catch up from Chapters 2-5
@@ -14,6 +12,8 @@ If you didn't go through Chapters 2-5, the simplest way to catch up is to copy d
 	```
 	bash create_trainday.sh BUCKET-NAME
 	```
+
+# 6. Bayes Classifier on Cloud Dataproc
 
 ### Create Dataproc cluster
 In CloudShell:
