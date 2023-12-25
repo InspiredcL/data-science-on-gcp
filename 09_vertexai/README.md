@@ -1,5 +1,3 @@
-# Machine Learning Classifier using TensorFlow
-
 ### Catch up from previous chapters if necessary
 If you didn't go through Chapters 2-7, the simplest way to catch up is to copy data from my bucket:
 
@@ -14,7 +12,8 @@ If you didn't go through Chapters 2-7, the simplest way to catch up is to copy d
 	```
 	bash create_trainday.sh <BUCKET-NAME>
 	```
- 
+
+# Machine Learning Classifier using TensorFlow 
 ## This Chapter
 
 * Open a new notebook in Vertex AI Workbench from https://console.cloud.google.com/vertex-ai/workbench
