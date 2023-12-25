@@ -24,7 +24,7 @@ If you didn't go through Chapters 2-9, the simplest way to catch up is to copy d
     ```
     
     ```bash
-    #!/bin/bash \
+    #!/bin/bash
     bq query --nouse_legacy_sql --format=sparse \
         "SELECT EVENT_DATA FROM dsongcp.flights_simevents \
         WHERE EVENT_TYPE = 'wheelsoff' AND \
