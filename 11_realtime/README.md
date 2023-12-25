@@ -4,7 +4,7 @@ If you didn't go through Chapters 2-9, the simplest way to catch up is to copy d
 #### Catch up from Chapters 2-9
 * Open CloudShell and git clone this repo:
     ```
-    git clone https://github.com/GoogleCloudPlatform/data-science-on-gcp
+    git clone https://github.com/InspiredcL/data-science-on-gcp
     ```
 * Go to the 02_ingest folder of the repo, run the program ./ingest_from_crsbucket.sh and specify your bucket name.
 * Go to the 04_streaming folder of the repo, run the program ./ingest_from_crsbucket.sh and specify your bucket name.
@@ -19,7 +19,7 @@ If you didn't go through Chapters 2-9, the simplest way to catch up is to copy d
     pip3 install google-cloud-aiplatform cloudml-hypertune pyfarmhash
     ```
 * [Optional] Create a small, local sample of BigQuery datasets for local experimentation:
-    ```
+    ```bash
     bash create_sample_input.sh
     ```
 * [Optional] Run a local pipeline to create a training dataset:
@@ -39,7 +39,7 @@ If you didn't go through Chapters 2-9, the simplest way to catch up is to copy d
   AttributeError: Can't get attribute '_create_code' on <module 'dill._dill' from '/usr/local/lib/python3.7/site-packages/dill/_dill.py'>
   ```
   it is because the global version of your modules are ahead/behind of what Apache Beam on the server requires. Make sure to submit Apache Beam code to Dataflow from a pristine virtual environment that has only the modules you need:
-  ```
+  ```bash
   python -m venv ~/beamenv
   source ~/beamenv/bin/activate
   pip install apache-beam[gcp] google-cloud-aiplatform cloudml-hypertune pyfarmhash pyparsing==2.4.2
@@ -52,10 +52,10 @@ If you didn't go through Chapters 2-9, the simplest way to catch up is to copy d
   ```
 * [Optional] Train an AutoML model on the enriched dataset:
   ```
-  python3 train_on_vertexai.py --automl --project <PROJECT> --bucket <BUCKET> --region <REGION>
+  python3 train_on_vertexai_11.py --automl --project <PROJECT> --bucket <BUCKET> --region <REGION>
   ```
   Verify performance by running the following BigQuery query:
-  ```
+  ```sql
   SELECT  
   SQRT(SUM(
       (CAST(ontime AS FLOAT64) - predicted_ontime.scores[OFFSET(0)])*
@@ -123,7 +123,7 @@ If you didn't go through Chapters 2-9, the simplest way to catch up is to copy d
     ```
   
   Ensure that the pipeline starts, look at BigQuery:
-   ```
+   ```sql
    SELECT * FROM dsongcp.streaming_preds ORDER BY event_time DESC LIMIT 10
    ```
    When done, make sure to go to the GCP Console and stop the Dataflow pipeline.
