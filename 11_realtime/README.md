@@ -1,5 +1,3 @@
-# Machine Learning on Streaming Pipelines
-
 ### Catch up from previous chapters if necessary
 If you didn't go through Chapters 2-9, the simplest way to catch up is to copy data from my bucket:
 
@@ -12,6 +10,8 @@ If you didn't go through Chapters 2-9, the simplest way to catch up is to copy d
 * Go to the 04_streaming folder of the repo, run the program ./ingest_from_crsbucket.sh and specify your bucket name.
 * Go to the 05_bqnotebook folder of the repo, run the program ./create_trainday.sh and specify your bucket name.
 * Go to the 10_mlops folder of the repo, run the program ./ingest_from_crsbucket.sh and specify your bucket name.
+
+# 11. Machine Learning on Streaming Pipelines
 
 #### From CloudShell
 * Install the Python libraries you'll need
