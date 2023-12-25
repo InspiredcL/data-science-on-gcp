@@ -13,8 +13,8 @@ If you didn't go through Chapters 2-7, the simplest way to catch up is to copy d
 	bash create_trainday.sh <BUCKET-NAME>
 	```
  
-## This Chapter
 # 8. Machine Learning with BigQuery ML 
+## This Chapter
 
 ### Vertex AI Workbench
 * Open a new notebook in Vertex AI Workbench from https://console.cloud.google.com/vertex-ai/workbench
