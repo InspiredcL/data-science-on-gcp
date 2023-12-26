@@ -4,7 +4,7 @@ If you didn't go through Chapters 2-7, the simplest way to catch up is to copy d
 #### Catch up from Chapters 2-7
 * Open CloudShell and git clone this repo:
     ```
-    git clone https://github.com/GoogleCloudPlatform/data-science-on-gcp
+    git clone https://github.com/InspiredcL/data-science-on-gcp
     ```
 * Go to the 02_ingest folder of the repo, run the program ./ingest_from_crsbucket.sh and specify your bucket name.
 * Go to the 04_streaming folder of the repo, run the program ./ingest_from_crsbucket.sh and specify your bucket name.
