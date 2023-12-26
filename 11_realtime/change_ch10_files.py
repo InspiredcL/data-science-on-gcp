@@ -16,7 +16,7 @@ import os
 
 CHANGES = [
     # both
-    ("ch9", "ch11"),
+    ("ch10", "ch11"),
 
     # train_on_vertexai.py
     ("ENDPOINT_NAME = 'flights'", "ENDPOINT_NAME = 'flights-ch11'"),
