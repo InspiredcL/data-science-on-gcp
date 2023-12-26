@@ -19,7 +19,7 @@ If you didn't go through Chapters 2-7, the simplest way to catch up is to copy d
 * Open a new notebook in Vertex AI Workbench from https://console.cloud.google.com/vertex-ai/workbench
 * Launch a new terminal window and type in it:
 ```
-git clone https://github.com/GoogleCloudPlatform/data-science-on-gcp
+git clone https://github.com/InspiredcL/data-science-on-gcp
 ```
 * In the navigation pane on the left, navigate to data-science-on-gcp/09_vertexai
 * Open the notebook flights_model_tf2.ipynb and run the cells.  Note that the notebook has
