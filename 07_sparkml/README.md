@@ -20,7 +20,9 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
 #### [Optional] Catch up from Chapter 6
 * Use the instructions in the <a href="../06_dataproc/README.md">Chapter 6 README</a> to:
     * launch a minimal Cloud Dataproc cluster with initialization actions for Jupyter (`./create_cluster.sh BUCKET ZONE`)
-    * \# create cluster \
+    *
+	```sh
+  	# create cluster \
 	gcloud dataproc clusters create ch6cluster \
 		--enable-component-gateway \
 		--region ${REGION} --zone ${REGION}-a \
@@ -31,6 +33,7 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
 		--optional-components JUPYTER --project $PROJECT \
 		--initialization-actions=$INSTALL \
 		--scopes https://www.googleapis.com/auth/cloud-platform
+ 	```
 * Start a new notebook and in a cell, download a read-only clone of this repository:
     ```bash
     %bash
