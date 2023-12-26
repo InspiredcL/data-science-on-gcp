@@ -9,7 +9,7 @@ If you didn't go through Chapters 2-7, the simplest way to catch up is to copy d
 * Go to the 02_ingest folder of the repo, run the program ./ingest_from_crsbucket.sh and specify your bucket name.
 * Go to the 04_streaming folder of the repo, run the program ./ingest_from_crsbucket.sh and specify your bucket name.
 * Go to the 05_bqnotebook folder of the repo, run the script to load data into BigQuery:
-	```
+	```sh
 	bash create_trainday.sh <BUCKET-NAME>
 	```
  
@@ -20,7 +20,7 @@ If you didn't go through Chapters 2-7, the simplest way to catch up is to copy d
 * Open a new notebook in Vertex AI Workbench from https://console.cloud.google.com/vertex-ai/workbench
 * Launch a new terminal window and type in it:
 ```
-git clone https://github.com/GoogleCloudPlatform/data-science-on-gcp
+git clone https://github.com/InspiredcL/data-science-on-gcp
 ```
 * In the navigation pane on the left, navigate to data-science-on-gcp/08_bqml
 
