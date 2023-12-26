@@ -3,7 +3,7 @@ If you didn't go through Chapters 2-4, the simplest way to catch up is to copy d
 * Go to the Storage section of the GCP web console and create a new bucket
 * Open CloudShell and git clone this repo:
     ```SH
-    git clone https://github.com/GoogleCloudPlatform/data-science-on-gcp
+    git clone https://github.com/InspiredcL/data-science-on-gcp
     ```
 * Then, run:
     ```SH
