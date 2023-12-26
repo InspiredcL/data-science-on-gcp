@@ -17,7 +17,7 @@
 
 * Open CloudShell and git clone this repo:
     ```git
-    git clone https://github.com/GoogleCloudPlatform/data-science-on-gcp
+    git clone https://github.com/InspiredcL/data-science-on-gcp
     ```
 * Go to the 02_ingest folder of the repo
 * Edit ./ingest.sh to reflect the years you want to process (at minimum, you need 2015)
