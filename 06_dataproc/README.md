@@ -17,10 +17,6 @@ If you didn't go through Chapters 2-5, the simplest way to catch up is to copy d
 
 ### Create Dataproc cluster
 In CloudShell:
-* Clone the repository if you haven't already done so:
-    ```
-    git clone https://github.com/InspiredcL/data-science-on-gcp
-    ```
 * Change to the directory for this chapter:
     ```
     cd data-science-on-gcp/06_dataproc
