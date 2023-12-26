@@ -2,7 +2,7 @@
 
 if test "$#" -ne 1; then
    echo "Usage: ./bq_flight_sample.sh bucket-name"
-   echo "   eg: ./bq_flight_sample.sh cloud-training-demos-ml"
+   echo "   eg: ./bq_flight_sample.sh ${PROJECT}-dsongcp"
    exit
 fi
 
