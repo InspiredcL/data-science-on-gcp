@@ -19,7 +19,7 @@ If you didn't go through Chapters 2-5, the simplest way to catch up is to copy d
 In CloudShell:
 * Clone the repository if you haven't already done so:
     ```
-    git clone https://github.com/GoogleCloudPlatform/data-science-on-gcp
+    git clone https://github.com/InspiredcL/data-science-on-gcp
     ```
 * Change to the directory for this chapter:
     ```
