@@ -36,7 +36,7 @@ If you didn't go through Chapters 2-6, the simplest way to catch up is to copy d
 * Start a new notebook and in a cell, download a read-only clone of this repository:
     ```bash
     %bash
-    git clone https://github.com/GoogleCloudPlatform/data-science-on-gcp
+    git clone https://github.com/InspiredcL/data-science-on-gcp
     rm -rf data-science-on-gcp/.git
     ```
 * Browse to data-science-on-gcp/07_sparkml_and_bqml/logistic_regression.ipynb
