@@ -22,24 +22,26 @@ import pyspark.sql.functions as F
 
 
 def run_bayes(BUCKET):
+    # Inicia sesión en Spark
     spark = SparkSession \
         .builder \
         .appName("Bayes classification using Spark") \
         .getOrCreate()
 
-    # read flights data
+    # Lee los archivos que comienzan con all_flights-* (* comodin cadena aleatoria)
     inputs = 'gs://{}/flights/tzcorr/all_flights-*'.format(BUCKET)  # FULL
     flights = spark.read.json(inputs)
     flights.createOrReplaceTempView('flights')
 
-    # which days are training days?
+    # Lee de la carpeta flights del bucket, el archivo trainday.csv (which days are training days?)
     traindays = spark.read \
         .option("header", "true") \
         .option("inferSchema", "true") \
         .csv('gs://{}/flights/trainday.csv'.format(BUCKET))
+    # Crea una vista de traindays (El que trae el tag de cual fila es de entrenamiento o no)
     traindays.createOrReplaceTempView('traindays')
 
-    # create training dataset
+    # Crea el conjunto de datos de entrenamiento flights (create training dataset)
     statement = """
     SELECT
       f.FL_DATE AS date,
@@ -57,13 +59,13 @@ def run_bayes(BUCKET):
     """
     flights = spark.sql(statement)
 
-    # quantiles
+    # Cuantiles
     distthresh = flights.approxQuantile('distance', list(np.arange(0, 1.0, 0.2)), 0.02)
     distthresh[-1] = float('inf')
     delaythresh = range(10, 20)
     logging.info("Computed distance thresholds: {}".format(distthresh))
 
-    # bayes in each bin
+    # Bayes en cada casilla (bayes in each bin)
     df = pd.DataFrame(columns=['dist_thresh', 'delay_thresh', 'frac_ontime'])
     for m in range(0, len(distthresh) - 1):
         for n in range(0, len(delaythresh) - 1):
