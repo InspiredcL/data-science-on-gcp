@@ -47,6 +47,6 @@ There is a reason why I have worked with only 1 year of data so far in the book.
 * [5 hr] Train AutoML model so that we have evaluation statistics in BigQuery:
   ```
   cd 11_realtime
-  python3 train_on_vertexai.py --automl --project $PROJECT --bucket $BUCKET --region $REGION
+  python3 train_on_vertexai_11.py --automl --project $PROJECT --bucket $BUCKET --region $REGION
   ```
 * Open the notebook evaluation.ipynb in Vertex Workbench and run the cells.

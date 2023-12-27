@@ -1,8 +1,10 @@
 #!/bin/bash
 
+# Crea la tabla "dsongcp.flights_sample" en base a "dsongcp.flights" y elegimos un porcentaje de 0.1%
+# Guarda la ttabla "dsongcp.flights_sample" en el bucket
 if test "$#" -ne 1; then
    echo "Usage: ./bq_flight_sample.sh bucket-name"
-   echo "   eg: ./bq_flight_sample.sh cloud-training-demos-ml"
+   echo "   eg: ./bq_flight_sample.sh ${PROJECT}-dsongcp"
    exit
 fi
 

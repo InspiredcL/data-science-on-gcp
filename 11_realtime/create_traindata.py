@@ -33,6 +33,15 @@ def dict_to_csv(f):
 
 
 def run(project, bucket, region, input):
+    '''
+    Pregunta si es local o en la nube.
+    Pipeline:
+         read the event stream
+         events -> features.  See ./flights_transforms.py for the code shared between training & prediction
+         shuffle globally so that we are not at mercy of TensorFlow's shuffle buffer
+         write out
+    '''
+    # Pregunta si es local o en la nube.
     if input == 'local':
         logging.info('Running locally on small extract')
         argv = [
@@ -55,9 +64,9 @@ def run(project, bucket, region, input):
             '--runner=DataflowRunner'
         ]
         flights_output = 'gs://{}/ch11/data/'.format(bucket)
-
+        
+    # Pipeline
     with beam.Pipeline(argv=argv) as pipeline:
-
         # read the event stream
         if input == 'local':
             input_file = './alldata_sample.json'

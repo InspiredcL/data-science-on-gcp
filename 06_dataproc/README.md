@@ -1,12 +1,10 @@
-# 6. Bayes Classifier on Cloud Dataproc
-
 To repeat the steps in this chapter, follow these steps.
 
 ### Catch up from Chapters 2-5
 If you didn't go through Chapters 2-5, the simplest way to catch up is to copy data from my bucket:
 * Open CloudShell and git clone this repo:
     ```
-    git clone https://github.com/GoogleCloudPlatform/data-science-on-gcp
+    git clone https://github.com/InspiredcL/data-science-on-gcp
     ```
 * Go to the 02_ingest folder of the repo, run the program ./ingest_from_crsbucket.sh and specify your bucket name.
 * Go to the 04_streaming folder of the repo, run the program ./ingest_from_crsbucket.sh and specify your bucket name.
@@ -15,12 +13,10 @@ If you didn't go through Chapters 2-5, the simplest way to catch up is to copy d
 	bash create_trainday.sh BUCKET-NAME
 	```
 
+# 6. Bayes Classifier on Cloud Dataproc
+
 ### Create Dataproc cluster
 In CloudShell:
-* Clone the repository if you haven't already done so:
-    ```
-    git clone https://github.com/GoogleCloudPlatform/data-science-on-gcp
-    ```
 * Change to the directory for this chapter:
     ```
     cd data-science-on-gcp/06_dataproc

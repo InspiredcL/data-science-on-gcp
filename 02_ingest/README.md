@@ -2,6 +2,7 @@
 
 ### Create a proyect
 * gcloud projects create ds-on-gcp --set-as-default (el set es opcional)
+* gcloud projects list
 * gcloud config set project NOMBRE_DEL_PROYECTO
 
 ### Create a bucket
@@ -15,13 +16,12 @@
 ### Populate your bucket with the data you will need for the book
 
 * Open CloudShell and git clone this repo:
-    ```
-    git clone https://github.com/GoogleCloudPlatform/data-science-on-gcp
+    ```git
+    git clone https://github.com/InspiredcL/data-science-on-gcp
     ```
 * Go to the 02_ingest folder of the repo
 * Edit ./ingest.sh to reflect the years you want to process (at minimum, you need 2015)
-* Execute ./ingest.sh bucketname
-* gs://ds-on-gcp-394717-dsongcp/
+* Execute ./ingest.sh "bucketname" o por ejemplo "gs://ds-on-gcp-394717-dsongcp/"
 
 ### [Optional] Scheduling monthly downloads
 * Go to the 02_ingest/monthlyupdate folder in the repo.

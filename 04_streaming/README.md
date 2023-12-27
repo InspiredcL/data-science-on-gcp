@@ -1,3 +1,20 @@
+### Catch up until Chapter 3 if necessary
+* Go to the Storage section of the GCP web console and create a new bucket
+* Open CloudShell and git clone this repo:
+    ```
+    git clone https://github.com/InspiredcL/data-science-on-gcp
+    ```
+* Then, run:
+```
+cd data-science-on-gcp/02_ingest
+./ingest_from_crsbucket bucketname
+```
+* Run:
+```
+cd ../03_sqlstudio
+./create_views.sh
+```
+
 # 4. Streaming data: publication and ingest
 
 ### Batch processing transformation in DataFlow
@@ -84,9 +101,8 @@
 
 
 
-  
 * Correcting dates:
-	```
+	```sh
 	./df04.py
 	head -3 all_flights-00000*
 	rm all_flights-*
