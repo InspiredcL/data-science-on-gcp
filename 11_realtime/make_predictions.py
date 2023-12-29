@@ -55,6 +55,19 @@ CSV_HEADER = 'event_time,dep_delay,taxi_out,distance,origin,dest,dep_hour,is_wee
 #             yield result
 
 
+# class CreateRowFn(beam.DoFn):
+#     def process(self, event):
+#     key = "{}#{}#{}#{}".format(event['origin'],
+#     event['dest'],event['carrier'],reverse_ts(event['event_time']))
+#     result = []
+#     for name, value in event.items():
+#         direct_row = row.DirectRow(row_key=key)
+#         direct_row.set_cell(
+#         name, value, event['event_time']))
+#         result.append(direct_row)
+#     return result
+
+
 class FlightsModelInvoker(beam.DoFn):
     def __init__(self):
         self.endpoint = None
