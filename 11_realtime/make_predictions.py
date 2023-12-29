@@ -54,7 +54,7 @@ CSV_HEADER = 'event_time,dep_delay,taxi_out,distance,origin,dest,dep_hour,is_wee
 #             result['prob_ontime'] = predictions[idx][0]
 #             yield result
 
-
+# To stream into Cloud Bigtable from Bigtable, we need to create a set of Cloud BigTable mutations
 # class CreateRowFn(beam.DoFn):
 #     def process(self, event):
 #     key = "{}#{}#{}#{}".format(event['origin'],
