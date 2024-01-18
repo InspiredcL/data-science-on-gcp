@@ -7,12 +7,11 @@
 
 ### Crear un proyecto en google cloud
 
-* El nombre del proyecto "ds-on-gcp" es una sugerencia.
-  
+* El nombre del proyecto "ds-on-gcp" es una sugerencia, reemplaza el valor de [PROJECT] por ds-on-gcp.  
   `gcloud projects create [PROJECT]`
-
+  
 * Lista los proyectos exitentes para ver el "Project ID" el cual es un identificador único que no se puede modificar.
-'gcloud projects list'
+  'gcloud projects list'
 
 * Establece en tu configuración [Default] el proyecto deseado. 
 'gcloud config set project NOMBRE_DEL_PROYECTO'  
