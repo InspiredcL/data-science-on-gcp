@@ -39,11 +39,11 @@ El código de Qwiklabs (ver más abajo) se **prueba continuamente** y este repos
 Si el código no te funciona, te recomiendo que pruebes el laboratorio de Qwiklab () correspondiente para ver si hay algún paso que te perdiste.
 Si aún tiene problemas, deje sus comentarios en Qwiklabs o presente un problema en este repositorio.
 
-### Try out the code on Qwiklabs
+### Pruebe el código en Qwiklabs
 
-- [Data Science on the Google Cloud Platform Quest (A la fecha de esta edicion solo 3 labs estan disponibles)](https://google.qwiklabs.com/quests/43)
+- [Data Science on the Google Cloud Platform Quest (A la fecha de esta edicion 18-01-2024 solo 3 labs estan disponibles)](https://google.qwiklabs.com/quests/43)
 - [Data Science on Google Cloud Platform: Machine Learning Quest (para tener acceso se necesitan credenciales comunicarse con agentes de google)](https://google.qwiklabs.com/quests/50)
 
 
-### Actualizaciones para reservar
-El autor actalizó el libro en noviembre de 2019 con TensorFlow 2.0, Cloud Functions y BigQuery ML.
+### Actualizaciones al libro
+El autor actualizó el libro en noviembre de 2019 con TensorFlow 2.0, Cloud Functions y BigQuery ML.
