@@ -1,14 +1,26 @@
-# 2. Ingesting data onto the Cloud on CLI
+# 2. Ingerir datos en la nube a través de CLI (Interfaz de línea de comandos)
 
-### Create a proyect
-* gcloud projects create ds-on-gcp --set-as-default (el set es opcional)
-* gcloud projects list
-* gcloud config set project NOMBRE_DEL_PROYECTO
+### Antes de crear el proyecto
+* Asegurate que tienes una cuenta en google cloud
+* Existen maneras de replicar este proyecto sin costo, google asigna 300 creditos de computo (disponibles por 3 meses) para clientes nuevos solo necesitas agregar un metodo de pago, se recomienda al lector que indague sobre limites de coutas para no incurrir en cargos.
+* Los nombres estan encerrados en []
 
-### Create a bucket
-* Go to the Storage section of the GCP web console and create a new bucket
+### Crear un proyecto en google cloud
+
+* El nombre del proyecto "ds-on-gcp" es una sugerencia.
+* 'gcloud projects create [PROJECT]'
+
+* Lista los proyectos exitentes para ver el "Project ID" el cual es un identificador único que no se puede modificar.
+* 'gcloud projects list'
+
+* Establece en tu configuración [Default] el proyecto deseado. 
+* 'gcloud config set project NOMBRE_DEL_PROYECTO'
+
+### Crea un bucket
+
+* Un bucket es un contenedor de datos utilizado en servicios de almacenamiento en la nube, tienen un nombre único y son accesibles a través de una URI única y específica, para poder acceder a los archivos alamcenados en ellos desde cualquier lugar con conexión a internet.
   
-* PROJECT=$(gcloud config get-value project)
+* 'PROJECT=$(gcloud config get-value project)'
 * BUCKET=${PROJECT}-dsongcp
 * REGION=southamerica-west1 #See https://cloud.google.com/storage/docs/locations
 * gsutil mb -l $REGION gs://$BUCKET
