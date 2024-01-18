@@ -8,14 +8,14 @@
 ### Crear un proyecto en google cloud
 
 * El nombre del proyecto "ds-on-gcp" es una sugerencia.
-* 'gcloud projects create [PROJECT]'
+'gcloud projects create [PROJECT]'  
 
 * Lista los proyectos exitentes para ver el "Project ID" el cual es un identificador único que no se puede modificar.
-* 'gcloud projects list'
+'gcloud projects list'
 
 * Establece en tu configuración [Default] el proyecto deseado. 
-* 'gcloud config set project NOMBRE_DEL_PROYECTO'
-
+'gcloud config set project NOMBRE_DEL_PROYECTO'  
+  
 ### Crea un bucket
 
 * Un bucket es un contenedor de datos utilizado en servicios de almacenamiento en la nube, tienen un nombre único y son accesibles a través de una URI única y específica, para poder acceder a los archivos alamcenados en ellos desde cualquier lugar con conexión a internet.
