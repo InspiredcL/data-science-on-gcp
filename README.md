@@ -1,6 +1,7 @@
 # data-science-on-gcp
 
-Source code accompanying book:
+Código fuente que acompaña al libro:
+Utilizaremos la segunda version
 
 <table>
 <tr>
@@ -13,7 +14,7 @@ Source code accompanying book:
   O'Reilly, Apr 2022
   </td>
   <td>
-  Branch <a href="https://github.com/GoogleCloudPlatform/data-science-on-gcp/">2nd Edition</a> [also main]
+  Branch <a href="https://github.com/GoogleCloudPlatform/data-science-on-gcp/">2nd Edition</a> [también rama principal (main)]
   </td>
 </tr>
 <tr>
@@ -30,25 +31,19 @@ Source code accompanying book:
   </td>
 </table>
 
-### Try out the code on Google Cloud Platform
+### Pruebe el código en Google Cloud Platform
 <a href="https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/data-science-on-gcp&page=editor&open_in_editor=README.md"> <img alt="Open in Cloud Shell" src ="http://gstatic.com/cloudssh/images/open-btn.png"></a>
 
-The code on Qwiklabs (see below) is **continually tested**, and this repo is kept up-to-date.
+El código de Qwiklabs (ver más abajo) se **prueba continuamente** y este repositorio se mantiene actualizado por el estudiante (Bifurcacion para replicacion del trabajo).
 
-If the code doesn't work for you, I recommend that you try the corresponding Qwiklab lab to see if there is some step that you missed.
-If you still have problems, please leave feedback in Qwiklabs, or file an issue in this repo.
+Si el código no te funciona, te recomiendo que pruebes el laboratorio de Qwiklab () correspondiente para ver si hay algún paso que te perdiste.
+Si aún tiene problemas, deje sus comentarios en Qwiklabs o presente un problema en este repositorio.
 
 ### Try out the code on Qwiklabs
 
-- [Data Science on the Google Cloud Platform Quest](https://google.qwiklabs.com/quests/43)
-- [Data Science on Google Cloud Platform: Machine Learning Quest](https://google.qwiklabs.com/quests/50)
+- [Data Science on the Google Cloud Platform Quest (A la fecha de esta edicion solo 3 labs estan disponibles)](https://google.qwiklabs.com/quests/43)
+- [Data Science on Google Cloud Platform: Machine Learning Quest (para tener acceso se necesitan credenciales comunicarse con agentes de google)](https://google.qwiklabs.com/quests/50)
 
 
-
-### Purchase book
-[Read on-line or download PDF of book](https://www.oreilly.com/library/view/data-science-on/9781098118945/)
-
-[Buy on Amazon.com](https://www.amazon.com/Data-Science-Google-Cloud-Platform-dp-1098118952/dp/1098118952/)
-
-### Updates to book
-I updated the book in Nov 2019 with TensorFlow 2.0, Cloud Functions, and BigQuery ML.
+### Actualizaciones para reservar
+El autor actalizó el libro en noviembre de 2019 con TensorFlow 2.0, Cloud Functions y BigQuery ML.
