@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#gs://ds-on-gcp-394717-dsongcp/
+# Copiar los archivos del año 2015 y Enero 2016 desde el bucket del curso
 if [ "$#" -ne 1 ]; then
     echo "Usage: ./ingest_from_crsbucket.sh  destination-bucket-name"
     exit

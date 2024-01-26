@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Copia el archivo "airports.csv.gz" a un directorio del bucket ingresado, luego crea  la tabla "dsongcp.airports"
 if test "$#" -ne 1; then
    echo "Usage: ./stage_airports_file.sh bucket-name"
