@@ -78,19 +78,19 @@
     cd monthlyupdate
     ```
 
-* Run the command
+* Ejecuta el comando, para instalar las bibliotecas de google cloud, storage y bigquery (técnicamente proporcionan una interfaz para acceder a los servicios de google cloud platform por ende se catalogarian como API).
 
     ```py
     pip3 install google-cloud-storage google-cloud-bigquery
     ```
 
-* Run the command
+* Ejecuta el comando, para obtener credenciales de autenticación que permiten a las apliaciones locales acceder a los servicios de GCP.
 
     ```sh
     gcloud auth application-default login
     ```
 
-* Try ingesting one month using the Python script:
+* Probamos ingerir un mes usando el script de Python:
 
     ```sh
     ./ingest_flights.py --debug --bucket your-bucket-name --year 2015 --month 02
