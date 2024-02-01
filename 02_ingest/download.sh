@@ -30,7 +30,7 @@ TMPDIR=$(mktemp -d)
 ZIPFILE=${TMPDIR}/${YEAR}_${MONTH2}.zip
 echo $ZIPFILE
 
-# Si la fuente es el sitio de BTS debemos agregar el flag -k para no solicitar los certiicados de seguridad
+# Si la fuente es el sitio de BTS debemos agregar el flag -k para no solicitar los certificados de seguridad
 curl -o ${ZIPFILE} ${BASEURL}_${YEAR}_${MONTH}.zip
 unzip -d ${TMPDIR} ${ZIPFILE}
 

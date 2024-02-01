@@ -30,7 +30,7 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
 # ./ingest_flights.py --bucket $BUCKET --year 2015 --month 03 --debug
 # after this, go back to being yourself with gcloud auth login
 
-# Make sure the sevice account can invoke cloud functions
+# Make sure the service account can invoke cloud functions
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
   --member ${SVC_PRINCIPAL} \
   --role roles/run.invoker

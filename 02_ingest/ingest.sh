@@ -11,7 +11,7 @@ fi
 # Exportamos el primer y único parametro a la variable BUCKET
 export BUCKET=$1
 
-# Obten los archivos zip desde el sitio de la BTS (), para luego extraerlos.
+# Obtén los archivos zip desde el sitio de la BTS (), para luego extraerlos.
 for YEAR in $(seq 2015 2015); do
     for MONTH in $(seq 1 12); do
         bash download.sh $YEAR $MONTH

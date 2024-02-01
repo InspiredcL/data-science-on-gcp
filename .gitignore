@@ -1,1 +1,5 @@
 .ipynb_checkpoints
+schema.txt
+02_ingest/for_loop_test.sh
+02_ingest/bq_auto.sh
+02_ingest/bq_test.sh
