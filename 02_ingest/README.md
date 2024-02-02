@@ -72,12 +72,13 @@
 
 * Ejecuta `./ingest.sh "bucketname"` o por ejemplo *"gs://ds-on-gcp-394717-dsongcp/"*
 
-## [Opcional] Programar descargas mensuales Scheduling monthly downloads
+## [Opcional] Programar descargas mensuales
 
-* Ir a la carpeta monthlyupdate dentro de 02_ingest en la carpeta del repositorio.
+* Creamos un ambiente virtual, en este caso usaré virtualenv para crear un ambiente llamado dsongcp
 
     ```sh
-    cd monthlyupdate
+    virtualenv ~/dsongcp
+    source ~/dsongcp/bin/activate
     ```
 
 * Ejecuta el comando, para instalar las bibliotecas de google cloud, storage y bigquery (técnicamente proporcionan una interfaz para acceder a los servicios de google cloud platform por ende se catalogarían como API).
@@ -90,6 +91,12 @@
 
     ```sh
     gcloud auth application-default login
+    ```
+
+* Ir a la carpeta monthlyupdate dentro de 02_ingest en la carpeta del repositorio.
+
+    ```sh
+    cd monthlyupdate
     ```
 
 * Probamos ingerir un mes usando el script de Python:

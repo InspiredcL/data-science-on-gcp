@@ -26,8 +26,8 @@ from google.cloud import storage
 from google.cloud.storage import Blob
 from google.cloud import bigquery
 
-SOURCE = "https://storage.googleapis.com/data-science-on-gcp/edition2/raw"
-#SOURCE = "https://transtats.bts.gov/PREZIP"
+#SOURCE = "https://storage.googleapis.com/data-science-on-gcp/edition2/raw"
+SOURCE = "https://transtats.bts.gov/PREZIP"
 
 
 def urlopen(url):
@@ -128,10 +128,10 @@ def bqload(gcsfile, year, month):
 
 def ingest(year, month, bucket):
     '''
-   ingest flights data from BTS website to Google Cloud Storage
-   return table, numrows on success.
-   raises exception if this data is not on BTS website
-   '''
+    ingest flights data from BTS website to Google Cloud Storage
+    return table, numrows on success.
+    raises exception if this data is not on BTS website
+    '''
     tempdir = tempfile.mkdtemp(prefix='ingest_flights')
     try:
         zipfile = download(year, month, tempdir)
@@ -146,8 +146,8 @@ def ingest(year, month, bucket):
 
 def next_month(bucketname):
     '''
-     Finds which months are on GCS, and returns next year,month to download
-   '''
+    Finds which months are on GCS, and returns next year,month to download
+    '''
     client = storage.Client()
     bucket = client.get_bucket(bucketname)
     blobs = list(bucket.list_blobs(prefix='flights/raw/'))
