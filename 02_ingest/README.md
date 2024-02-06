@@ -87,7 +87,7 @@
     pip3 install google-cloud-storage google-cloud-bigquery
     ```
 
-* Ejecuta el comando, para utilizar tus propias credenciales de usuario para que tu aplicación acceda a una API, esto sirve para ir probando el código.
+* Ejecuta el siguiente comando, para utilizar tus propias credenciales de usuario para que tu aplicación acceda a una API, esto sirve para ir probando el código.
 
     ```sh
     gcloud auth application-default login
@@ -102,7 +102,7 @@
 * Probamos ingerir un mes usando el script de Python:
 
     ```sh
-    ./ingest_flights.py --debug --bucket your-bucket-name --year 2015 --month 02
+    ./ingest_flights.py --debug --bucket your-bucket-name --year 2022 --month 11
     ```
 
 * Configura una cuenta de servicio llamada svc-monthly-ingest ejecutando:
@@ -111,19 +111,29 @@
     ./01_setup_svc_acct.sh
     ```
 
-    Este script, primero configura el entorno definiendo el nombre de la cuenta de servicio, el ID del proyecto, el nombre del bucket, la región
+    **Descripción:**
 
-* Now, try running the ingest script as the service account:
+  * Crea un bucket de Cloud Storage: Si no existe un bucket con el nombre especificado, lo crea en la región configurada.
+  * Habilita la protección de acceso uniforme a nivel de bucket (Uniform Bucket Level Access, UBLA): Esta medida de seguridad garantiza que todos los objetos del bucket tengan políticas de acceso explícitas.
+  * Crea una cuenta de servicio: Asigna un nombre a la cuenta de servicio y la asocia a la función de ingesta de datos.
+  * Otorga permisos a la cuenta de servicio:
+    * Otorga a la cuenta de servicio el rol de administrador del bucket de Cloud Storage, lo que le permite leer, escribir, listar y eliminar objetos en el bucket.
+    * Otorga a la cuenta de servicio el rol de propietario de datos en el esquema BigQuery especificado, lo que le permite crear y eliminar particiones en las tablas de BigQuery.
+    * Otorga a la cuenta de servicio el rol de usuario de BigQuery, lo que le permite ejecutar trabajos de BigQuery.
+    * Otorga a la cuenta de servicio el rol de invocador de Cloud Functions, lo que le permite invocar funciones de Cloud Functions.
 
-  * Visit the Service Accounts section of the GCP Console: [Consola GCP](https://console.cloud.google.com/iam-admin/serviceaccounts)
+* Ahora, intenta ejecutar el script de importación como una cuenta de servicio Now, try running the ingest script as the service account:
 
-  * Select the newly created service account svc-monthly-ingest and click Manage Keys.
+  * Visita la seccion de cuentas de servicio de la consola de google cloud platform. [Consola GCP](https://console.cloud.google.com/iam-admin/serviceaccounts)
 
-  * Add key (Create a new JSON key) and download it to a file named tempkey.json
+  * Seleccione la cuenta de servicio svc-monthly-ingest recién creada y haga clic en Gestionar claves.
 
-  * Run `gcloud auth activate-service-account --key-file tempkey.json`
+  * Añadir clave (Crear una nueva clave y seleccionar JSON) y descargarla en un archivo llamado tempkey.json
+  Add key (Create a new JSON key) and download it to a file named tempkey.json
 
-  * Try ingesting one month `./ingest_flights.py --bucket $BUCKET --year 2015 --month 03 --debug`
+  * Ejecuta `gcloud auth activate-service-account --key-file tempkey.json`
+
+  * Try ingesting one month `./ingest_flights.py --bucket $BUCKET --year 2022 --month 12 --debug`
 
   * Go back to running command as yourself using `gcloud auth login`
 

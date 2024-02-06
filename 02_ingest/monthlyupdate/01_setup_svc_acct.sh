@@ -7,6 +7,7 @@ REGION=southamerica-west1
 SVC_PRINCIPAL=serviceAccount:${SVC_ACCT}@${PROJECT_ID}.iam.gserviceaccount.com
 
 gsutil ls gs://$BUCKET || gsutil mb -l $REGION gs://$BUCKET
+
 gsutil uniformbucketlevelaccess set on gs://$BUCKET
 
 gcloud iam service-accounts create $SVC_ACCT --display-name "flights monthly ingest"
@@ -17,11 +18,11 @@ gsutil iam ch ${SVC_PRINCIPAL}:roles/storage.admin gs://$BUCKET
 
 # ability to create/delete partitions etc in BigQuery table
 bq --project_id=${PROJECT_ID} query --nouse_legacy_sql \
-  "GRANT \`roles/bigquery.dataOwner\` ON SCHEMA dsongcp TO '$SVC_PRINCIPAL' "
+    "GRANT \`roles/bigquery.dataOwner\` ON SCHEMA dsongcp TO '$SVC_PRINCIPAL' "
 
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-  --member ${SVC_PRINCIPAL} \
-  --role roles/bigquery.jobUser
+    --member ${SVC_PRINCIPAL} \
+    --role roles/bigquery.jobUser
 
 # At this point, test running as service account
 # download a json key from the console (temporarily)
@@ -32,5 +33,4 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
 
 # Make sure the service account can invoke cloud functions
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-  --member ${SVC_PRINCIPAL} \
-  --role roles/run.invoker
+    --member ${SVC_PRINCIPAL} --role roles/run.invoker

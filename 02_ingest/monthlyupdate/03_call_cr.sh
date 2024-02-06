@@ -10,9 +10,8 @@ URL=$(gcloud run services describe ingest-flights-monthly --format 'value(status
 echo $URL
 
 # Feb 2015
-echo {\"year\":\"2015\"\,\"month\":\"02\"\,\"bucket\":\"${BUCKET}\"\} > /tmp/message
+echo {\"year\":\"2015\"\,\"month\":\"02\"\,\"bucket\":\"${BUCKET}\"\} >/tmp/message
 
 curl -k -X POST $URL \
-   -H "Authorization: Bearer $(gcloud auth print-identity-token)" \
-   -H "Content-Type:application/json" --data-binary @/tmp/message
-
+    -H "Authorization: Bearer $(gcloud auth print-identity-token)" \
+    -H "Content-Type:application/json" --data-binary @/tmp/message
