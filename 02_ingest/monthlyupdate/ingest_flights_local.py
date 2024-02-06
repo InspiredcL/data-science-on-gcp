@@ -126,7 +126,7 @@ def bqload(gcsfile, year, month):
     """
     client = bigquery.Client()
     # truncate existing partition ...
-    table_ref = client.dataset('dsongcp').table('flights_raw${}{}'.format(year, month))
+    table_ref = client.dataset('dsongcp').table('flights_auto${}{}'.format(year, month))
     job_config = bigquery.LoadJobConfig()
     job_config.source_format = 'CSV'
     job_config.write_disposition = 'WRITE_TRUNCATE'
@@ -194,7 +194,7 @@ if __name__ == '__main__':
     parser.add_argument('--bucket', help='GCS bucket to upload data to', required=True)
     parser.add_argument('--year', help='Example: 2015.  If not provided, defaults to getting next month')
     parser.add_argument('--month', help='Specify 01 for January. If not provided, defaults to getting next month')
-    parser.add_argument('--debug', dest='debug', action='store_true', help='Specify if you want debug messages')
+    parser.add_argument('--debug', dest='debug', action='store_true', help='Debug message')
 
     try:
         args = parser.parse_args()

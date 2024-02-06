@@ -87,7 +87,7 @@
     pip3 install google-cloud-storage google-cloud-bigquery
     ```
 
-* Ejecuta el comando, para obtener credenciales de autenticación que permiten a las aplicaciones locales acceder a los servicios de GCP.
+* Ejecuta el comando, para utilizar tus propias credenciales de usuario para que tu aplicación acceda a una API, esto sirve para ir probando el código.
 
     ```sh
     gcloud auth application-default login
@@ -105,7 +105,13 @@
     ./ingest_flights.py --debug --bucket your-bucket-name --year 2015 --month 02
     ```
 
-* Set up a service account called svc-monthly-ingest by running `./01_setup_svc_acct.sh`
+* Configura una cuenta de servicio llamada svc-monthly-ingest ejecutando:
+
+    ```sh
+    ./01_setup_svc_acct.sh
+    ```
+
+    Este script, primero configura el entorno definiendo el nombre de la cuenta de servicio, el ID del proyecto, el nombre del bucket, la región
 
 * Now, try running the ingest script as the service account:
 

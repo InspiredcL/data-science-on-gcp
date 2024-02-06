@@ -1,6 +1,9 @@
 .ipynb_checkpoints
+.vscode
 schema.txt
 02_ingest/for_loop_test.sh
 02_ingest/bq_auto.sh
 02_ingest/bq_test.sh
 02_ingest/schema (copia).txt
+02_ingest/noschema.sh
+
