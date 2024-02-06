@@ -124,7 +124,7 @@
 
 * Ahora, intenta ejecutar el script de importación como una cuenta de servicio Now, try running the ingest script as the service account:
 
-  * Visita la seccion de cuentas de servicio de la consola de google cloud platform. [Consola GCP](https://console.cloud.google.com/iam-admin/serviceaccounts)
+  * Visita la sección de cuentas de servicio de la consola de google cloud platform. [Consola GCP](https://console.cloud.google.com/iam-admin/serviceaccounts)
 
   * Seleccione la cuenta de servicio svc-monthly-ingest recién creada y haga clic en Gestionar claves.
 
