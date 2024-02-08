@@ -229,8 +229,8 @@ if __name__ == '__main__':
     parser.add_argument(
         '--bucket', help='GCS bucket donde cargar los datos', required=True)
     parser.add_argument(
-        '--year', help='Ejemplo: 2015.  Si no se indica, se obtiene por defecto \
-        el mes siguiente.')
+        '--year', help='Ejemplo: 2015.  Si no se indica, se obtiene por \
+        defecto el mes siguiente.')
     parser.add_argument(
         '--month', help='Especifique 01 para enero. Si no se indica, se \
         obtiene por defecto el mes siguiente.')
