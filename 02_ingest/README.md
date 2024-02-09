@@ -165,7 +165,11 @@
     gcloud auth login
     ```
 
-- Ahora podemos desplegar en Cloud Run: `./02_deploy_cr.sh`
+- Ahora podemos desplegar en Cloud Run:
+
+  ```sh
+  ./02_deploy_cr.sh
+  ```
 
   **Explicación del script en detalle:**
 
@@ -222,6 +226,8 @@
     `--no-allow-unauthenticated`: No permite acceso sin autenticación.
 
 - Prueba que puedes invocar la función usando Cloud Run. Test that you can invoke the function using Cloud Run: `./03_call_cr.sh`
+
+  fe
 
 - Prueba la funcionalidad para obtener el mes siguiente Test that the functionality to get the next month works: `./04_next_month.sh`
 

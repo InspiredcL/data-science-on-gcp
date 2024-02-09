@@ -33,10 +33,7 @@ app = Flask(__name__)
 
 @app.route("/", methods=['POST'])
 def ingest_flights():
-    '''_summary_
-
-    Returns:
-        _description_
+    '''Wrapper de la función ingest_flights
     '''
 
     # noinspection PyBroadException
@@ -57,11 +54,14 @@ def ingest_flights():
         ok = f'Success ... ingested {numrows} rows to {tableref}'
         logging.info(ok)
         return ok
-    except Exception:
+    except Exception as e:
+        # Ver como incluir el mensaje
         logging.exception("Failed to ingest ... try again later?")
+        raise ValueError(f"Error: {str(e)}") from e
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
-
+    app.run(
+        debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080))
+    )
 # host en 0 es acceso para todos.
