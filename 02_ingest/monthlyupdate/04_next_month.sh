@@ -1,18 +1,18 @@
 #!/bin/bash
 
 # Mismos variables como en 02_deploy_cr.sh
-NAME=ingest-flights-monthly
+SERVICE=ingest-flights-monthly
 PROJECT_ID=$(gcloud config get-value project)
 BUCKET=${PROJECT_ID}-cf-staging
 
 #Obtenemos la URL
-URL=$(gcloud run services describe ingest-flights-monthly \
---format 'value(status.url)')
+URL=$(gcloud run services describe $SERVICE --format 'value(status.url)')
 echo $URL
 
 # Mes siguiente
-echo "Getting month that follows ... (removing 12 if needed, so there is something to get) "
-gsutil rm -rf gs://$BUCKET/flights/raw/201512.csv.gz
+echo "Obteniendo el mes siguiente ...\
+(Eliminamos el ultimo dato disponible, para tener algo que obtener) "
+gsutil rm -rf gs://$BUCKET/flights/raw/202310.csv.gz
 gsutil ls gs://$BUCKET/flights/raw
 
 # Creamos el mensaje, solamente con el bucket para obtener el mes siguiente

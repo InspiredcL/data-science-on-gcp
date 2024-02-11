@@ -8,14 +8,13 @@ PROJECT_ID=$(gcloud config get-value project)
 BUCKET=${PROJECT_ID}-cf-staging
 
 #Obtenemos la URL
-URL=$(gcloud run services describe ingest-flights-monthly \
---format 'value(status.url)')
+URL=$(gcloud run services describe $NAME --format 'value(status.url)')
 echo $URL
 
 # Creamos el mensaje para una fecha en particular Nov 2022
 echo {\"year\":\"2022\"\,\"month\":\"11\"\,\"bucket\":\"${BUCKET}\"\} >/tmp/message
 
-# --request o -X, --insecure o -k, --header o -H
+# --request, -X; --insecure, -k; --header, -H
 curl -k -X POST $URL \
     -H "Authorization: Bearer $(gcloud auth print-identity-token)" \
     -H "Content-Type:application/json" --data-binary @/tmp/message

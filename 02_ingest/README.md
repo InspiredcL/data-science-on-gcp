@@ -173,7 +173,7 @@
 
   **Explicación del script en detalle:**
 
-  - <ins>Configuración inicial:</ins>
+  - Configuración inicial:
 
     El script define algunas variables importantes:
 
@@ -191,9 +191,7 @@
 
     Se utiliza gcloud run deploy para desplegar un servicio en Cloud Run, en este caso una función.
 
-    `$SERVICE`: Nombre del servicio a desplegar.
-
-    `--region $REGION`: Región donde se desplegará
+    `--region`: Región donde se desplegará
 
     `--source=$(pwd)`: Directorio de origen del código de la función (directorio actual).
 
@@ -203,40 +201,119 @@
 
     `--no-allow-unauthenticated`: No permite acceso sin autenticación.
 
-    `--timeout 12m`: Establece el tiempo máximo de ejecución de la petición máximo.
+    `--timeout`: Establece el tiempo máximo de ejecución de la petición.
 
-  - Cloud Functions (comentado) Faltan detalles para la descripción:
-
-    La línea comentada utiliza `gcloud functions deploy` para desplegar una función en Cloud Functions.
-
-    Las opciones utilizadas son:
-
-    `NAME`: ID de la función (no definida explícitamente en el script).
-
-    `--entry-point` ingest_flights: Función a ejecutar (ingest_flights).
-
-    `--runtime python310`: Entorno de ejecución (Python 3.10).
-
-    `--trigger-http`: Trigger HTTP para invocar la función.
-
-    `--timeout 540s`: Tiempo de ejecución máximo (9 minutos).
-
-    `--service-account ${SVC_EMAIL}`: Cuenta de servicio utilizada.
-
-    `--no-allow-unauthenticated`: No permite acceso sin autenticación.
-
-- Prueba que puedes invocar la función usando Cloud Run. Test that you can invoke the function using Cloud Run: `./03_call_cr.sh`
-
-  fe
-
-- Prueba la funcionalidad para obtener el mes siguiente Test that the functionality to get the next month works: `./04_next_month.sh`
-
-- Configura un trabajo en Cloud Scheduler para invocar a Cloud run cada mes Set up a Cloud Scheduler job to invoke Cloud Run every month: `./05_setup_cron.sh`
-
-- Ahora eliminamos la instancia de Cloud run y la tarea programada de Cloud Scheduler ya que no las necesitaremos más para este proyecto. Visit the GCP Console for Cloud Run and Cloud Scheduler and delete the Cloud Run instance and the scheduled task—you won’t need them any further.
+- Prueba que puedes invocar la función usando Cloud Run. Test that you can invoke the function using Cloud Run:
 
   ```sh
-  d
+  ./03_call_cr.sh
+  ```
+
+  **Explicación del script en detalle:**
+
+  - Configura el entorno:
+
+    `SERVICE`: Define el nombre del servicio de Cloud Run (ingest-flights-monthly).
+
+    `PROJECT_ID=$(gcloud config get-value project)`: Obtiene el ID del proyecto GCP usando gcloud config get-value project.
+
+    `BUCKET=${PROJECT_ID}-cf-staging`: Asigna el nombre del bucket de Cloud Storage al valor de la variable BUCKET.
+
+  - Obtiene la URL del servicio:
+
+    `URL=$(gcloud run services describe $SERVICE --format 'value(status.url)')`:
+
+    Utiliza gcloud run services describe para recuperar la URL del servicio  y almacenar la URL en la variable URL.
+
+  - Crea un mensaje de datos:
+
+    `echo {\"year\":\"2022\"\,\"month\":\"11\"\,\"bucket\":\"${BUCKET}\"\} >/tmp/message`:
+
+    Crea un archivo temporal llamado /tmp/message que contiene un mensaje JSON con la información del año (2022), mes (11) y bucket ($BUCKET).
+
+  - Envía el mensaje al servicio:
+
+    `curl -k -X POST $URL -H "Authorization: Bearer $(gcloud auth print-identity-token)" -H "Content-Type:application/json" --data-binary @/tmp/message`:
+
+    Utiliza curl para enviar una solicitud POST a la URL del servicio.
+
+    Incluye la cabecera `Authorization: Bearer` con un token de identidad obtenido de `gcloud auth print-identity-token`.
+
+    Especifica la cabecera `Content-Type:application/json` para indicar el formato del mensaje.
+
+    Envía el contenido del archivo `/tmp/message` como datos binarios usando la opción `--data-binary`.
+
+- Prueba la funcionalidad para obtener el mes siguiente:
+
+  ```sh
+  ./04_next_month.sh
+  ```
+
+  De manera similar, este script define las variables a utilizar, luego obtiene la URL para preguntarse si estamos o no en el último mes y obtener el siguiente (a modo de prueba borra el ultimo mes disponible para poder obtener algo en respuesta) para asi crear el mensaje pero solamente con el nombre del bucket y finalmente realizar la solicitud.
+
+- Configura un trabajo en Cloud Scheduler para invocar a Cloud run cada mes Set up a Cloud Scheduler job to invoke Cloud Run every month:
+
+  ```sh
+  ./05_setup_cron.sh
+  ```
+
+    **Descripción del script:**
+
+  Este script automatiza la ejecución mensual de un servicio Cloud Run llamado ingest-flights-monthly para procesar datos de vuelos. Veamos paso a paso lo que hace cada comando:
+
+  - Variables de configuración:
+
+    `NAME`: Define el nombre del servicio (ingest-flights-monthly).
+
+    `PROJECT_ID`: Obtiene el ID del proyecto actual usando gcloud config.
+
+    `BUCKET`: Define el bucket de Cloud Storage a utilizar (PROJECT_ID-cf-staging).
+
+    `SVC_ACCT`: Define el nombre de la cuenta de servicio (svc-monthly-ingest).
+
+    `SVC_EMAIL`: Construye la dirección de correo electrónico de la cuenta de servicio a partir de los valores anteriores.
+
+    `SVC_URL`: Obtiene la URL del servicio Cloud Run usando gcloud run services describe y el formato específico para extraer sólo la URL.
+
+  - Imprimir información:
+
+    Imprime la URL del servicio `$SVC_URL` y la dirección de correo electrónico de la cuenta de servicio `$SVC_EMAIL`.
+
+  - Preparar mensaje JSON:
+
+    Crea un archivo temporal `/tmp/message` con un mensaje JSON que contiene el bucket a utilizar ("bucket":"${BUCKET}").
+    Imprime el contenido del archivo para visualizarlo (cat /tmp/message).
+
+  - Crear tarea en Cloud Scheduler:
+
+    Utiliza `gcloud scheduler jobs create http` crear un trabajo de Cloud Scheduler que desencadene una acción a través de HTTP monthlyupdate:
+
+    `--description`: Descripción del trabajo "Ingest flights using Cloud Run".
+
+    Horario: Ejecutar el día 8 de cada mes a las 10:00 AM en la zona horaria de Nueva York ("America/New_York").
+
+    `--uri`: URL del servicio Cloud Run obtenido previamente ($SVC_URL).
+
+    `--http-method` Método HTTP: POST.
+
+    Cuenta de servicio: Se autentica usando la cuenta de servicio `$SVC_EMAIL` y su audiencia correspondiente `$SVC_URL`.
+
+    Reintentos: Configura opciones de reintento con tiempos máximos y mínimos de espera.
+
+    Cabeceras: Establece la cabecera "Content-Type" a "application/json".
+    Cuerpo del mensaje: Lee el mensaje JSON del archivo temporal (/tmp/message).
+
+  - Notas adicionales:
+
+    El script menciona que el servicio Cloud Run busca por defecto el siguiente mes si no se especifica año o mes en el mensaje JSON.
+    Para probar el script, se recomienda otorgarse permiso para personificar la cuenta de servicio y luego ejecutar la tarea manualmente en Cloud Scheduler.
+
+- Ahora eliminamos la instancia de Cloud run y la tarea programada de Cloud Scheduler ya que no las necesitaremos más para este proyecto. Visit the GCP console for Cloud Run and Cloud Scheduler and delete the Cloud Run instance and the scheduled task—you won’t need them any further.
+
+  ```sh
+  ngrngngfnff
+
+  ngfngffnfgnfg
   ```
 
 ## [Opcional] Trabajo manual para crear el script de descarga y revisar los datos
