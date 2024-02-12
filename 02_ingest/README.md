@@ -111,7 +111,7 @@
   ./01_setup_svc_acct.sh
   ```
 
-  **Descripción del script en detalle:**
+  **Explicación del script en detalle:**
 
   - Crea un bucket de Cloud Storage: Si no existe un bucket con el nombre especificado, lo crea en la región configurada.
 
@@ -237,7 +237,7 @@
 
     Utiliza curl para enviar una solicitud POST a la URL del servicio.
 
-    Incluye la cabecera `Authorization: Bearer` con un token de identidad obtenido de `gcloud auth print-identity-token`.
+    Incluye la cabecera `Authorization` con un token de identidad obtenido de `gcloud auth print-identity-token` asignado al portador de la autorización.
 
     Especifica la cabecera `Content-Type:application/json` para indicar el formato del mensaje.
 
@@ -251,23 +251,25 @@
 
   De manera similar, este script define las variables a utilizar, luego obtiene la URL para preguntarse si estamos o no en el último mes y obtener el siguiente (a modo de prueba borra el ultimo mes disponible para poder obtener algo en respuesta) para asi crear el mensaje pero solamente con el nombre del bucket y finalmente realizar la solicitud.
 
-- Configura un trabajo en Cloud Scheduler para invocar a Cloud run cada mes Set up a Cloud Scheduler job to invoke Cloud Run every month:
+- Configura un trabajo en Cloud Scheduler para invocar a Cloud run cada mes:
 
   ```sh
   ./05_setup_cron.sh
   ```
 
-    **Descripción del script:**
+  **Explicación del script en detalle:**
 
-  Este script automatiza la ejecución mensual de un servicio Cloud Run llamado ingest-flights-monthly para procesar datos de vuelos. Veamos paso a paso lo que hace cada comando:
+  Este script automatiza la ejecución mensual de un servicio Cloud Run llamado ingest-flights-monthly para procesar datos de vuelos:
 
-  - Variables de configuración:
+  - Configura el entorno:
 
-    `NAME`: Define el nombre del servicio (ingest-flights-monthly).
+    `JOB`: Nombre del trabajo a crear.
+
+    `SERVICE`: Define el nombre del servicio (ingest-flights-monthly).
 
     `PROJECT_ID`: Obtiene el ID del proyecto actual usando gcloud config.
 
-    `BUCKET`: Define el bucket de Cloud Storage a utilizar (PROJECT_ID-cf-staging).
+    `BUCKET`: Define el bucket de Cloud Storage a utilizar en base al nombre del proyecto.
 
     `SVC_ACCT`: Define el nombre de la cuenta de servicio (svc-monthly-ingest).
 
@@ -281,39 +283,53 @@
 
   - Preparar mensaje JSON:
 
-    Crea un archivo temporal `/tmp/message` con un mensaje JSON que contiene el bucket a utilizar ("bucket":"${BUCKET}").
+    Crea un archivo temporal `/tmp/message` con un mensaje JSON que contiene el bucket a utilizar.
+
     Imprime el contenido del archivo para visualizarlo (cat /tmp/message).
 
   - Crear tarea en Cloud Scheduler:
 
-    Utiliza `gcloud scheduler jobs create http` crear un trabajo de Cloud Scheduler que desencadene una acción a través de HTTP monthlyupdate:
+    Utiliza `gcloud scheduler jobs create http` para crear un trabajo de Cloud Scheduler que desencadene una acción a través de HTTP con nombre `$JOB`:
 
-    `--description`: Descripción del trabajo "Ingest flights using Cloud Run".
+    `--description`: Descripción del trabajo legible por humanos ("Ingest flights using Cloud Run").
 
-    Horario: Ejecutar el día 8 de cada mes a las 10:00 AM en la zona horaria de Nueva York ("America/New_York").
+    `--schedule`: Horario en el que se ejecutará el trabajo (ejecutar el día 8 de cada mes a las 10:00 AM)
 
-    `--uri`: URL del servicio Cloud Run obtenido previamente ($SVC_URL).
+    `--time-zone` Zona horaria de la tarea ejecutada (Santiago de Chile).
 
-    `--http-method` Método HTTP: POST.
+    `--uri`: La ruta URI completa a la que se enviará la solicitud ($SVC_URL).
 
-    Cuenta de servicio: Se autentica usando la cuenta de servicio `$SVC_EMAIL` y su audiencia correspondiente `$SVC_URL`.
+    `--http-method`: Método HTTP a utilizar (POST).
 
-    Reintentos: Configura opciones de reintento con tiempos máximos y mínimos de espera.
+    `--oidc-service-account-email`: El correo electrónico de la cuenta de servicio que se utilizará para generar un token de OpenId Connect que se incluirá en la solicitud enviada al destino al ejecutar el trabajo.
 
-    Cabeceras: Establece la cabecera "Content-Type" a "application/json".
-    Cuerpo del mensaje: Lee el mensaje JSON del archivo temporal (/tmp/message).
+    `--oidc-token-audience`: La Audiencia prevista al generar un token OpenID Connect que será incluido en la solicitud enviada al destino al ejecutar el trabajo.
+
+    `--max-backoff`: La cantidad máxima de tiempo a esperar antes de re-intentar una tarea, después de que dicha tarea falle.
+
+    `--max-retry-attempts`: Número de veces que se debe re-intentar una solicitud si falla o se agota el tiempo de espera.
+
+    `--max-retry-duration`: Límite de tiempo para re-intentar una tarea fallida, medido desde que la tarea se ejecutó por primera vez. Si se especifica con --max-retry-attempts mayor que 0, la tarea se re-intentará hasta que se alcancen ambos límites.
+
+    `--min-backoff`: Cantidad mínima de tiempo que se debe esperar antes de re-intentar una tarea después de que falle.
+
+    `--headers`: Pares de Clave/Valor de encabezados HTTP a incluir en la solicitud.
+
+    `--message-body-from-file`: Ruta al archivo que contiene la carga útil de datos que se incluirá como cuerpo de la petición HTTP. Sólo puede indicarse con métodos HTTP compatibles (PUT o POST).
 
   - Notas adicionales:
 
-    El script menciona que el servicio Cloud Run busca por defecto el siguiente mes si no se especifica año o mes en el mensaje JSON.
-    Para probar el script, se recomienda otorgarse permiso para personificar la cuenta de servicio y luego ejecutar la tarea manualmente en Cloud Scheduler.
+    Para probar este script y ejecutar la tarea debemos darnos la posibilidad de suplantar la cuenta de servicio.
+
+    ```sh
+    gcloud scheduler jobs run $JOB --impersonate-service-account
+    ```
 
 - Ahora eliminamos la instancia de Cloud run y la tarea programada de Cloud Scheduler ya que no las necesitaremos más para este proyecto. Visit the GCP console for Cloud Run and Cloud Scheduler and delete the Cloud Run instance and the scheduled task—you won’t need them any further.
 
   ```sh
-  ngrngngfnff
-
-  ngfngffnfgnfg
+  gcloud run services delete $SERVICE;
+  gcloud scheduler jobs delete $JOB
   ```
 
 ## [Opcional] Trabajo manual para crear el script de descarga y revisar los datos
