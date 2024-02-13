@@ -12,8 +12,8 @@ WITH contingency_table AS (
 )
 
 SELECT
-   ROUND((true_positives + true_negatives)/total, 2) AS accuracy,
-   ROUND(false_positives/(true_positives+false_positives), 2) AS fpr,
-   ROUND(false_negatives/(false_negatives+true_negatives), 2) AS fnr,
-   *
+    ROUND((true_positives + true_negatives)/total, 2) AS accuracy,
+    ROUND(false_positives/(true_positives+false_positives), 2) AS fpr,
+    ROUND(false_negatives/(false_negatives+true_negatives), 2) AS fnr,
+    *
 FROM contingency_table

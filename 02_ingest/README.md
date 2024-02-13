@@ -344,11 +344,29 @@ A grandes rasgos primero debemos verificar que los términos de uso del sitio we
 
 - Para revisar el tipo de solicitud que se realizo en la descarga debemos utilizar las herramientas de desarrollador del navegador para luego ir a red (grabar los registros) repetir los pasos y finalmente observamos que la solicitud es de tipo GET en la dirección del link de descarga.
 
-- Hasta la fecha (2024-01-24) de esta réplica los datos de 2023 están disponibles hasta octubre, por si deseas cambiarlos ya que 2023 fue un año mas normal con respecto a los vuelos.
+- Hasta la fecha (2024-01-24) de esta réplica los datos de 2023 están disponibles hasta octubre, por si deseas cambiarlos ya que 2023 fue un año mas normal con respecto a los vuelos (y un año es una cantidad de vuelos razonable).
 
-- Para poder hacer la descarga mas fácil lo deal es llamar al archivo download.sh y descargar lo necesario, leer los comentarios para satisfacer sus necesidades, dentro de 02_ingest creamos una carpeta para la descarga de los datos y llamamos al script desde ahi.
+- Para poder hacer la descarga mas fácil lo ideal es llamar al archivo download.sh y descargar lo necesario, leer los comentarios para satisfacer sus necesidades, dentro de 02_ingest (o donde el usuario estime conveniente) creamos una carpeta para la descarga de los datos y llamamos al siguiente script desde ahi.
+
+- En nuestro caso (deseamos meses de 2 años distintos) podemos hacerlo en  2 partes o crear un script que indique el año/mes de inicio y fin
 
   ```sh
-  for MONTH in $(seq 1 12)
-      do bash ../download.sh 2015 $MONTH
+  START_YEAR=2022
+  START_MONTH=11
+  END_YEAR=2023
+  END_MONTH=10
+
+  for YEAR in $(seq $START_YEAR $END_YEAR); do
+      if [[ $YEAR -eq $START_YEAR ]]; then
+          # Descargar desde el mes de inicio
+          for MONTH in $(seq $START_MONTH 12); do
+              bash download.sh $YEAR $MONTH
+          done
+      else [[ $YEAR -eq $END_YEAR ]]; then
+          # Descargar hasta el mes de fin
+          for MONTH in $(seq 1 $END_MONTH); do
+              bash download.sh $YEAR $MONTH
+          done
+      fi
+  done
   ```

@@ -7,13 +7,13 @@
 
 # Obs: los archivos del libro están disponibles hasta 2019.
 
-SOURCE=https://storage.googleapis.com/data-science-on-gcp/edition2/raw
+#SOURCE=https://storage.googleapis.com/data-science-on-gcp/edition2/raw
 
-#SOURCE=https://transtats.bts.gov/PREZIP
+SOURCE=https://transtats.bts.gov/PREZIP
 
 if test "$#" -ne 2; then
     echo "Usage: ./download.sh year month"
-    echo "   eg: ./download.sh 2015 1"
+    echo "   eg: ./download.sh 2022 11"
     exit
 fi
 
@@ -31,7 +31,7 @@ ZIPFILE=${TMPDIR}/${YEAR}_${MONTH2}.zip
 echo $ZIPFILE
 
 # Si la fuente es el sitio de BTS debemos agregar el flag -k para no solicitar los certificados de seguridad
-curl -o ${ZIPFILE} ${BASEURL}_${YEAR}_${MONTH}.zip
+curl -k -o ${ZIPFILE} ${BASEURL}_${YEAR}_${MONTH}.zip
 unzip -d ${TMPDIR} ${ZIPFILE}
 
 mv ${TMPDIR}/*.csv ./${YEAR}${MONTH2}.csv

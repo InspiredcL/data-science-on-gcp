@@ -1,6 +1,8 @@
 .ipynb_checkpoints
 .vscode
 schema.txt
+02_ingest/raw_data
+02_ingest/raw_zipped_data
 02_ingest/for_loop_test.sh
 02_ingest/bq_auto.sh
 02_ingest/bq_test.sh

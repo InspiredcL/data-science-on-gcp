@@ -2,13 +2,13 @@
 
 # Script que descarga por defecto el año 2015, editar dependiendo de su necesidad
 
-# Verificamos la cantidad de parámetros entergados e indicamos como utilizar el script
+# Verificamos la cantidad de parámetros entregados e indicamos como utilizar el script
 if [ "$#" -ne 1 ]; then
     echo "Usage: ./ingest.sh  destination-bucket-name"
     exit
 fi
 
-# Exportamos el primer y único parametro a la variable BUCKET
+# Exportamos el parámetro a la variable BUCKET
 export BUCKET=$1
 
 # Obtén los archivos zip desde el sitio de la BTS (), para luego extraerlos.
