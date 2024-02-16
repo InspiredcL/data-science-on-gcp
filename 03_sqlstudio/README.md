@@ -64,5 +64,13 @@ Once you are done, delete the Cloud SQL instance since you will not need it for 
   ```
 
 ### Building a dashboard
-Follow the steps in the main text of the chapter to set up a Data Studio dashboard and create charts.
 
+Sigue los pasos del texto principal del capítulo para configurar un dashboard de Looker Studio y crear gráficos.
+
+Crearemos el panel con Looker pero lo haremos a través de la API de looker studio con el SDK de python
+
+Para esto debemos habilitar la API de looker studio a través del comando
+
+```sh
+gcloud services enable datastudio.googleapis.com
+```

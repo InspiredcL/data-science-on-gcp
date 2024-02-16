@@ -23,5 +23,3 @@ rows = query_job.result()  # Waits for query to finish
 
 for row in rows:
     print(row.true_positives)
-
-
