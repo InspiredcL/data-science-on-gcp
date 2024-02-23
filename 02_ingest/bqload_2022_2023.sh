@@ -23,7 +23,7 @@ for YEAR in "2022" "2023"; do
     # Iterar sobre los meses
     for MONTH in $MONTHS; do
         CSVFILE= \
-        "/home/inspired/data-science-on-gcp/ingest/raw_data/${YEAR}${MONTH}.csv"
+        "/home/inspired/data-science-on-gcp/02_ingest/raw_data/${YEAR}${MONTH}.csv"
 
         bq --project_id=$PROJECT \
             --location=southamerica-west1 --synchronous_mode \

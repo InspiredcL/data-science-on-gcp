@@ -1,0 +1,71 @@
+Instrucciones:
+
+1- Descargamos:
+El archivo T_MASTER_CORD.csv desde el sitio web de
+la BTS https://transtats.bts.gov/ para esto, dentro del sitio pinchamos en
+Resources-Database Directory el cual nos lleva a
+Data Directory: List of Databases, de ahi pinchamos en Next>> para ir a
+la pagina siguiente de la letra A y buscamos el dataset
+"Aviation Support Tables" dentro de ese dataset descargamos la tabla
+"Master Coordinate" seleccionando previamente todos sus campos.guardamos
+como T_MASTER_CORD.zip en la carpeta data-science-on-gcp/04_streaming/design
+de nuestro clon del repositorio
+
+2- Descomprimimos:
+El archivo T_MASTER_CORD.zip (o el nombre que le haya dado, por defecto es
+DL_SelectFields.zip) primero nos posicionamos en la carpeta design mencionada
+anteriormente para luego descomprimir con el comando `unzip T_MASTER_CORD.zip`
+
+3- En el archivo T_MASTER_CORD.csv hacemos 3 operaciones de sed inplace
+(la opción -i[SUFFIX] o su equivalente --in-place[=SUFFIX]),
+primero en la primera linea del archivo buscamos la expresión regular
+(/regexp/) , y la reemplazamos con "," con la opción g que significa global o
+sea todas las coincidencias, el siguiente comando (que viene después de ;) en
+la primera linea busca el primer carácter (vacío o NUL) y lo reemplaza con "
+,la última expresión de sed busca \r y lo reemplaza con ",
+(para coincidir con el esquema en formato json)
+
+    sed -i '1s/,/","/g; 1s/^/"/; 1s/\r/",/; 1!/\r/,/' T_MASTER_CORD.csv
+
+4- las columnas (comenzando desde 1) 3, 4, 5, 8, 9, 10, 11, 15, 19, 24 y 33 deben ser STRING
+por lo tanto debemos encasillarlas con comillas dobles
+
+5- Las columnas 29 y 30 debemos cambiar el formato de MES/DIA/AÑO HORA
+a AÑO/MES/DIA
+
+Database Name: Aviation Support Tables
+https://www.transtats.bts.gov/tables.asp?QO_VQ=IMI&QO_anzr=N8vn6v10
+
+Aviation Support Tables : Master Coordinate
+https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FLL&QO_fu146_anzr=N8vn6v10%20f722146%20gnoyr5
+
+https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FLL&QO_fu146_anzr=N8vn6v10+f722146+gnoyr5
+
+
+Solicitud curl que descarga el archivo .zip
+
+curl -o T_MASTER_CORD.zip 'https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FLL&QO_fu146_anzr=N8vn6v10+f722146+gnoyr5' \
+  -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
+  -H 'Accept-Language: en,es;q=0.9,es-ES;q=0.8,en-GB;q=0.7,en-US;q=0.6,es-CL;q=0.5' \
+  -H 'Cache-Control: no-cache' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -H 'Cookie: _ga=GA1.3.1853474386.1707749262; __utmc=42773238; ASPSESSIONIDQCAARCTC=ADINFIPBEKPIFMNIFGGMPJEP; ASP.NET_SessionId=k20pqij2qn4t3wdt0wg2rycg; QSI_SI_e8TSnTOxZxScWdT_intercept=true; _ga_BYBGSXCYW4=GS1.1.1708428774.2.1.1708428909.0.0.0; ASPSESSIONIDQCDCRCQC=NACJBJIDIBNBGNBHNLFICBDA; _gid=GA1.3.651360354.1708620199; _gid=GA1.2.651360354.1708620199; ASPSESSIONIDSCDATCRD=FDLCLOLDOOCBGJKIFMKJPEBE; _ga_V8B916H3DB=GS1.2.1708680845.3.0.1708680845.0.0.0; __utma=42773238.1853474386.1707749262.1708421829.1708680845.3; __utmz=42773238.1708680845.3.2.utmcsr=search.usa.gov|utmccn=(referral)|utmcmd=referral|utmcct=/; ASPSESSIONIDSACBRBTC=INHILHAAEMEKCHAPNLIMHLPM; ak_bmsc=390845B93A005331ACFECDD0FDCC5573~000000000000000000000000000000~YAAQhg48F9JoH2GNAQAAlfpe1RZIJuujkErJx+8I//fLPJXU5cq0E8lD6Uu7wbytPVhLXuUo6Nq7aCxK+bMOcpF6r7fQR6lJoZVgKIBrBJRE6hvR7FVRS1+JLbr2rKqV5PnTsJViRD4FMazk72Op1oa2BdDd7JgFQUe52tmSIFGruooTszMd+0ythIoeKDyUygyREVgQWI4rhqqHseF3o1mWoOxqDHRK3w87KG1lvpU3FAy0WqRUr4gcKAsDSQ+qssoj3licTXXvadYxpqjbTF1r9MrTKkfuiPRKWNLgEFRRA5j2qx5Kt9rTurzIotsG1bg/H8ZEzL3VRbF3v20CzTRYb4TWOTpyirI1fGWdO6MfbDEU/w9Ann5XIqMgwSxjZ1cH+Y6cr+PpyJ0GdyO+tZOhrlq2OccfxRPSgE5W9F0LGJDxJ1mo133hqBTqlAwZKnquBre/XUeIoKc4E2I9exfVMpy/vq5IQPfR0lT6VCXOw90=; f5avraaaaaaaaaaaaaaaa_session_=FHKPEOAOPLNJHBICIIELGHPPBHMBNGEOKGFAJKIGHKHACAFKMNDHLDBJHJOPPDDGGNIDJMPIOBPCIFCPIDAAKKBMHHGABOMEDKJHGOFDIGLIMDOLFDFCEHCJKAKKBDDC; _gat_gtag_UA_18660041_1=1; _gat_GSA_ENOR0=1; _ga_NQ5ZN114SB=GS1.1.1708683720.14.1.1708684237.0.0.0; _ga=GA1.1.1853474386.1707749262; _ga_CSLL4ZEK4L=GS1.1.1708683720.14.1.1708684237.0.0.0; _ga_TS9639848Y=GS1.1.1708683720.14.1.1708684237.0.0.0' \
+  -H 'DNT: 1' \
+  -H 'Origin: https://www.transtats.bts.gov' \
+  -H 'Pragma: no-cache' \
+  -H 'Referer: https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FLL&QO_fu146_anzr=N8vn6v10+f722146+gnoyr5' \
+  -H 'Sec-Fetch-Dest: document' \
+  -H 'Sec-Fetch-Mode: navigate' \
+  -H 'Sec-Fetch-Site: same-origin' \
+  -H 'Sec-Fetch-User: ?1' \
+  -H 'Upgrade-Insecure-Requests: 1' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0' \
+  -H 'sec-ch-ua: "Not A(Brand";v="99", "Microsoft Edge";v="121", "Chromium";v="121"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "Windows"' \
+  --data-raw '__EVENTTARGET=&__EVENTARGUMENT=&__LASTFOCUS=&__VIEWSTATE=r%2FZXPo%2BJwGeXnMsBickSNZEGL7BkIPvXmqx8rLiVbmVnRwZ0Gzi7WNttdwECFzYBwgzMgy%2FVT1QtvDlRiSqhQ37cYkWILRAWMdWSOhYrfyXNCLcjG%2FULf4I4Br5zDILwYG6BUlsZgj2xzdHUtMNmAsnCA%2FLOYDVYf61UZaalIgV%2Ff%2BVizibxIlZZjRH6Hog4avkjYwP24Dara7PiqqJ40HkJ%2B0QfVCRa2DTlkoWJfDfV1l2%2FnyWUH2y4zjpaeuBvZWPREWpUeryrhQBSdVq%2FI9HYbCvZysRvaNeY0vYKnFESWq9%2BznBUygtwBxpIneUv9W6jGkl0XvISkCQN%2BWXSorf6Xk%2F2fmb%2FtHPcSmFBg%2F6prceaNpmoq6UxtETAECuM%2BmYbm8VKN92AC3pxY06V2RrLhE4mSz%2FdmlhL82rs6UI2sT154PLhu1KWo7fuYXyBgZ5gTUeMC2t17ODizblS4Rudp1eFQ7ukH6gtOWKu%2FVPuaoLhcsgCS8QxDx6U9lx2g7IOSgq8jAj83N9ffL7Qoo4j48VVpDXw51P1poz7xZJIQlRcy%2BwakdA4WdOG2WgLUZMAkb5lkKOS%2FvCiS92XpFVicm0hoUN3GQy2ne61Y9SPf6XaDJddgU6SntGHSk2%2BvCr5cXhZ1FQHXzbeTzgbFe8NTOJCaq%2F%2Bpgy1adyZraMk3Q8lkvDVKzPGBA2fZC21%2FHD2oBb9pvBsK4iBpeGLozWVZ7SPlWIiyfPwztoRPVszAO%2FohCMe4EA4BjRBwHNvu3nJO%2BDRqrKxPskOmHXbcKLcjvMASZU%2BwG%2B5HXqxqU%2Fiae7jzkwLlCEVx1%2BNTNX6HBW4DSGrpU9P6xa5mn%2F%2B1cz6q73N1o2VIYNGnwPbcpnENo8UWi0vlvL%2BebQ%2FSg86wFh93wpZDRTFcpG1Cc2T9D7PvDepXv9s1xdLiau%2F3cvLMSWPQ4ZZOwxKtnEt1bYhu3txEDfmSAEwLy5gynLbNqyn54WyBJvN%2FrWeDGG2IPRnioIgzQVrwIgSvhtjjlS2CSnQbMVIcP5rgbpbHp1U%2FVpPpOqXKxapy%2BvKqsyqlg2F9wUX7g97bOdIMJ19T46T58kIjzMSny6bV199FzA5W%2BKkmKcAA5mXvkJLzlakKu5ujqcBpN9oYACVMsS%2BgcbvsmCbcS7phdhef9REdleDGDP8NOzjDOnQ5jT%2BIrh8SmXGiT0ZVc8NjBeF5dZdDtcTbidDjXMlNnKpr9YEH8Oiwn15sXv0lfvNmSP6TBz9Ti7tvMhKa%2FbagW3HMmOLVkbrKc4FkwDgeeXJ4jknRVzz0UPRyQQOVYx%2BnZctpMeN5Sqo4NtJpaBYZv8AItgA2oCCB1E4%2FKI9GD87k4VRkZLVB%2FBHfEJuTqTTyqt5BgeHZx9RmXBIPZDIPT4rOzbBtLohzcjUojU2VxuopQEO4eRtWp1cI6nIune%2B4vvw%2FzsQ11tO9Ty9ZVVjzgfO%2B9FCAELuaA6XMy02zQAj2dBzLdFbhunOeXDa9QVZIaNSqkY5My3W6D1z%2B8Z%2BdVf4ifzH64mzDbIgg4Eb7qISik5jqeN48LKTgdCQZw%2B23H9SwVc3LFdI5E%2FHAfL%2BOiFYMUKJbTIRxyaUZu0VjINffeZaCVwGSu8hi%2FGr4MI6T84SG4n9BMHXgWrf1%2BR9BD3IWp14fNmtmM15fxFogIC8TKPYihMHaU22VF5tw7Wn9OhnyAeKE%2F7kNfNWFe%2F8QI%2FoW2ewJ1b2AcB9gf6wI1IAAPrSLQT4Rk%2Fa5qi7XUi4kjXOahNtr%2F0ZsppObbOZQP8z3%2BEbtSBSaDC29byNrog4z4OysGVw3rznpS0vi7YyliZbOpXIl6c31Tm2uqgPunATRWDyWXayN7zqkqYFMNQl4juGs%2F%2B0OuJ3xIoKGXGeEwtasZmxg8UqaGrEP3YItzetp%2BfFB%2B%2FoBstKSLzlmKaolnAU%2BvsWmGAYIOHjL5k1tRILEiV1c3cUFBOCz3H5d5O2K4LKmMZ2AIofTHHuTE7QHWpXykEY70w2vEfcH8xrMrYQvOdgwklQE0BvtC78pULv9XgoPUMKaSLJu2tzA%2BS98bpMwCy6%2Bf5HXpBvE28wHm%2FhtIKnE7yLn09ASJZiDwiFQKZxEEJ5RPzI1vnIjXYclZmVFgqhSQ%3D%3D&__VIEWSTATEGENERATOR=82CE8F70&__EVENTVALIDATION=RclUPL4PkCBiEdB6hKSbOQJfk6JXVN0WZyjesoMZDOLR0h3oB%2BfcNFJilKsXCXJ91ZAHpJVFUiXnUU08rOEUTZgcgIMQorLiPcDnlpTdVlMa21CNt5Fc5IFjcUOc1KARrEyO%2BTo6dvK7oo2P7FPiOjthpT0GdxOXIZNx%2BafGjllXOAMz7esMmeQtTP%2FsudW2KY%2BdFmCwa2ci4WnJJrINVnSz5dLkOCxC7xwMS%2BIi4qZinUg5P%2Fanyjt0Qob7bfZlGXUn9leASrol1CBdQ16%2BBdCNQdZ0pLbyGrB3Xe2WQaHanrcqkwKutDjutnAoPmeZj5WlIRsb9RpErem8YrS%2FsZu4FS6iuv7nznTpExIKB99KsaEo%2BCA7sOR5DslqeZtCv46iXk45UW%2Bs4OnDTmPTABUCHk%2B9mKOyBzmLi7Bwxi4CUSsTLGXuIDm82Cr%2B%2FYhfMNE9wbvo8V%2FikROSsjh2hyzq%2BMgAsKz1qGG%2BocNfLUS6TbuVC9bE5NXtkYfQnSEXoRir3VYx7v6mvGRGoUBZngE2UK0E0vf57Y3mV3tJMz%2F2FWR9a2aI8k83lwN2heq6a0KwA7U%2BpY79rsrxDn13cDrOg9L0HV%2Ba9Hjzv6yRsdLZLKPJYdIfMD7nDX4WWBQglzgk3wFYQ0slA31T7gOhfcKpMdAy6tXyQIABbHc0MSZ%2FYS90fTuN5%2F6ROwG%2F7l20xhlQ5lgHo6NOH3B5fouTCGrPHAsfIyjIWHj3Ojt2hSXgQaorO%2BE15RCP9du4jvCey4GKpNEMCjwylicnA4oY4xZjei2Ci748gLPQHn8RbsppelREcjO1ImSC%2FJzahjRbUMq%2ByRAodoPQzg%2F%2FOB6ZAenr0wK%2BUzRnDmgDxsiGOUfu8k0NAn4hGMmClcmRWiPk30%2B%2F913VLOhg4QE%2Fwhqk0utf%2FqGDP1%2FqtpR7hcY%2FPQVi%2B82gg0B6gcPaivmvKdLFM8OjIKH%2BzhBdQDEYqH0y3igkX9ejjf7wxyCjWS39cybebjb833kkuuXZRr9Muo8F&txtSearch=&cboGeography=All&cboYear=All&cboPeriod=All&chkAllVars=on&btnDownload=Download&AIRPORT_SEQ_ID=on&AIRPORT_ID=on&AIRPORT=on&DISPLAY_AIRPORT_NAME=on&DISPLAY_AIRPORT_CITY_NAME_FULL=on&AIRPORT_WAC_SEQ_ID2=on&AIRPORT_WAC=on&AIRPORT_COUNTRY_NAME=on&AIRPORT_COUNTRY_CODE_ISO=on&AIRPORT_STATE_NAME=on&AIRPORT_STATE_CODE=on&AIRPORT_STATE_FIPS=on&CITY_MARKET_SEQ_ID=on&CITY_MARKET_ID=on&DISPLAY_CITY_MARKET_NAME_FULL=on&CITY_MARKET_WAC_SEQ_ID2=on&CITY_MARKET_WAC=on&LAT_DEGREES=on&LAT_HEMISPHERE=on&LAT_MINUTES=on&LAT_SECONDS=on&LATITUDE=on&LON_DEGREES=on&LON_HEMISPHERE=on&LON_MINUTES=on&LON_SECONDS=on&LONGITUDE=on&UTC_LOCAL_TIME_VARIATION=on&AIRPORT_START_DATE=on&AIRPORT_THRU_DATE=on&AIRPORT_IS_CLOSED=on&AIRPORT_IS_LATEST=on' \
+  --compressed
+
+
+Solicitud modificada

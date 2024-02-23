@@ -1,0 +1,940 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>
+	Download page
+</title><link href="styles/global.css" rel="stylesheet" type="text/css" /><link rel="stylesheet" type="text/css" href="styles/rita_main.css" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-18660041-1"></script>
+    <script>  window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments) }; gtag("js", new Date()); gtag("config", "UA-18660041-1", { "groups": "default", "anonymize_ip": true }); //gtag('config', 'G-G4Y2DGXG7K');</script>
+    <script type="text/javascript">
+
+        function displayHelp(height, width, Link)
+        {
+            var w = width + "px";
+            var h = height + "px";
+
+            if (Link) {
+                urlPage = Link;
+                helpURI = "./showHelp2.asp#_" + urlPage;
+            }
+            else {
+                var helpURI, urlPath, urlPage, m, n;
+                var objHelpWindow;
+                urlPath = location.pathname.toUpperCase();
+                m = urlPath.lastIndexOf('/');
+                n = urlPath.indexOf('.ASP');
+                if (urlPath.indexOf('.ASP') == -1) {
+                    urlPage = "HOMEPAGE";
+                } else {
+                    urlPage = urlPath.substring(m + 1, n);
+                }
+                if (urlPath.indexOf('.ASPX') == -1) {
+                    urlPage = "DL_SELECTFIELDS";
+                }
+                helpURI = "./showHelp.asp#_" + urlPage;
+            }
+            if (urlPage == "MAPPINGCENTER") {
+                helpURI = "http://websas.bts.gov/website/help/maphelp/index.htm";
+                objHelpWindow = window.open(helpURI, "Help");
+            } else {
+                windef = "HEIGHT=" + h + ",WIDTH=" + w + ",Left=0, Top=0, dependent=yes,resizable=yes"
+                objHelpWindow = window.open("", "Help", windef);
+                objHelpWindow.location.href = helpURI;
+                objHelpWindow.focus();
+            }
+        }
+
+    </script>
+
+
+    <meta charset="utf-8" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-18660041-1"></script>
+<script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments)};gtag("js", new Date());gtag("set", "developer_id.dMDhkMT", true);gtag("config", "UA-18660041-1", {"groups":"default","anonymize_ip":true,"page_placeholder":"PLACEHOLDER_page_path"});gtag("config", "G-TS9639848Y", {"groups":"default","page_placeholder":"PLACEHOLDER_page_location"});//gtag('config', 'G-G4Y2DGXG7K');</script>
+
+
+
+
+
+<meta name="Generator" content="Drupal 10 (https://www.drupal.org)" /><meta name="MobileOptimized" content="width" /><meta name="HandheldFriendly" content="true" /><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" /><meta http-equiv="x-ua-compatible" content="ie=edge" /><link rel="icon" href="https://www.bts.gov/themes/custom/dot_cms/favicon_dot.png" type="image/png" /><link rel="alternate" type="application/rss+xml" title="" href="http://www.bts.gov/rss.xml" /><link rel="stylesheet" media="all" href="https://www.bts.gov/sites/bts.dot.gov/files/css/css_JFWOPjRBM0W66um541uBKl2VVxIAuy-bhc706DX71Sw.css?delta=0&amp;language=en&amp;theme=bts&amp;include=eJxtkltywyAMRTeEzU-7HkaA4lDLiCJo6q6-xHGcxM4PzD2gx1wJf0sGcwpI3ngUl0MqgaPG99w4EeU4o_76rphnNTAPhAYi0FyCE70HKkGGIUM6ixly8Hqne8tcpBVLH0pmKThpC4LPRfoaeg8FU3AjZjWxB9IDsQXqpMwU4rDCE8cCFxSe0HyujBNGIxDFOB-V52LcJPvwO35NsLVmLOQceB_13CNHh8qWQ-Yr2mVt5LWpZnb7O2qfawLqV7mml84xj2F1ZCnjmAiSBEvsRk3BZsgBpRcKHjsknDCW3a9rdCuUIHqzvrQpEekb6-5MSWkSiCOaNoxEzXjRlv3cOYI2_Z-AF9HL2TeHK-HRp8j-DbUZwbtcJ6sswd-s_XKpSiW0jutt8JtaVlAe-gyTrXloG7AhPp0cxB-QPlU5e77EY9XN6uPT61zuO_AI2C3QP6h-PpM" /><link rel="stylesheet" media="all" href="https://www.bts.gov/sites/bts.dot.gov/files/css/css_5rvtkya9rTKprbxqz-ja_YqMTdrb8XMcRzcVrdYUrmM.css?delta=1&amp;language=en&amp;theme=bts&amp;include=eJxtkltywyAMRTeEzU-7HkaA4lDLiCJo6q6-xHGcxM4PzD2gx1wJf0sGcwpI3ngUl0MqgaPG99w4EeU4o_76rphnNTAPhAYi0FyCE70HKkGGIUM6ixly8Hqne8tcpBVLH0pmKThpC4LPRfoaeg8FU3AjZjWxB9IDsQXqpMwU4rDCE8cCFxSe0HyujBNGIxDFOB-V52LcJPvwO35NsLVmLOQceB_13CNHh8qWQ-Yr2mVt5LWpZnb7O2qfawLqV7mml84xj2F1ZCnjmAiSBEvsRk3BZsgBpRcKHjsknDCW3a9rdCuUIHqzvrQpEekb6-5MSWkSiCOaNoxEzXjRlv3cOYI2_Z-AF9HL2TeHK-HRp8j-DbUZwbtcJ6sswd-s_XKpSiW0jutt8JtaVlAe-gyTrXloG7AhPp0cxB-QPlU5e77EY9XN6uPT61zuO_AI2C3QP6h-PpM" /><link rel="stylesheet" media="all" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" /><link rel="stylesheet" media="all" href="//fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&amp;display=swap" /><link rel="stylesheet" media="all" href="//fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&amp;display=swap" /><link rel="stylesheet" media="all" href="https://www.bts.gov/sites/bts.dot.gov/files/css/css_Zkbu44M538dNk--5xbtF48MJhUJry1_w_Q4if79c3qQ.css?delta=5&amp;language=en&amp;theme=bts&amp;include=eJxtkltywyAMRTeEzU-7HkaA4lDLiCJo6q6-xHGcxM4PzD2gx1wJf0sGcwpI3ngUl0MqgaPG99w4EeU4o_76rphnNTAPhAYi0FyCE70HKkGGIUM6ixly8Hqne8tcpBVLH0pmKThpC4LPRfoaeg8FU3AjZjWxB9IDsQXqpMwU4rDCE8cCFxSe0HyujBNGIxDFOB-V52LcJPvwO35NsLVmLOQceB_13CNHh8qWQ-Yr2mVt5LWpZnb7O2qfawLqV7mml84xj2F1ZCnjmAiSBEvsRk3BZsgBpRcKHjsknDCW3a9rdCuUIHqzvrQpEekb6-5MSWkSiCOaNoxEzXjRlv3cOYI2_Z-AF9HL2TeHK-HRp8j-DbUZwbtcJ6sswd-s_XKpSiW0jutt8JtaVlAe-gyTrXloG7AhPp0cxB-QPlU5e77EY9XN6uPT61zuO_AI2C3QP6h-PpM" /><link rel="stylesheet" media="all" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" crossorigin="anonymous" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" /><link rel="stylesheet" media="all" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" /><link rel="stylesheet" media="all" href="https://www.bts.gov/sites/bts.dot.gov/files/css/css_21WJRyJ3xJvvHv6mfpVE2WqbhDKjhR-V1Lag5pf14Yo.css?delta=8&amp;language=en&amp;theme=bts&amp;include=eJxtkltywyAMRTeEzU-7HkaA4lDLiCJo6q6-xHGcxM4PzD2gx1wJf0sGcwpI3ngUl0MqgaPG99w4EeU4o_76rphnNTAPhAYi0FyCE70HKkGGIUM6ixly8Hqne8tcpBVLH0pmKThpC4LPRfoaeg8FU3AjZjWxB9IDsQXqpMwU4rDCE8cCFxSe0HyujBNGIxDFOB-V52LcJPvwO35NsLVmLOQceB_13CNHh8qWQ-Yr2mVt5LWpZnb7O2qfawLqV7mml84xj2F1ZCnjmAiSBEvsRk3BZsgBpRcKHjsknDCW3a9rdCuUIHqzvrQpEekb6-5MSWkSiCOaNoxEzXjRlv3cOYI2_Z-AF9HL2TeHK-HRp8j-DbUZwbtcJ6sswd-s_XKpSiW0jutt8JtaVlAe-gyTrXloG7AhPp0cxB-QPlU5e77EY9XN6uPT61zuO_AI2C3QP6h-PpM" />
+
+    <script type="application/json" data-drupal-selector="drupal-settings-json">{"path":{"baseUrl":"\/","scriptPath":null,"pathPrefix":"","currentPath":"standalone_template\/head","currentPathIsAdmin":false,"isFront":false,"currentLanguage":"en"},"pluralDelimiter":"\u0003","suppressDeprecationErrors":true,"google_analytics":{"account":"UA-18660041-1","trackOutbound":true,"trackMailto":true,"trackDownload":true,"trackDownloadExtensions":"7z|aac|arc|arj|asf|asx|avi|bin|csv|doc(x|m)?|dot(x|m)?|exe|flv|gif|gz|gzip|hqx|jar|jpe?g|js|mp(2|3|4|e?g)|mov(ie)?|msi|msp|pdf|phps|png|ppt(x|m)?|pot(x|m)?|pps(x|m)?|ppam|sld(x|m)?|thmx|qtm?|ra(m|r)?|sea|sit|tar|tgz|torrent|txt|wav|wma|wmv|wpd|xls(x|m|b)?|xlt(x|m)|xlam|xml|z|zip"},"data":[],"collapsiblock":{"active_pages":false,"slide_speed":200,"cookie_lifetime":null},"user":{"uid":0,"permissionsHash":"00bf93d99a6b10f4fd0e77a1d6ce282b336881ec2ae9a95dd1f6d826eadd3d2c"}}</script>
+<script src="https://www.bts.gov/sites/bts.dot.gov/files/js/js_tLnpPXsmYfsaVNKbsIEuLz5rti17vdK0qg2LLril1ZI.js?scope=header&amp;delta=0&amp;language=en&amp;theme=bts&amp;include=eJxtkltywyAMRTeEzU-7HkaA4lDLiCJo6q6-xHGcxM4PzD2gx1wJf0sGcwpI3ngUl0MqgaPG99w4EeU4o_76rphnNTAPhAYi0FyCE70HKkGGIUM6ixly8Hqne8tcpBVLH0pmKThpC4LPRfoaeg8FU3AjZjWxB9IDsQXqpMwU4rDCE8cCFxSe0HyujBNGIxDFOB-V52LcJPvwO35NsLVmLOQceB_13CNHh8qWQ-Yr2mVt5LWpZnb7O2qfawLqV7mml84xj2F1ZCnjmAiSBEvsRk3BZsgBpRcKHjsknDCW3a9rdCuUIHqzvrQpEekb6-5MSWkSiCOaNoxEzXjRlv3cOYI2_Z-AF9HL2TeHK-HRp8j-DbUZwbtcJ6sswd-s_XKpSiW0jutt8JtaVlAe-gyTrXloG7AhPp0cxB-QPlU5e77EY9XN6uPT61zuO_AI2C3QP6h-PpM"></script>
+
+    <!-- DAP Implementation -->
+    <script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=DOT"></script>
+  <meta name="standalone" content="standalone" />
+
+
+    <style type="text/css">
+        .auto-style1 {
+            width: 172px;
+        }
+
+        .auto-style2 {
+            width: 580px;
+        }
+
+        .auto-style3 {
+            width: 740px;
+        }
+
+        .auto-style4 {
+            width: 718px;
+            border-left: 1px solid #efefef;
+        }
+    </style>
+
+
+</head>
+<body style='background: #ffffff;'>
+    
+
+  <noscript>Please enable JavaScript to use this site.</noscript>
+    <a href="#main" class="visually-hidden focusable skip-link">
+      Skip to main content
+    </a>
+    
+      <div class="dialog-off-canvas-main-canvas" data-off-canvas-main-canvas="">
+    <div id="page-wrapper" class="page-wrapper">
+  <div id="page" class="page">
+
+     <section class="usa-banner"><h2 class="sr-only">USA Banner</h2>
+  <div class="usa-banner-inner container">
+    <div class="row">
+      <div class="usa-accordion col" id="accordion">
+        <header class="usa-banner-header" id="headingOne"><div aria-controls="collapseOne" aria-expanded="false" class="collapsed small row" data-target="#collapseOne" data-toggle="collapse" role="complementary">
+            <div class="usa-banner-guidance-gov usa-width-one-full col-sm d-flex">
+              <div class="usa-media_block-icon">
+                <img class="usa-banner-flag" src="https://www.bts.gov/themes/custom/dot_cms/images/assets/us_flag_small.svg" alt="U.S. flag" /></div>
+              <div class="usa-media_block-body">
+                <p>An official website of the United States government <button class="usa-accordion-button usa-banner-button"><span class="usa-banner-button-text">Here's how you know</span></button></p>
+              </div>
+            </div>
+          </div>
+        </header><div class="usa-banner-content container">
+          <div aria-labelledby="headingOne" class="collapse row" data-parent="#accordion" id="collapseOne">
+            <div class="usa-banner-guidance-gov usa-width-one-half col-sm d-flex">
+              <div class="usa-media_block-icon">
+                <img class="usa-banner-icon" src="https://www.bts.gov/themes/custom/dot_cms/images/assets/icon-dot-gov.svg" alt="Official US Government Icon" /></div>
+              <div class="usa-media_block-body">
+                <p><small><strong>Official websites use .gov</strong><br />A <strong>.gov</strong> website belongs to an official government organization in the United States.</small></p>
+              </div>
+            </div>
+            <div class="usa-banner-guidance-ssl usa-width-one-half col-sm d-flex">
+              <div class="usa-media_block-icon">
+                <img class="usa-banner-icon" src="https://www.bts.gov/themes/custom/dot_cms/images/assets/icon-https.svg" alt="Secure Site Icon" /></div>
+              <div class="usa-media_block-body">
+                <p><small><strong>Secure .gov websites use HTTPS</strong><br />
+                  A <strong>lock</strong> ( <span class="icon-lock"><svg xmlns="http://www.w3.org/2000/svg" width="52" height="64" viewbox="0 0 52 64" class="usa-banner__lock-image" role="img" aria-labelledby="banner-lock-title banner-lock-description"><title id="banner-lock-title">Lock</title><desc id="banner-lock-description">A locked padlock</desc><path fill="#000000" fill-rule="evenodd" d="M26 0c10.493 0 19 8.507 19 19v9h3a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V32a4 4 0 0 1 4-4h3v-9C7 8.507 15.507 0 26 0zm0 8c-5.979 0-10.843 4.77-10.996 10.712L15 19v9h22v-9c0-6.075-4.925-11-11-11z"></path></svg></span> ) or <strong>https://</strong> means you’ve safely connected to the .gov website. Share sensitive information only on official, secure websites.
+                </small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section><section class="region region-site-notification"><h2 class="sr-only">Site Notification</h2>
+  <div class="block block--site-notification block--emergency block-views block-views-blocksite-notification-block-notification-emergency w-100 clearfix">
+    
+
+
+  </div>
+  
+      <h2 class="sr-only">Site Notification</h2>
+    <div class="block block--site-notification block--warning block-views block-views-blocksite-notification-block-notification-warning w-100 clearfix">
+      
+
+
+    </div>
+  
+  </section><style>
+/*<![CDATA[*/
+
+.dot-ribbon {
+	background: #15396c;
+	color: white;
+	height: 1.75rem;
+	display: flex;
+	align-items: center;
+	font-size: .8rem;
+}
+.dot-ribbon svg {
+	width: 17px;
+	opacity: .5;
+	margin-right: 6px;
+}
+.dot-ribbon a:link,
+.dot-ribbon a:hover,
+.dot-ribbon a:visited,
+.dot-ribbon a:active {
+	color: white;
+}
+
+/*]]>*/
+</style><div class="dot-ribbon">
+	<div class="container">
+		<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 35.82 37.1" role="img"><title>U.S. Department of Transportation</title><desc>U.S. Department of Transportation Icon</desc><defs><style>
+/*<![CDATA[*/
+.cls-1{fill:#FFFFFF;}
+/*]]>*/
+</style></defs><title>United States Department of Transportation</title><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path class="cls-1" d="M4.46,6.35a8.38,8.38,0,0,1,8.15-2.94c2.71.55,4.26,2.77,4.78,5.43a6.31,6.31,0,0,1-2.75,6.79c-3.68,2.1-8,3.74-8.86,8.5A13.42,13.42,0,0,0,8.47,34.4C3.81,31.8,1.13,26.6.25,21.23A18,18,0,0,1,4.46,6.35"></path><path class="cls-1" d="M14.41,36.71A8.65,8.65,0,0,1,7.85,30.9a6.51,6.51,0,0,1,2.13-7,5.85,5.85,0,0,1,7.05-1c3.61,2.23,7.17,5.31,11.56,3.64A12.82,12.82,0,0,0,35.81,19C36,24.49,33,29.5,29,33a16.57,16.57,0,0,1-14.55,3.72"></path><path class="cls-1" d="M34.73,12.39a9.12,9.12,0,0,1-1.53,8.8c-1.79,2.17-4.42,2.47-6.91,1.63A6.18,6.18,0,0,1,21.92,17c0-4.35.81-9.1-2.8-12.17A12.51,12.51,0,0,0,9.05,2.33c4.47-2.92,10.27-2.89,15.22-1A17.36,17.36,0,0,1,34.73,12.39"></path></g></g></svg><a href="https://www.transportation.gov">United States Department of Transportation</a>
+</div>
+</div>
+
+ <header id="header" class="header site-header site-masthead bg-primary" role="banner" aria-label="Site header"><div class="container">
+    <div class="row">
+              <nav class="navbar navbar-dark navbar-expand-lg" id="navbar-main"><a href="https://www.bts.gov/" title="Home" rel="home" class="navbar-brand bts-brand mx-0 mt-lg-5">
+              <img src="https://www.bts.gov/themes/custom/bts/logo_bts.svg" alt="Home" class="img-fluid" /></a>
+    
+
+                  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#CollapsingNavbar" aria-controls="CollapsingNavbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                      <div class="form-inline navbar-form">
+                <section class="region region-header-form"><nav aria-labelledby="block-header-utility-menu" id="block-header-utility" class="block block-menu navigation menu--utility"><h2 class="sr-only" id="block-header-utility-menu">Header - Utility</h2>
+  
+
+        
+              <ul id="block-header-utility" block="block-header-utility" class="clearfix nav justify-content-end"><li class="nav-item ml-3 my-2">
+                <a href="http://transportation.libanswers.com/">Ask-A-Librarian</a>
+              </li>
+                <li class="nav-item ml-3 my-2">
+                <a href="https://www.bts.gov/A-Z-Index" data-drupal-link-system-path="node/224996">A-Z Index</a>
+              </li>
+        </ul></nav><div id="block-custombtsheadersearch" class="block block-fixed-block-content block-fixed-block-contentcustom-bts-header-search">
+  
+    
+      <div class="content">
+      
+            <div class="clearfix text-formatted field field--name-body field--type-text-with-summary field--label-hidden field__item"><div class="usasearch-search-block-form block block-usasearch block-usasearch-search-form-block" data-drupal-selector="usasearch-search-block-form" id="block-usasearch-form">
+   <div class="search__wrapper">
+      <form block="block-usasearch-form" action="https://search.usa.gov/search" method="GET" id="usasearch-search-block-form" accept-charset="UTF-8">
+         <fieldset class="js-form-item js-form-type-search form-type-search js-form-item-query form-item-query form-no-label form-group" aria-labelledby="headerquery"><legend class="d-none">Search DOT</legend>
+            <label for="query" class="sr-only">Search</label>
+            <input id="query" title="Enter the terms you wish to search for." placeholder="Search" class="usagov-search-autocomplete form-search form-control ui-autocomplete-input" autocomplete="off" aria-autocomplete="list" aria-haspopup="" data-drupal-selector="edit-query" type="search" name="query" value="" size="60" maxlength="128" /></fieldset><input data-drupal-selector="edit-affiliate" type="hidden" name="affiliate" value="dot-bts" class="form-control" /><input data-drupal-selector="edit-submit" type="submit" id="edit-submit" value="Search" class="button js-form-submit form-submit btn btn-primary form-control" /></form>
+   </div>
+</div></div>
+      
+    </div>
+  </div>
+
+  </section></div>
+                    <div class="collapse navbar-collapse" id="CollapsingNavbar">
+              <div id="block-ultimenumainnavigation" class="block block-ultimenu block-ultimenu-blockultimenu-main">
+  
+    
+      <div class="content">
+      <ul id="ultimenu-main" data-ultimenu="main" class="ultimenu ultimenu--hover ultimenu--main ultimenu--htb ultimenu--horizontal"><li class="ultimenu__item uitem has-ultimenu"><a href="https://www.bts.gov/explore-topics-and-geography" data-drupal-link-system-path="node/224296" class="ultimenu__link">Topics and Geography<span class="caret" aria-hidden="true"></span></a><section class="ultimenu__flyout is-htb"><section class="ultimenu__region region region--count-3 row region-ultimenu-main-topics-and-geography"><nav aria-labelledby="block-main-topics-1-menu" id="block-main-topics-1" class="block block-menu navigation menu--main--topics-1"><h2 id="block-main-topics-1-menu">Topics</h2>
+  
+
+        
+              <ul block="block-main-topics-1" class="clearfix nav navbar-nav"><li class="nav-item">
+                          <a href="https://www.bts.gov/explore-topics-and-geography/introduction-transportation-statistics" class="nav-link nav-link--explore-topics-and-geography-introduction-transportation-statistics" data-drupal-link-system-path="node/229016">Introduction to Transportation Statistics</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/topics/airlines-airports-and-aviation" class="nav-link nav-link--topics-airlines-airports-and-aviation" data-drupal-link-system-path="node/186">Airlines, Airports, and Aviation</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/topics/energy-and-environment" class="nav-link nav-link--topics-energy-and-environment" data-drupal-link-system-path="node/266">Energy and Environment</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/topics/freight-transportation" class="nav-link nav-link--topics-freight-transportation" data-drupal-link-system-path="node/316">Freight Transportation</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/topics/infrastructure" class="nav-link nav-link--topics-infrastructure" data-drupal-link-system-path="node/261">Infrastructure</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/topics/passenger-travel" class="nav-link nav-link--topics-passenger-travel" data-drupal-link-system-path="node/231">Passenger Travel</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/topics/transportation-safety" class="nav-link nav-link--topics-transportation-safety">Safety</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/statistical-policy" class="nav-link nav-link--statistical-policy" data-drupal-link-system-path="node/169991">Statistical Policies and Methods</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/topics/transportation-system-performance" class="nav-link nav-link--topics-transportation-system-performance" data-drupal-link-system-path="node/276">System Performance</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/topics/transportation-and-economy" class="nav-link nav-link--topics-transportation-and-economy" data-drupal-link-system-path="node/311">Transportation and the Economy</a>
+              </li>
+        </ul></nav><nav aria-labelledby="block-main-topics-2-menu" id="block-main-topics-2" class="block block-menu navigation menu--main--topics-2"><h2 id="block-main-topics-2-menu">Geography</h2>
+  
+
+        
+              <ul block="block-main-topics-2" class="clearfix nav navbar-nav"><li class="nav-item">
+                          <a href="https://www.bts.gov/maps" class="nav-link nav-link--maps" data-drupal-link-system-path="node/224311">Transportation Maps and Geospatial Data</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/product/geospatial-application-and-map-gallery" class="nav-link nav-link--product-geospatial-application-and-map-gallery" data-drupal-link-system-path="node/224276">Map Gallery</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/topics/international" class="nav-link nav-link--topics-international" data-drupal-link-system-path="node/241">International</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/topics/national" class="nav-link nav-link--topics-national" data-drupal-link-system-path="node/281">National</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/content/state-transportation-numbers" class="nav-link nav-link--content-state-transportation-numbers">By State</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/ctp" class="nav-link nav-link--ctp" data-drupal-link-system-path="node/199386">By County</a>
+              </li>
+        </ul></nav><nav aria-labelledby="block-main-topics-3-menu" id="block-main-topics-3" class="block block-menu navigation menu--main--topics-3"><h2 id="block-main-topics-3-menu">Modes</h2>
+  
+
+        
+              <ul block="block-main-topics-3" class="clearfix nav navbar-nav"><li class="nav-item">
+                          <a href="https://www.bts.gov/topics/airlines-and-airports" class="nav-link nav-link--topics-airlines-and-airports">Aviation</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/topics/highway" class="nav-link nav-link--topics-highway">Highway</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/topics/rail" class="nav-link nav-link--topics-rail">Rail</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/topics/maritime-and-inland-waterways" class="nav-link nav-link--topics-maritime-and-inland-waterways">Maritime and Inland Waterways</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/topics/pipelines" class="nav-link nav-link--topics-pipelines">Pipelines</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/topics/transit" class="nav-link nav-link--topics-transit" data-drupal-link-system-path="node/301">Transit</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/topics/bicycle-and-pedestrian" class="nav-link nav-link--topics-bicycle-and-pedestrian">Bicycles and Pedestrian</a>
+              </li>
+        </ul></nav></section></section></li><li class="ultimenu__item uitem has-ultimenu"><a href="https://www.bts.gov/browse-statistical-products-and-data" data-drupal-link-system-path="node/224301" class="ultimenu__link">Statistical Products and Data<span class="caret" aria-hidden="true"></span></a><section class="ultimenu__flyout is-htb"><section class="ultimenu__region region region--count-3 row region-ultimenu-main-statistical-products-and"><nav aria-labelledby="block-main-statistical-1-menu" id="block-main-statistical-1" class="block block-menu navigation menu--main--statistical-1"><h2 class="sr-only" id="block-main-statistical-1-menu">Main - Statistical 1</h2>
+  
+
+        
+              <ul block="block-main-statistical-1" class="clearfix nav navbar-nav"><li class="nav-item">
+                          <a href="https://www.bts.gov/information-gallery" class="nav-link nav-link--information-gallery" data-drupal-link-system-path="node/6">Information Gallery</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/browse-statistical-products-and-data/bts-publications/z-index" class="nav-link nav-link--browse-statistical-products-and-data-bts-publications-z-index">A-Z Index</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/airline-data-downloads" class="nav-link nav-link--airline-data-downloads" data-drupal-link-system-path="node/117081">Airline Information for Download</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/browse-statistical-products-and-data/border-crossing-data/border-crossingentry-data" class="nav-link nav-link--browse-statistical-products-and-data-border-crossing-data-border-crossingentry-data" data-drupal-link-system-path="node/199321">Border Crossing Data</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/cfs" class="nav-link nav-link--cfs" data-drupal-link-system-path="node/121606">Commodity Flow Survey</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/close-call" class="nav-link nav-link--close-call" data-drupal-link-system-path="node/117501">Confidential Close Calls Reporting</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/ctp" class="nav-link nav-link--ctp" data-drupal-link-system-path="node/199386">County Transportation Profiles</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://data.bts.gov/" class="nav-link nav-link-https--databtsgov-">Data Inventory</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/data-spotlights" class="nav-link nav-link--data-spotlights" data-drupal-link-system-path="node/121801">Data Spotlights</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/faf" class="nav-link nav-link--faf" data-drupal-link-system-path="node/111386">Freight Analysis Framework</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/product/freight-facts-and-figures" class="nav-link nav-link--product-freight-facts-and-figures" data-drupal-link-system-path="node/76">Freight Facts and Figures</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/flow" class="nav-link nav-link--flow" data-drupal-link-system-path="node/234506">Freight Logistics Optimization Works (FLOW)</a>
+              </li>
+        </ul></nav><nav aria-labelledby="block-main-statistical-2-menu" id="block-main-statistical-2" class="block block-menu navigation menu--main--statistical-2"><h2 class="sr-only" id="block-main-statistical-2-menu">Main - Statistical 2</h2>
+  
+
+        
+              <ul block="block-main-statistical-2" class="clearfix nav navbar-nav"><li class="nav-item">
+                          <a href="https://www.bts.gov/product/geospatial-application-and-map-gallery" class="nav-link nav-link--product-geospatial-application-and-map-gallery" data-drupal-link-system-path="node/224276">GIS Applications</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/gtfs" class="nav-link nav-link--gtfs" data-drupal-link-system-path="node/111">Government Transportation Financial Statistics</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/browse-statistical-products-and-data/statistical-products/intermodal-transportation-database" class="nav-link nav-link--browse-statistical-products-and-data-statistical-products-intermodal-transportation-database" data-drupal-link-system-path="node/22096">Intermodal Transportation Database</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/latch" class="nav-link nav-link--latch" data-drupal-link-system-path="node/10026">Local Area Transportation Characteristics (LATCH dataset)</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://data.bts.gov/stories/s/m9eb-yevh" class="nav-link nav-link-https--databtsgov-stories-s-m9eb-yevh">Monthly Transportation Statistics</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/NCFO" class="nav-link nav-link--ncfo" data-drupal-link-system-path="node/117646">National Census of Ferry Operators</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/topics/national-transportation-statistics" class="nav-link nav-link--topics-national-transportation-statistics" data-drupal-link-system-path="node/326">National Transportation Statistics</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/geospatial/national-transportation-atlas-database" class="nav-link nav-link--geospatial-national-transportation-atlas-database">National Transportation Atlas Database</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/browse-statistical-products-and-data/statistical-products/national-transportation-data-archive" class="nav-link nav-link--browse-statistical-products-and-data-statistical-products-national-transportation-data-archive" data-drupal-link-system-path="node/117291">National Transportation Data Archives</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/osra" class="nav-link nav-link--osra" data-drupal-link-system-path="node/233951">Ocean Shipping Reform Act (OSRA)</a>
+              </li>
+        </ul></nav><nav aria-labelledby="block-main-statistical-3-menu" id="block-main-statistical-3" class="block block-menu navigation menu--main--statistical-3"><h2 class="sr-only" id="block-main-statistical-3-menu">Main - Statistical 3</h2>
+  
+
+        
+              <ul block="block-main-statistical-3" class="clearfix nav navbar-nav"><li class="nav-item">
+                          <a href="https://www.bts.gov/pocketguide" class="nav-link nav-link--pocketguide" data-drupal-link-system-path="node/118881">Pocket Guide</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/ports" class="nav-link nav-link--ports" data-drupal-link-system-path="node/119751">Port Performance Freight Statistics</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://safeocs.gov/index.htm" class="nav-link nav-link-https--safeocsgov-indexhtm">SafeOCS</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/product/state-transportation-statistics" class="nav-link nav-link--product-state-transportation-statistics" data-drupal-link-system-path="node/91">State Transportation Statistics</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/freight-indicators" class="nav-link nav-link--freight-indicators" data-drupal-link-system-path="node/231491">Supply Chain Indicators</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/surveys/annual-tank-car-facility-survey/annual-tank-car-facility-survey-program" class="nav-link nav-link--surveys-annual-tank-car-facility-survey-annual-tank-car-facility-survey-program" data-drupal-link-system-path="node/120171">Tank Car Data</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/covid-19/week-in-transportation" class="nav-link nav-link--covid-19-week-in-transportation" data-drupal-link-system-path="node/229296">The Week in Transportation</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/transborder" class="nav-link nav-link--transborder" data-drupal-link-system-path="node/199336">TransBorder Freight Data</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://data.bts.gov/stories/s/28tb-cpjy" class="nav-link nav-link-https--databtsgov-stories-s-28tb-cpjy">Transportation Economic Trends</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://data.bts.gov/stories/s/Transportation-as-an-Economic-Indicator/9czv-tjte" class="nav-link nav-link-https--databtsgov-stories-s-transportation-as-an-economic-indicator-9czv-tjte">Transportation Services Index</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/tsar" class="nav-link nav-link--tsar" data-drupal-link-system-path="node/120771">Transportation Statistics Annual Reports</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/vius" class="nav-link nav-link--vius" data-drupal-link-system-path="node/226021">Vehicle Inventory and Use Survey (VIUS)</a>
+              </li>
+        </ul></nav></section></section></li><li class="ultimenu__item uitem has-ultimenu"><a href="https://www.bts.gov/ntl" data-drupal-link-system-path="node/229051" class="ultimenu__link">National Transportation Library<span class="caret" aria-hidden="true"></span></a><section class="ultimenu__flyout is-htb"><section class="ultimenu__region region region--count-1 row region-ultimenu-main-national-transportation"><nav aria-labelledby="block-main-library-menu" id="block-main-library" class="block block-menu navigation menu--main--library"><h2 class="sr-only" id="block-main-library-menu">Main - Library</h2>
+  
+
+        
+              <ul block="block-main-library" class="clearfix nav navbar-nav"><li class="nav-item">
+                          <a href="https://rosap.ntl.bts.gov" class="nav-link nav-link-https--rosapntlbtsgov">Digital Repository (ROSA P)</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://rosap.ntl.bts.gov/cbrowse?pid=dot%3A35533&amp;parentId=Dot%3A35533" class="nav-link nav-link-https--rosapntlbtsgov-cbrowsepiddot3a35533parentiddot3a35533">BTS Products in the NTL</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://transportation.libguides.com/usdot_history" class="nav-link nav-link-https--transportationlibguidescom-usdot-history">U.S. DOT History</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/ntl/submitting-content" class="nav-link nav-link--ntl-submitting-content" data-drupal-link-system-path="node/118441">Submitting Content to the NTL</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://transportation.libguides.com/NTLsubjects" class="nav-link nav-link-https--transportationlibguidescom-ntlsubjects">Research Tools</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://transportation.libguides.com/ntkn" class="nav-link nav-link-https--transportationlibguidescom-ntkn">National Transportation Knowledge Network</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/ntl/public-access" class="nav-link nav-link--ntl-public-access" data-drupal-link-system-path="node/118861">Public Access</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://fdd.bts.gov/freight-data-dictionary/" class="nav-link nav-link-https--fddbtsgov-freight-data-dictionary-">Freight Data Dictionary</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/ntl/policies" class="nav-link nav-link--ntl-policies" data-drupal-link-system-path="node/118466">NTL Policies</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/ntl/about" class="nav-link nav-link--ntl-about" data-drupal-link-system-path="node/118461">About the NTL</a>
+              </li>
+        </ul></nav></section></section></li><li class="ultimenu__item uitem has-ultimenu"><a href="https://www.bts.gov/newsroom" data-drupal-link-system-path="node/230276" class="ultimenu__link">Newsroom<span class="caret" aria-hidden="true"></span></a><section class="ultimenu__flyout is-htb"><section class="ultimenu__region region region--count-1 row region-ultimenu-main-newsroom"><nav aria-labelledby="block-main-newsroom-menu" id="block-main-newsroom" class="block block-menu navigation menu--main--newsroom"><h2 class="sr-only" id="block-main-newsroom-menu">Main - Newsroom</h2>
+  
+
+        
+              <ul block="block-main-newsroom" class="clearfix nav navbar-nav"><li class="nav-item">
+                          <a href="https://www.bts.gov/statistical-releases" class="nav-link nav-link--statistical-releases" data-drupal-link-system-path="statistical-releases">News and Statistical Releases</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/events" class="nav-link nav-link--events" data-drupal-link-system-path="events">Release Schedule</a>
+              </li>
+        </ul></nav></section></section></li><li class="ultimenu__item uitem has-ultimenu"><a href="https://www.bts.gov/learn-about-bts-and-our-work" data-drupal-link-system-path="node/224306" class="ultimenu__link">About BTS<span class="caret" aria-hidden="true"></span></a><section class="ultimenu__flyout is-htb"><section class="ultimenu__region region region--count-1 row region-ultimenu-main-about-bts"><nav aria-labelledby="block-main-about-menu" id="block-main-about" class="block block-menu navigation menu--main--about"><h2 class="sr-only" id="block-main-about-menu">Main - About</h2>
+  
+
+        
+              <ul block="block-main-about" class="clearfix nav navbar-nav"><li class="nav-item">
+                          <a href="https://www.bts.gov/about-BTS" class="nav-link nav-link--about-bts" data-drupal-link-system-path="node/8581">Overview</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/local-outreach" class="nav-link nav-link--local-outreach" data-drupal-link-system-path="node/232331">Local Outreach</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/jobs" class="nav-link nav-link--jobs" data-drupal-link-system-path="node/233181">Jobs and Internships</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/learn-about-bts-and-our-work/about-bts/legislative-mandates" class="nav-link nav-link--learn-about-bts-and-our-work-about-bts-legislative-mandates" data-drupal-link-system-path="node/29861">Legislative Mandates </a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/learn-about-bts-and-our-work/bts-strategic-plan-0" class="nav-link nav-link--learn-about-bts-and-our-work-bts-strategic-plan-0" data-drupal-link-system-path="node/225096">BTS Strategic Plan</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/staff-directory" class="nav-link nav-link--staff-directory">Staff Directory</a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/acts" class="nav-link nav-link--acts" data-drupal-link-system-path="node/28751">Advisory Council on Transportation Statistics </a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/learn-about-bts-and-our-work/about-bts/port-performance-working-group" class="nav-link nav-link--learn-about-bts-and-our-work-about-bts-port-performance-working-group" data-drupal-link-system-path="node/29306">Port Performance Working Group </a>
+              </li>
+                <li class="nav-item">
+                          <a href="https://www.bts.gov/learn-about-bts-and-our-work/history-bts" class="nav-link nav-link--learn-about-bts-and-our-work-history-bts" data-drupal-link-system-path="node/30416">History of BTS</a>
+              </li>
+        </ul></nav></section></section></li></ul><button data-ultimenu-button="#ultimenu-main" class="button button--ultimenu" aria-label="Menu" value="Menu"><span class="bars">Menu</span></button>
+    </div>
+  </div>
+
+
+          </div>
+                      </nav></div><!-- row -->
+  </div><!-- container -->
+  <!--BEGIN QUALTRICS WEBSITE FEEDBACK SNIPPET-->
+  <script type="text/javascript">
+//<![CDATA[
+
+    (function(){var g=function(e,h,f,g){
+    this.get=function(a){for(var a=a+"=",c=document.cookie.split(";"),b=0,e=c.length;b<e;b++){for(var d=c[b];" "==d.charAt(0);)d=d.substring(1,d.length);if(0==d.indexOf(a))return d.substring(a.length,d.length)}return null};
+    this.set=function(a,c){var b="",b=new Date;b.setTime(b.getTime()+6048E5);b="; expires="+b.toGMTString();document.cookie=a+"="+c+b+"; path=/; "};
+    this.check=function(){var a=this.get(f);if(a)a=a.split(":");else if(100!=e)"v"==h&&(e=Math.random()>=e/100?0:100),a=[h,e,0],this.set(f,a.join(":"));else return!0;var c=a[1];if(100==c)return!0;switch(a[0]){case "v":return!1;case "r":return c=a[2]%Math.floor(100/c),a[2]++,this.set(f,a.join(":")),!c}return!0};
+    this.go=function(){if(this.check()){var a=document.createElement("script");a.type="text/javascript";a.src=g;document.body&&document.body.appendChild(a)}};
+    this.start=function(){var t=this;"complete"!==document.readyState?window.addEventListener?window.addEventListener("load",function(){t.go()},!1):window.attachEvent&&window.attachEvent("onload",function(){t.go()}):t.go()};};
+  try{(new g(100,"r","QSI_S_ZN_5zoA3vXq9g9IftP","https://zn5zoa3vxq9g9iftp-dotocio.gov1.siteintercept.qualtrics.com/SIE/?Q_ZID=ZN_5zoA3vXq9g9IftP")).start()}catch(i){}})();
+  
+//]]>
+</script><div id="ZN_5zoA3vXq9g9IftP"><!--DO NOT REMOVE-CONTENTS PLACED HERE--></div>
+  <!--END WEBSITE FEEDBACK SNIPPET-->
+
+</header></div></div></div>
+    <a class="ritafont" style="font-size: 9pt;" href="https://www.bts.gov/">BTS</a>>
+    <a class="ritafont" style="font-size: 9pt;" href="Homepage.asp">TranStats</a>
+    <form method="post" action="./DL_SelectFields.aspx?gnoyr_VQ=FLL&amp;QO_fu146_anzr=N8vn6v10+f722146+gnoyr5" id="form1">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="W/S+qJu+JBqy59l9AoqZoxs6nEzOLQGdwWgAKD2TYc6GWZGX8QSnDN3vg9nSKl5e3cbh9EhIm7eCjuno+0nY2Pqr8SEkzKhU1dVq7hyj3cI3Df5EgIzQJehoBQVJvvbeTc6xcPRyKpA3d8eRsD9PtvXAc7efuA+WIFZHVSmTJVgGujQs3IE02mnsbMigA9JQ97Vv17Jxxvh82I2WTJJKNSiTMNi9MAhMNtDJTa0n5HZZa/KrmOUhrJu8w/DJAU0fb9nyeMFhV6tLRMEelCwW0n3wPnZQuUiFwpmwKg9E8uJelrA64cIGTMvFjHnIdiQTBZomGTGuopaxs23F4wnfKqa5XnhnSCo9UiszlOV1BzdgEpvBBMoJB0KSR83arSWbgPBSrGHl75N3+9sUlsFFfJpscfWmTCEP2QydWWMc0qjjgBVe7zyT5p/iYNPzXgYxlTimvg/8aVSGsMZ1Z4Ga4IwRFFUKP+Fbu6jR2ipn89zP87J554KAUU3srYu+uFFnhaA3a0QiC+iK+MVogte/UYfxcVStqEVwJAvJp5aXjdOwrs/Eix6joPhHDwEns+cnyeZtRFUSuJ7zZoBTSvTNshWSuZeefuLfcoUBL+d5zYPcR3XWRwCm6h9NQS8sfdvrffY0liV8pHhjFI4Op/vIXbAbTnZ3FTxd7QFAYILYlmV1bPLNlwryFNfIB9XmDnM5u7/9mFV4XI+6ZbjUZV4V8c/FNrxGvWBsqLMJinDEVpG1mqpRNI6pjuZkxJiErXJibJIalL1TWgZF0Gn2VExhd3scYm5AG35r1LU1PJbySPxnCS74SEMck11/YzlBXUJGbUqeLyCRA0b0hQ4Agzzqjb4OB/6283zbe+ar2VB5wrgatdlpr3l4uo9d+0S5/FGVLo1T5v0YqtliMjWSAcMYxjlCFWv9df+iG+xIvgzC8p64dqyUbElvJyJsXJ9Ot2n4uWlFuZsEyB5NF1HdKVklz1hgVFFXsENQLq6De4DcQ7UTfYVdYpyQrXBjNSUyxiovPAy6WWQabJz/wuQo9kJPtChroQ8CWZYtaZhYp+YNQLe7edboBW0GT5Fbbx11F3TN1walKL/4lEJ+lAJE6E+ne0E4hmnEbsIR2P17h3qEasGOMWBcOFs1HCkaM64qI43Qqmz0qUZC8993Z2JHYmApomLx+pqJFoQoGKqPRXr9MQ3Z5XKS2omCNKX+yuEHyS4GwSmGAqwTmpf5jFng9rgZjvuJJNKrBajj9nOXQlwp57WN3kOuXMRsDJ0oR5puiQh1O/77LlXwzpajGP7fXCKOJNzIJTN8DkcDiHNTidIumNP0/jELhOzbu4wX62+jeRGPhm1kw5kXWeiouoNLGwZFxSL6gEqzIW5WqARMrb9pDhqWvhGdhzRnIgVLYlmo+gy4HNTyDnL3mrLDrB6hIowM9mr8cqf2JDOL5dwApAGxNW2J4EkPva/wuxox9oHf4OYY9oKZdIy/IcrzaQKdBWkYFDqMHN2myw85nDddWcFl4hjCKu6KVS9H9tsSMpGDemgdrkLJjL30tZye9H7tKCxisTIWY3HnaweUNB+Nu+8U2+gHLirWaD3QO3EAgnMy4UFO1RZbCmtKc5nBtH1d5la4jeXSuf3yeWYmg77DGbZwY7zXCtXYRPa87AZt3efaBbksUE8xUguY3Lv4Ti+ojWw2kahhqy0IeGxKk85OBepw8jwpvK1RtRN0aNFcoKoNUS3zPBC4pmLJ5TTO9wjuxVloIya48vgelw8ZHAgiobAqXt+XjPP3RbzBpC6H2oFBAKQzYwwYjabH0EJZ4hJFW8NXvKFzy03GXEke36D5tTOMh6i2TeqyR+7c5AABaL9t77lVzo0UHD7QU8HDiXcI1fTOMaE1etXZmH0+BhlW33FtZfH8VQkGzJ9IZJuw9EuYnwWmkjaC0t7jrEQYMF4xohlWoT5Mvph3hx8w8cTi+Q1rTzvfUtU4UP72tVVIHoj5nFWC/ve9MgFAU+FMIsKyvN8r7++mryfb6Vm1otkMq4VtBfsuejnL+wopCphKNKIrSBM67s5+LAx3EfVst/Muvy0tEuzWTVSaVKRRpMxET6VIVBM=" />
+
+<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="82CE8F70" />
+<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="9cyEUwlfSxlzykP5FusUJ+tAemp1d8egrpvqzApxTq7SsNLoErZlJuTYLP4jn9fgAzscNT+SgTAO9mWBvXZ1R4F3YEMqirwd2OEJSO7CycNFfyYbxIz2JfEMmJzDfgPpx/UEWtdLtzo1UN03+syoHvBJIBWgURcNQkX56zeorXO/Nm6fclbMjSQQp+6bBuY0YAJXjNO67zBsxh4XWivrGigTLs3I9NwByGL5EoTvrpzibqAvjG4BkLVmF12qbDKQZpthitHGIgb+/YoeCdVKuQtU3j8Tyd9HAOfHANDgqXwwpaR3AZ5LTvZM0Yv5hjkX+W7vUnPHtooT8+B998aKN2pyywW6nSXQlVAbjImbMpFvJnAUaZJ3Guiw8qV7m66fyREFQFZjkWFUwzJLFWwk6OEli/Y8e9qLLUr1E8yhEH5RH1u/zHM4TMTyKD+X/sAZV4PN5D7cSKUrncM+qrrpIqJwzI2IfXnVYgm8MOb9O92pTN5EwjAPlbZTOeKYhI2BrntsREb+bVAQBG/F1E+mSCsromFZRV6TD0HzGfA/+Uo7gPjp54ehiJvcSxzzD/B4QlcbXxLB7R3Qx/Bw8v12pl+I5E8NsNA+473Ol1ZbAm8DMhpd9o1cY0C7rzlMJQ5jFyf3wMnCcoVNVCj93w2mWVKOiBg5MPsfG1c6ez7PdClJlNguUQXA/nC4YoIEqza+ZvyaH/Co4/9oTG1K+7K142n4NqtbSSjexsMzZB3cN305ZKIm0rJXb5BVcq5PNytf8uAqy8+FWU/fNOhydmm2wEydZ4xLBKNH/KvoaYKmRAtHdlZxGeHsFKKRclenAu6b73G+IABCe5JgJ81/FhrBvnj3PGUDWwNl03EUozdy9AZN4wmOXO9AOBripWZidR4k3hYbNHAU9gCr/549dyzgXC4bUuTwl40VZl7bR+toxKpwfQBPJH3t8LG9mt0FIe/gSwjHKMw1gSGqfyz+7/GKjyxWyQGD/i11G/l8Zm/8ZMF0UJXXY7yQiPMpfvIY/CwX" />
+        <div>
+            <table border='0' width='890px' style="margin-left: auto; margin-right: auto;">
+                <tr>
+                    <!--'First TD-->
+                    <td width='136px' style='vertical-align: top; border-top: white 1px solid; border-bottom: white 1px solid;'>
+                        <Table style="margin-right:3px;">
+<tr><td style='border-top: #efefef 1px solid;border-bottom: #efefef 1px solid;' ><a href="/homepage.asp" ><img src="images/smalltop.gif" style="border:0px" alt="transtats logo" ></a></td></tr>
+	<FORM name='searchForm'  METHOD=POST ACTION='Search.asp'  >
+<TR><TD style='text-align:left;padding-left:10px;padding-top:2px;border-top: #efefef 1px solid;border-bottom: #efefef 1px solid;'><LABEL FOR='txtSearch'>
+		<a class=tsslcLbl style='color: #000000;text-decoration:none;' href='javascript:displayHelp(300,450,"SITESEARCH")'>Search this site:</a></LABEL></td></tr><tr><td style='padding-left:5px' nowrap>
+		<INPUT class=slcBox TYPE='text' name='txtSearch' id='txtSearch' size=16 style='width:110px;height:20;vertical-align:bottom;'>&nbsp;
+		<Button TYPE='submit'  style='font-size:6.5pt;height:20;width=24;vertical-align:middle;' >Go</button></td>
+</TR>
+	</FORM>
+<TR>
+<TD nowrap style='text-align:left;padding-left:10px;padding-top:2px;border-top: #efefef 1px solid;border-bottom: #efefef 1px solid;'><a class='finePrint' href="/SearchInfo.asp">Advanced Search</a></TD>
+</TR>
+<TR><TD class="hspacing"></TD></TR>
+<TD  class="sidebarTH">Resources</TD>
+</TR>
+<TR>
+<TD class="hspacing" style="background-color:#efefef;"></TD>
+</TR>
+<TR>
+<TD class="sidebarLink" onmouseover="toggleMenu(this,'Data Directory');return true;"
+	onmouseout="toggleMenu(this,'');return true;"><A href="/DataIndex.asp" style='color:#000000;text-decoration:none;'>Database Directory</A></TD>
+</TR>
+<TR>
+<TD class="sidebarLink"  onmouseover="toggleMenu(this,'Glossary');return true;" onmouseout="toggleMenu(this,' ');return true;"><A href='/glossary.asp' style='color:#000000;text-decoration:none;'>Glossary</A></TD>
+</TR>
+<TR>
+<TD class="sidebarLink" onmouseover="toggleMenu(this,'What&#145;s New Page');return true;" onmouseout="toggleMenu(this,' ');return true;"><A href='http://www.bts.gov/upcoming_data_releases/' style='color:#000000;text-decoration:none;'>Upcoming Releases</A></TD>
+</TR>
+<TR>
+<TD class="sidebarLink" onmouseover="toggleMenu(this,'What&#145;s New Page');return true;" onmouseout="toggleMenu(this,' ');return true;"><A href='/releaseinfo.asp' style='color:#000000;text-decoration:none;'>Data Release History</A></TD>
+</TR>
+<TR><TD class="hspacing"></TD></TR>
+<TR>
+<TD  class="sidebarTH">Data Finder</TD>
+</TR>
+<TR>
+<TD  class="sidebarTH2">By Mode</TD>
+</TR>
+<TR><TD class="sidebarLink"  onmouseover="toggleMenu(this,'Aviation Mode');return true;" 
+onmouseout="window.status='';toggleMenu(this,'Aviation Mode');return true;"><A href="/databases.asp?Z1qr_VQ=E&Z1qr_Qr5p=N8vn6v10&f7owrp6_VQF=D" style='color:#000000;text-decoration:none;' >Aviation</A></TD>
+</TR>
+
+<TR><TD class="sidebarLink"  onmouseover="toggleMenu(this,'Maritime Mode');return true;" 
+onmouseout="toggleMenu(this,'Maritime Mode');return true;"><A href="/databases.asp?Z1qr_VQ=F&Z1qr_Qr5p=Zn4v6vzr&f7owrp6_VQF=D" style='color:#000000;text-decoration:none;' >Maritime</A></TD>
+</TR>
+<TR><TD class="sidebarLink"  onmouseover="toggleMenu(this,'Highway Mode');return true;" 
+	onmouseout="toggleMenu(this,'Highway Mode');return true;"><A href="/databases.asp?Z1qr_VQ=G&Z1qr_Qr5p=Uvtu9nB&f7owrp6_VQF=D" style='color:#000000;text-decoration:none;'>Highway</A></TD>
+</TR>
+<TR><TD class="sidebarLink"  onmouseover="toggleMenu(this,'Transit Mode');return true;" 
+	onmouseout="toggleMenu(this,'Transit Mode');return true;"><A href="/databases.asp?Z1qr_VQ=H&Z1qr_Qr5p=g4n05v6&f7owrp6_VQF=D" style='color:#000000;text-decoration:none;'>Transit</A></TD>
+</TR>
+<TR><TD class="sidebarLink"  onmouseover="toggleMenu(this,'Rail Mode');return true;" 
+	onmouseout="toggleMenu(this,'Rail Mode');return true;"><A href="/databases.asp?Z1qr_VQ=I&Z1qr_Qr5p=envy&f7owrp6_VQF=D" style='color:#000000;text-decoration:none;'>Rail</A></TD>
+</TR>
+<TR><TD class="sidebarLink"  onmouseover="toggleMenu(this,'Pipeline Mode');return true;"  
+	onmouseout="toggleMenu(this,'Pipeline Mode');return true;"><A href="/databases.asp?Z1qr_VQ=J&Z1qr_Qr5p=cv2ryv0r&f7owrp6_VQF=D" style='color:#000000;text-decoration:none;'>Pipeline</A></TD>
+</TR>
+<TR><TD class="sidebarLink" onmouseover="toggleMenu(this,'Bike/Pedestrian Mode');return true;" onmouseout="toggleMenu(this,'Bike/Pedestrian Mode');return true;">
+	<A href="/Databases.asp?Z1qr_VQ=K&Z1qr_Qr5p=Ovxr/crqr564vn0&f7owrp6_VQF=D" style='color:#000000;text-decoration:none;'>Bike/Pedestrian</A></TD></TR>
+<TR><TD class="sidebarLink" 
+	onmouseover="toggleMenu(this,'Other Mode');return true;"  onmouseout="toggleMenu(this,'Other Mode');return true;" ><A href="Databases.asp?Z1qr_VQ=MM&Z1qr_Qr5p=b6ur4&f7owrp6_VQF=D" 		style='color:#000000;text-decoration:none;'>Other</A></TD>
+</TR>
+<TR>
+<TD  class="sidebarTH2">By Subject</TD>
+</TR>
+<TR><TD class="sidebarLink"  onmouseover="toggleMenu(this,'Safety subject');return true;" 
+	onmouseout="toggleMenu(this,'');return true"><A href="/databases.asp?f7owrp6_VQ=E&f7owrp6_Qr5p=fnsr6B&Z1qr_VQF=D" style='color:#000000;text-decoration:none;'>Safety</A></TD>
+</TR>
+<TR><TD class="sidebarLink"  onmouseover="toggleMenu(this,'Freight Transportation subject');return true;" 
+	onmouseout="toggleMenu(this,'');return true"><A href="/databases.asp?f7owrp6_VQ=F&f7owrp6_Qr5p=S4rvtu6%FDg4n052146&Z1qr_VQF=D" style='color:#000000;text-decoration:none;'>Freight Transport</A></TD>
+</TR>
+<TR><TD class="sidebarLink"  onmouseover="toggleMenu(this,'Passenger Travel subject');return true;" 
+	onmouseout="toggleMenu(this,'');return true"><A href="/databases.asp?f7owrp6_VQ=G&f7owrp6_Qr5p=cn55r0tr4%FDg4n8ry&Z1qr_VQF=D" style='color:#000000;text-decoration:none;'>Passenger Travel</A></TD>
+</TR>
+<TR><TD class="sidebarLink"  onmouseover="toggleMenu(this,'Infrastructure subject');return true;" 
+	onmouseout="toggleMenu(this,'');return true"><A href="/databases.asp?f7owrp6_VQ=H&f7owrp6_Qr5p=V0s4n5647p674r&Z1qr_VQF=D" style='color:#000000;text-decoration:none;'>Infrastructure</A></TD>
+</TR>
+<TR><TD class="sidebarLink"  onmouseover="toggleMenu(this,'Economic/Financial subject');return true;" 
+	onmouseout="toggleMenu(this,'');return true"><A href="/databases.asp?f7owrp6_VQ=I&f7owrp6_Qr5p=Rp101zvp/Sv0n0pvny&Z1qr_VQF=D" style='color:#000000;text-decoration:none;'>Economic/Financial</A></TD>
+</TR>
+<TR><TD class="sidebarLink"  onmouseover="toggleMenu(this,'Social/Demographic subject');return true;" 
+	onmouseout="toggleMenu(this,'');return true"><A href="/databases.asp?f7owrp6_VQ=J&f7owrp6_Qr5p=f1pvny/Qrz1t4n2uvp&Z1qr_VQF=D" style='color:#000000;text-decoration:none;'>Social/Demographic</A></TD>
+</TR>
+<TR><TD class="sidebarLink"  onmouseover="toggleMenu(this,'Energy subject');return true;" 
+	onmouseout="toggleMenu(this,'');return true"><A href="/databases.asp?f7owrp6_VQ=K&f7owrp6_Qr5p=R0r4tB&Z1qr_VQF=D" style='color:#000000;text-decoration:none;'>Energy</A></TD>
+</TR>
+<TR><TD class="sidebarLink"  onmouseover="toggleMenu(this,'Environment subject');return true;" 
+	onmouseout="toggleMenu(this,'');return true"><A href="/databases.asp?f7owrp6_VQ=L&f7owrp6_Qr5p=R08v410zr06&Z1qr_VQF=D" style='color:#000000;text-decoration:none;'>Environment</A></TD>
+</TR>
+<TR><TD class="sidebarLink"  onmouseover="toggleMenu(this,'National Security subject');return true;" 
+	onmouseout="toggleMenu(this,'');return true"><A href="/databases.asp?f7owrp6_VQ=M&f7owrp6_Qr5p=an6v10ny%FDfrp74v6B&Z1qr_VQF=D" style='color:#000000;text-decoration:none;'>National Security</A></TD>
+</TR>
+
+<TR>
+<TD  class="hspacing" STYLE="background-color:#efefef;"></TD></TR>
+<TR>
+<TR>
+</TABLE>
+
+                    </td>
+                    <td valign="top" style='border-top: white 1px solid; border-bottom: white 1px solid;'>
+                        <table width="720" style='border-left: 1px solid gray;' cellpadding="6" cellspacing="4" border="0">
+                            <tr>
+                                <td colspan="5" class='libraryTH2' style="border-top: white 1px solid;border-bottom: white 1px solid;border-left: white 1px solid;border-right: white 1px solid;">
+                                    <span id="lblHeader">Aviation Support Tables :&nbsp;Master Coordinate</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style='border-bottom: 1px solid #336699; padding-right: 5px; vertical-align: bottom;border-top: white 1px solid;border-bottom:  1px solid;border-left: white 1px solid;border-right: white 1px solid;'>
+                                    <span id="lblLatest" class="dataTD" style="display:inline-block;text-align: left; font-size: 11pt; color: gray; font-weight: 500; vertical-align: middle"></span>
+                                </td>
+                                <td colspan="3" style='border-bottom: 1px solid #336699; text-align: right; padding-right: 5px; vertical-align: bottom;'>
+                                    <a id="HyperLink1" class="finePrint" href="Databases.asp?Z1qr_VQ=E&amp;Z1qr_Qr5p=N8vn6v10&amp;f7owrp6_VQF=D">Databases</a>
+                                    &nbsp;&nbsp;&nbsp;<a id="HyperLink2" class="finePrint" href="Tables.asp?6noyr_vq=FLL">Data Tables</a>
+                                    &nbsp;&nbsp;&nbsp;<a id="HyperLink3" class="finePrint" href="Fields.asp?6noyr_vq=FLL">Table Contents</a>
+                                </td>
+                            </tr>
+                            <tr style='padding-top: 3px; padding-bottom: 0;'>
+                                <td width="167px" class='dataTD' style='vertical-align: bottom;border-top: white 1px solid;border-bottom: white 1px solid;border-left: white 1px solid;border-right: white 1px solid;'>
+                                    <a id="HyperLink4" class="finePrint" href="javascript:displayHelp(650,450);">Download Instructions</a>
+                                </td>
+                                <td width="180" style="border-top: white 1px solid;border-bottom: white 1px solid;border-left: white 1px solid;border-right: white 1px solid;">
+                                    <br />
+                                    
+                                </td>
+                                <td width="180" style="border-top: white 1px solid;border-bottom: white 1px solid;border-left: white 1px solid;border-right: white 1px solid;">
+                                    <a id="HyperLink6" class="finePrint">Filter Geography</a><br />
+                                    <select name="cboGeography" id="cboGeography" class="slcBox">
+	<option selected="selected" value="All">Not Applicable</option>
+
+</select>
+                                </td>
+                                <td width="90" style="border-top: white 1px solid;border-bottom: white 1px solid;border-left: white 1px solid;border-right: white 1px solid;">
+                                    <a id="HyperLink7" class="finePrint">Filter Year</a><br />
+                                    <select name="cboYear" id="cboYear" class="slcBox">
+	<option selected="selected" value="All">Not Applicable</option>
+
+</select>
+                                </td>
+                                <td class="auto-style1" style="border-top: white 1px solid;border-bottom: white 1px solid;border-left: white 1px solid;border-right: white 1px solid;">
+                                    <a id="HyperLink8" class="finePrint">Filter Period</a><br />
+                                    <select name="cboPeriod" id="cboPeriod" class="slcBox">
+	<option selected="selected" value="All">Not Applicable</option>
+
+</select>
+                                </td>
+                            </tr>
+                            <tr><td colspan="5" style="border-top: white 1px solid;border-bottom: white 1px solid;border-left: white 1px solid;border-right: white 1px solid;">
+                                <span id="lblNote" class="dataTD" style="font-size:9pt;"><b><font color="#CC0000"></font></b></span>
+                            </td></tr>
+                        </table>
+
+                        <table width="780" style='border-left: 1px solid gray; padding-bottom: 5px;' cellpadding="5" cellspacing="0" border="0">
+                            <tr>
+                                <td class='dataTDLeft' width="680" style='border-top: 1px solid gray;' nowrap="nowrap">
+
+                                    
+                                    <span class="tsslcLbl" style="display:inline"><input id="chkAllVars" type="checkbox" name="chkAllVars" /></span>
+                                    <a id="hlinkAllVars" class="tsslcLbl" href="javascript:displayHelp(300,450,&#39;SELECTALLFIELDS&#39;)" style="display:inline">Select all fields&nbsp;&nbsp;</a>
+                                    &nbsp;&nbsp;
+
+                                
+                                    <span class="tsslcLbl" style="display: none;"><input id="chkAllGroups" type="checkbox" name="chkAllGroups" /></span>
+                                    <a id="hlinkAllGroups" class="tsslcLbl" href="javascript:displayHelp(300,450,&#39;SELECTALLGROUPS&#39;)" style="color: #000000; text-decoration: none; vertical-align: middle; display: none;">Select all groups&nbsp;&nbsp;</a>
+                                    &nbsp;&nbsp;
+
+                                
+                                    <span class="tsslcLbl" style="display: none;"><input id="chkDownloadZip" type="checkbox" name="chkDownloadZip" /></span>
+                                    <a id="hlinkDownloadZip" class="tsslcLbl" href="javascript:displayHelp(300,450,&#39;DownloadZip&#39;)" style="color: #000000; text-decoration: none; vertical-align: middle; display: none;">Prezipped File&nbsp;&nbsp;</a>
+                                    &nbsp;&nbsp;
+                                
+                                
+                                    <span class="tsslcLbl" style="display:inline"><input id="chkshowNull" type="checkbox" name="chkshowNull" /></span>
+                                    <a id="hlinkShowNull" class="tsslcLbl" href="javascript:displayHelp(300,450,&#39;SHOWNULL&#39;)" style="display:inline">% Missing in table&nbsp;&nbsp;</a>
+                                    &nbsp;&nbsp;
+
+                                
+                                    <span class="tsslcLbl" style="display: none;"><input id="chkMergeSub" type="checkbox" name="chkMergeSub" /></span>
+                                    <a id="hlinkMergeSub" class="tsslcLbl" href="javascript:displayHelp(300,450,&#39;MergeSub&#39;)" style="color: #000000; text-decoration: none; vertical-align: middle; display: none;">Merge groups into one table&nbsp;&nbsp;</a>
+                                    &nbsp;&nbsp;
+
+                                
+                                    <span class="tsslcLbl" style="display:inline"><input id="chkDocument" type="checkbox" name="chkDocument" /></span>
+                                    <a id="hlinkDocument" class="tsslcLbl" href="javascript:displayHelp(300,450,&#39;DOCUMENT&#39;)" style="display:inline">Documentation&nbsp;&nbsp;</a>
+                                    &nbsp;&nbsp;
+
+                                
+                                    <span class="tsslcLbl" style="display:inline"><input id="chkTermDef" type="checkbox" name="chkTermDef" /></span>
+                                    <a id="hlinkTermDef" class="tsslcLbl" href="javascript:displayHelp(300,450,&#39;TERMSDEF&#39;)" style="display:inline">Term&nbsp;&nbsp;</a>
+                                    &nbsp;&nbsp;
+
+                                <span>
+                                    <span id="lblDownload" class="finePrint"></span></span>
+                                </td>
+                                <td class='dataTDRight' style='border-top: 1px solid gray;' nowrap="nowrap">
+                                    <input type="submit" name="btnDownload" value="Download" id="btnDownload" />
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table id="myTable" cellspacing="0" cellpadding="6" class="mediumTABLE" Border="1" width="780" style="border-left: 1px solid gray;">
+	<tr>
+		<td CssClass="libraryTH2" style="font-weight:800;">Field Name</td><td CssClass="libraryTH2" style="font-weight:800;">Description</td><td CssClass="libraryTH2" style="font-weight:800;">Support Table</td>
+	</tr><tr bgcolor="White">
+		<td><span CssClass="dataTD"><input id="AIRPORT_SEQ_ID" type="checkbox" name="AIRPORT_SEQ_ID" checked="checked" /><label for="AIRPORT_SEQ_ID">AirportSeqID</label></span></td><td>An identification number assigned by US DOT to identify a unique airport at a given point of time.  Airport attributes, such as airport name or coordinates, may change over time.</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="LightGrey">
+		<td><span CssClass="dataTD"><input id="AIRPORT_ID" type="checkbox" name="AIRPORT_ID" checked="checked" /><label for="AIRPORT_ID">AirportID</label></span></td><td>An identification number assigned by US DOT to identify a unique airport.  Use this field for airport analysis across a range of years because an airport can change its airport code and airport codes can be reused.</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="White">
+		<td><span CssClass="dataTD"><input id="AIRPORT" type="checkbox" name="AIRPORT" checked="checked" /><label for="AIRPORT">Airport</label></span></td><td>A three character alpha-numeric code issued by the U.S. Department of Transportation which is the official designation of the airport.  The airport code is not always unique to a specific airport because airport codes can change or can be reused.</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="LightGrey">
+		<td><span CssClass="dataTD"><input id="DISPLAY_AIRPORT_NAME" type="checkbox" name="DISPLAY_AIRPORT_NAME" checked="checked" /><label for="DISPLAY_AIRPORT_NAME">AirportName</label></span></td><td>Airport Name</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="White">
+		<td><span CssClass="dataTD"><input id="DISPLAY_AIRPORT_CITY_NAME_FULL" type="checkbox" name="DISPLAY_AIRPORT_CITY_NAME_FULL" checked="checked" /><label for="DISPLAY_AIRPORT_CITY_NAME_FULL">AirportCityName</label></span></td><td>Airport City Name with either U.S. State or Country</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="LightGrey">
+		<td><span CssClass="dataTD"><input id="AIRPORT_WAC_SEQ_ID2" type="checkbox" name="AIRPORT_WAC_SEQ_ID2" /><label for="AIRPORT_WAC_SEQ_ID2">AirportWacSeqID2</label></span></td><td>Unique Identifier for a World Area Code (WAC) at a given point of time for the Physical Location of the Airport.  See World Area Codes support table.</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="White">
+		<td><span CssClass="dataTD"><input id="AIRPORT_WAC" type="checkbox" name="AIRPORT_WAC" checked="checked" /><label for="AIRPORT_WAC">AirportWac</label></span></td><td>World Area Code for the Physical Location of the Airport</td><td><a title="Download Lookup data" class="dataTDRight" href="Download_Lookup.asp?Y11x72=Y_jbeYQ_NeRN_PbQRf">Get Lookup Table</a></td>
+	</tr><tr bgcolor="LightGrey">
+		<td><span CssClass="dataTD"><input id="AIRPORT_COUNTRY_NAME" type="checkbox" name="AIRPORT_COUNTRY_NAME" checked="checked" /><label for="AIRPORT_COUNTRY_NAME">AirportCountryName</label></span></td><td>Country Name for the Physical Location of the Airport</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="White">
+		<td><span CssClass="dataTD"><input id="AIRPORT_COUNTRY_CODE_ISO" type="checkbox" name="AIRPORT_COUNTRY_CODE_ISO" checked="checked" /><label for="AIRPORT_COUNTRY_CODE_ISO">AirportCountryCodeISO</label></span></td><td>Two-character ISO Country Code for the Physical Location of the Airport</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="LightGrey">
+		<td><span CssClass="dataTD"><input id="AIRPORT_STATE_NAME" type="checkbox" name="AIRPORT_STATE_NAME" checked="checked" /><label for="AIRPORT_STATE_NAME">AirportStateName</label></span></td><td>State Name for the Physical Location of the Airport </td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="White">
+		<td><span CssClass="dataTD"><input id="AIRPORT_STATE_CODE" type="checkbox" name="AIRPORT_STATE_CODE" checked="checked" /><label for="AIRPORT_STATE_CODE">AirportStateCode</label></span></td><td>State Abbreviation for the Physical Location of the Airport</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="LightGrey">
+		<td><span CssClass="dataTD"><input id="AIRPORT_STATE_FIPS" type="checkbox" name="AIRPORT_STATE_FIPS" checked="checked" /><label for="AIRPORT_STATE_FIPS">AirportStateFips</label></span></td><td>FIPS (Federal Information Processing Standard) State Code for the Physical Location of the Airport</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="White">
+		<td><span CssClass="dataTD"><input id="CITY_MARKET_SEQ_ID" type="checkbox" name="CITY_MARKET_SEQ_ID" /><label for="CITY_MARKET_SEQ_ID">CityMarketSeqID</label></span></td><td>An identification number assigned by US DOT to identify a city market at a given point of time.  City Market attributes may change over time.  For example the country associated with the city market can change over time due to geopolitical changes.</td><td><a title="Download Lookup data" class="dataTDRight" href="Download_Lookup.asp?Y11x72=Y_PVgl_ZNeXRg_fRd_VQ">Get Lookup Table</a></td>
+	</tr><tr bgcolor="LightGrey">
+		<td><span CssClass="dataTD"><input id="CITY_MARKET_ID" type="checkbox" name="CITY_MARKET_ID" checked="checked" /><label for="CITY_MARKET_ID">CityMarketID</label></span></td><td>An identification number assigned by US DOT to identify a city market.  Use this field to consolidate airports serving the same city market.</td><td><a title="Download Lookup data" class="dataTDRight" href="Download_Lookup.asp?Y11x72=Y_PVgl_ZNeXRg_VQ">Get Lookup Table</a></td>
+	</tr><tr bgcolor="White">
+		<td><span CssClass="dataTD"><input id="DISPLAY_CITY_MARKET_NAME_FULL" type="checkbox" name="DISPLAY_CITY_MARKET_NAME_FULL" checked="checked" /><label for="DISPLAY_CITY_MARKET_NAME_FULL">CityMarketName</label></span></td><td>City Market Name with either U.S. State or Country</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="LightGrey">
+		<td><span CssClass="dataTD"><input id="CITY_MARKET_WAC_SEQ_ID2" type="checkbox" name="CITY_MARKET_WAC_SEQ_ID2" /><label for="CITY_MARKET_WAC_SEQ_ID2">CityMarketWacSeqID2</label></span></td><td>Unique Identifier for a World Area Code (WAC) at a given point of time for the City Market.  See World Area Codes support table.</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="White">
+		<td><span CssClass="dataTD"><input id="CITY_MARKET_WAC" type="checkbox" name="CITY_MARKET_WAC" checked="checked" /><label for="CITY_MARKET_WAC">CityMarketWac</label></span></td><td>World Area Code for the City Market</td><td><a title="Download Lookup data" class="dataTDRight" href="Download_Lookup.asp?Y11x72=Y_jbeYQ_NeRN_PbQRf">Get Lookup Table</a></td>
+	</tr><tr bgcolor="LightGrey">
+		<td><span CssClass="dataTD"><input id="LAT_DEGREES" type="checkbox" name="LAT_DEGREES" checked="checked" /><label for="LAT_DEGREES">LatDegrees</label></span></td><td>Latitude, Degrees</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="White">
+		<td><span CssClass="dataTD"><input id="LAT_HEMISPHERE" type="checkbox" name="LAT_HEMISPHERE" checked="checked" /><label for="LAT_HEMISPHERE">LatHemisphere</label></span></td><td>Latitude, Hemisphere</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="LightGrey">
+		<td><span CssClass="dataTD"><input id="LAT_MINUTES" type="checkbox" name="LAT_MINUTES" checked="checked" /><label for="LAT_MINUTES">LatMinutes</label></span></td><td>Latitude, Minutes</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="White">
+		<td><span CssClass="dataTD"><input id="LAT_SECONDS" type="checkbox" name="LAT_SECONDS" checked="checked" /><label for="LAT_SECONDS">LatSeconds</label></span></td><td>Latitude, Seconds</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="LightGrey">
+		<td><span CssClass="dataTD"><input id="LATITUDE" type="checkbox" name="LATITUDE" checked="checked" /><label for="LATITUDE">Latitude</label></span></td><td>Latitude</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="White">
+		<td><span CssClass="dataTD"><input id="LON_DEGREES" type="checkbox" name="LON_DEGREES" checked="checked" /><label for="LON_DEGREES">LonDegrees</label></span></td><td>Longitude, Degrees</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="LightGrey">
+		<td><span CssClass="dataTD"><input id="LON_HEMISPHERE" type="checkbox" name="LON_HEMISPHERE" checked="checked" /><label for="LON_HEMISPHERE">LonHemisphere</label></span></td><td>Longitude, Hemisphere</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="White">
+		<td><span CssClass="dataTD"><input id="LON_MINUTES" type="checkbox" name="LON_MINUTES" checked="checked" /><label for="LON_MINUTES">LonMinutes</label></span></td><td>Longitude, Minutes</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="LightGrey">
+		<td><span CssClass="dataTD"><input id="LON_SECONDS" type="checkbox" name="LON_SECONDS" checked="checked" /><label for="LON_SECONDS">LonSeconds</label></span></td><td>Longitude, Seconds</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="White">
+		<td><span CssClass="dataTD"><input id="LONGITUDE" type="checkbox" name="LONGITUDE" checked="checked" /><label for="LONGITUDE">Longitude</label></span></td><td>Longitude</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="LightGrey">
+		<td><span CssClass="dataTD"><input id="UTC_LOCAL_TIME_VARIATION" type="checkbox" name="UTC_LOCAL_TIME_VARIATION" /><label for="UTC_LOCAL_TIME_VARIATION">UTCLocalTimeVariation</label></span></td><td>Time Zone at the Airport</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="White">
+		<td><span CssClass="dataTD"><input id="AIRPORT_START_DATE" type="checkbox" name="AIRPORT_START_DATE" checked="checked" /><label for="AIRPORT_START_DATE">AirportStartDate</label></span></td><td>Start Date of Airport Attributes</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="LightGrey">
+		<td><span CssClass="dataTD"><input id="AIRPORT_THRU_DATE" type="checkbox" name="AIRPORT_THRU_DATE" checked="checked" /><label for="AIRPORT_THRU_DATE">AirportEndDate</label></span></td><td>End Date of Airport Attributes (Active = NULL)</td><td CssClass="dataTDRight"></td>
+	</tr><tr bgcolor="White">
+		<td><span CssClass="dataTD"><input id="AIRPORT_IS_CLOSED" type="checkbox" name="AIRPORT_IS_CLOSED" checked="checked" /><label for="AIRPORT_IS_CLOSED">AirportIsClosed</label></span></td><td>Indicates if the airport is closed (1 = Yes).  If yes, the airport is closed is on the AirportEndDate.</td><td><a title="Download Lookup data" class="dataTDRight" href="Download_Lookup.asp?Y11x72=Y_lRfab_VeRfc">Get Lookup Table</a></td>
+	</tr><tr bgcolor="LightGrey">
+		<td><span CssClass="dataTD"><input id="AIRPORT_IS_LATEST" type="checkbox" name="AIRPORT_IS_LATEST" checked="checked" /><label for="AIRPORT_IS_LATEST">AirportIsLatest</label></span></td><td>Indicates if this row contains the latest attributes for the Airport (1 = Yes)</td><td><a title="Download Lookup data" class="dataTDRight" href="Download_Lookup.asp?Y11x72=Y_lRfab_VeRfc">Get Lookup Table</a></td>
+	</tr>
+</table>
+
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </form>
+    
+<footer class="site-footer"><div class="container">
+              <div class="site-footer__top">
+            <section class="region region-footer-left"><div id="block-footer-contact-info" class="block block-fixed-block-content block-fixed-block-contentfooter-contact-info">
+  
+    
+      <div class="content">
+      
+            <div class="clearfix text-formatted field field--name-body field--type-text-with-summary field--label-hidden field__item"><p>U.S. DEPARTMENT OF TRANSPORTATION</p>
+
+<p><strong>Bureau of Transportation Statistics</strong></p>
+
+<p>1200 NEW JERSEY AVENUE, SE</p>
+
+<p>WASHINGTON, DC 20590</p>
+
+<p>800-853-1351</p>
+</div>
+      
+    </div>
+  </div>
+
+  </section><section class="region region-footer-right"><div id="block-footer-social" class="block block-fixed-block-content block-fixed-block-contentfooter-social">
+  
+    
+      <div class="content">
+      
+            <div class="clearfix text-formatted field field--name-body field--type-text-with-summary field--label-hidden field__item"><p><a class="subscribe-button" href="https://public.govdelivery.com/accounts/USDOT/subscriber/new?category_id=USDOT_C17">Subscribe to email updates</a></p>
+
+<ul class="footer-social"><li><a href="https://twitter.com/bts_usdot"><span class="fontawesome-icon-inline"><i class="fab fa-twitter"></i></span></a></li>
+	<li><a href="https://www.linkedin.com/company/bureau-of-transportation-statistics-bts"><span class="fontawesome-icon-inline"><i class="fab fa-linkedin"></i></span></a></li>
+	<li><a href="https://www.instagram.com/bts_usdot"><span class="fontawesome-icon-inline"><i class="fab fa-instagram"></i></span></a></li>
+	<li><a href="https://public.govdelivery.com/accounts/USDOT/subscriber/new?category_id=USDOT_C17"><span class="fontawesome-icon-inline"><i class="fas fa-envelope"></i></span></a></li>
+</ul></div>
+      
+    </div>
+  </div>
+
+  </section></div>
+                    <div class="site-footer__bottom">
+            <section class="region region-footer-first"><nav aria-labelledby="block-newfooternav1-menu" id="block-newfooternav1" class="block block-menu navigation menu--new-footer-nav-1"><h2 id="block-newfooternav1-menu">About</h2>
+  
+
+        
+              <ul block="block-newfooternav1" class="clearfix nav"><li class="nav-item">
+                <a href="https://www.bts.gov/about-BTS" class="nav-link nav-link--about-bts" data-drupal-link-system-path="node/8581">About BTS</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://www.bts.gov/learn-about-bts-and-our-work/contact-us" class="nav-link nav-link--learn-about-bts-and-our-work-contact-us" data-drupal-link-system-path="node/117496">Contact Us</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://transportation.libanswers.com/" class="nav-link nav-link-https--transportationlibanswerscom-">FAQs</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://www.bts.gov/learn-about-bts-and-our-work/about-bts/jobs-and-internships" class="nav-link nav-link--learn-about-bts-and-our-work-about-bts-jobs-and-internships">Jobs and Internships</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://www.transportation.gov/administrations/research-and-technology" class="nav-link nav-link-https--wwwtransportationgov-administrations-research-and-technology">DOT Research and Technology (OST-R)</a>
+              </li>
+        </ul></nav></section><section class="region region-footer-second"><nav aria-labelledby="block-newfooternav2-menu" id="block-newfooternav2" class="block block-menu navigation menu--new-footer-nav-2"><h2 id="block-newfooternav2-menu">Resources</h2>
+  
+
+        
+              <ul block="block-newfooternav2" class="clearfix nav"><li class="nav-item">
+                <a href="https://transportation.libanswers.com/form.php?queue_id=1810" class="nav-link nav-link-https--transportationlibanswerscom-formphpqueue-id1810">Ask a Librarian</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://data.bts.gov/" class="nav-link nav-link-https--databtsgov-">BTS Open Data Catalog</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://ntl.bts.gov/" class="nav-link nav-link-https--ntlbtsgov-">National Transportation Library</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://www.transtats.bts.gov/ONTIME/" class="nav-link nav-link-https--wwwtranstatsbtsgov-ontime-">Search for On-Time Flight Data</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://www.bts.gov/archive/publications/the_changing_face_of_transportation/appendix_b" class="nav-link nav-link--archive-publications-the-changing-face-of-transportation-appendix-b" data-drupal-link-system-path="node/191916">Acronym Guide</a>
+              </li>
+        </ul></nav></section><section class="region region-footer-third"><nav aria-labelledby="block-newfooternav3-menu" id="block-newfooternav3" class="block block-menu navigation menu--new-footer-nav-3"><h2 id="block-newfooternav3-menu">Policies, Rights and Legal</h2>
+  
+
+        
+              <ul block="block-newfooternav3" class="clearfix nav"><li class="nav-item">
+                <a href="https://www.transportation.gov/about" class="nav-link nav-link-https--wwwtransportationgov-about">About DOT</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://www.transportation.gov/budget/dot-budget-and-performance" class="nav-link nav-link-https--wwwtransportationgov-budget-dot-budget-and-performance">Budget and Performance</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://www.civilrights.dot.gov/" class="nav-link nav-link-https--wwwcivilrightsdotgov-">Civil Rights</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://www.transportation.gov/ethics" class="nav-link nav-link-https--wwwtransportationgov-ethics">Ethics</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://www.transportation.gov/foia" class="nav-link nav-link-https--wwwtransportationgov-foia">FOIA</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://www.transportation.gov/dot-information-dissemination-quality-guidelines" class="nav-link nav-link-https--wwwtransportationgov-dot-information-dissemination-quality-guidelines">Information Quality</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://www.civilrights.dot.gov/civil-rights-awareness-enforcement/employment-related/affirmative-employment/no-fear-act" class="nav-link nav-link-https--wwwcivilrightsdotgov-civil-rights-awareness-enforcement-employment-related-affirmative-employment-no-fear-act">No FEAR Act</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://www.oig.dot.gov/" class="nav-link nav-link-https--wwwoigdotgov-">Office of Inspector General</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://www.transportation.gov/dot-website-privacy-policy" class="nav-link nav-link-https--wwwtransportationgov-dot-website-privacy-policy">Privacy Policy</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://www.usa.gov/" class="nav-link nav-link-https--wwwusagov-">USA.gov</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://www.transportation.gov/web-policies" class="nav-link nav-link-https--wwwtransportationgov-web-policies">Web Policies and Notices</a>
+              </li>
+                <li class="nav-item">
+                <a href="https://www.transportation.gov/web-standards" class="nav-link nav-link-https--wwwtransportationgov-web-standards">Web Standards</a>
+              </li>
+        </ul></nav></section></div>
+          </div>
+  </footer><script src="https://www.bts.gov/sites/bts.dot.gov/files/js/js_yUiy7xTRzkkm9C6WfzFQyIKmrVd3TDEBg3CSgNvSS4k.js?scope=footer&amp;delta=0&amp;language=en&amp;theme=bts&amp;include=eJxtkltywyAMRTeEzU-7HkaA4lDLiCJo6q6-xHGcxM4PzD2gx1wJf0sGcwpI3ngUl0MqgaPG99w4EeU4o_76rphnNTAPhAYi0FyCE70HKkGGIUM6ixly8Hqne8tcpBVLH0pmKThpC4LPRfoaeg8FU3AjZjWxB9IDsQXqpMwU4rDCE8cCFxSe0HyujBNGIxDFOB-V52LcJPvwO35NsLVmLOQceB_13CNHh8qWQ-Yr2mVt5LWpZnb7O2qfawLqV7mml84xj2F1ZCnjmAiSBEvsRk3BZsgBpRcKHjsknDCW3a9rdCuUIHqzvrQpEekb6-5MSWkSiCOaNoxEzXjRlv3cOYI2_Z-AF9HL2TeHK-HRp8j-DbUZwbtcJ6sswd-s_XKpSiW0jutt8JtaVlAe-gyTrXloG7AhPp0cxB-QPlU5e77EY9XN6uPT61zuO_AI2C3QP6h-PpM"></script><script src="https://www.bts.gov/sites/bts.dot.gov/files/js/js_IXkYC-7gxlQ8PkdST1_1YsesZgA73pBWsVgPL9dC-OQ.js?scope=footer&amp;delta=2&amp;language=en&amp;theme=bts&amp;include=eJxtkltywyAMRTeEzU-7HkaA4lDLiCJo6q6-xHGcxM4PzD2gx1wJf0sGcwpI3ngUl0MqgaPG99w4EeU4o_76rphnNTAPhAYi0FyCE70HKkGGIUM6ixly8Hqne8tcpBVLH0pmKThpC4LPRfoaeg8FU3AjZjWxB9IDsQXqpMwU4rDCE8cCFxSe0HyujBNGIxDFOB-V52LcJPvwO35NsLVmLOQceB_13CNHh8qWQ-Yr2mVt5LWpZnb7O2qfawLqV7mml84xj2F1ZCnjmAiSBEvsRk3BZsgBpRcKHjsknDCW3a9rdCuUIHqzvrQpEekb6-5MSWkSiCOaNoxEzXjRlv3cOYI2_Z-AF9HL2TeHK-HRp8j-DbUZwbtcJ6sswd-s_XKpSiW0jutt8JtaVlAe-gyTrXloG7AhPp0cxB-QPlU5e77EY9XN6uPT61zuO_AI2C3QP6h-PpM"></script><script src="https://unpkg.com/slide-element@2.3.1/dist/index.umd.js"></script><script src="https://www.bts.gov/sites/bts.dot.gov/files/js/js_XwsNaSeIM_pdrRfL5y9kcUGIG7imglvOyuwE8kbSKVI.js?scope=footer&amp;delta=4&amp;language=en&amp;theme=bts&amp;include=eJxtkltywyAMRTeEzU-7HkaA4lDLiCJo6q6-xHGcxM4PzD2gx1wJf0sGcwpI3ngUl0MqgaPG99w4EeU4o_76rphnNTAPhAYi0FyCE70HKkGGIUM6ixly8Hqne8tcpBVLH0pmKThpC4LPRfoaeg8FU3AjZjWxB9IDsQXqpMwU4rDCE8cCFxSe0HyujBNGIxDFOB-V52LcJPvwO35NsLVmLOQceB_13CNHh8qWQ-Yr2mVt5LWpZnb7O2qfawLqV7mml84xj2F1ZCnjmAiSBEvsRk3BZsgBpRcKHjsknDCW3a9rdCuUIHqzvrQpEekb6-5MSWkSiCOaNoxEzXjRlv3cOYI2_Z-AF9HL2TeHK-HRp8j-DbUZwbtcJ6sswd-s_XKpSiW0jutt8JtaVlAe-gyTrXloG7AhPp0cxB-QPlU5e77EY9XN6uPT61zuO_AI2C3QP6h-PpM"></script>
+</body>
+</html>
+<script id="f5_cspm">(function(){var f5_cspm={f5_p:'NHOOEMNEBKCHLMIJHLGOCNGDFGBCILGAGINILJNANGNKCBPLGAMDPDFILHDEDLINPDBBPELPAALGFCNAMAOAPOBHAAMOFKCNGEPBPDPBDPGOGAMIDDBDKANKIBJPNACA',setCharAt:function(str,index,chr){if(index>str.length-1)return str;return str.substr(0,index)+chr+str.substr(index+1);},get_byte:function(str,i){var s=(i/16)|0;i=(i&15);s=s*32;return((str.charCodeAt(i+16+s)-65)<<4)|(str.charCodeAt(i+s)-65);},set_byte:function(str,i,b){var s=(i/16)|0;i=(i&15);s=s*32;str=f5_cspm.setCharAt(str,(i+16+s),String.fromCharCode((b>>4)+65));str=f5_cspm.setCharAt(str,(i+s),String.fromCharCode((b&15)+65));return str;},set_latency:function(str,latency){latency=latency&0xffff;str=f5_cspm.set_byte(str,40,(latency>>8));str=f5_cspm.set_byte(str,41,(latency&0xff));str=f5_cspm.set_byte(str,35,2);return str;},wait_perf_data:function(){try{var wp=window.performance.timing;if(wp.loadEventEnd>0){var res=wp.loadEventEnd-wp.navigationStart;if(res<60001){var cookie_val=f5_cspm.set_latency(f5_cspm.f5_p,res);window.document.cookie='f5avr1743122062aaaaaaaaaaaaaaaa_cspm_='+encodeURIComponent(cookie_val)+';path=/';}
+return;}}
+catch(err){return;}
+setTimeout(f5_cspm.wait_perf_data,100);return;},go:function(){var chunk=window.document.cookie.split(/\s*;\s*/);for(var i=0;i<chunk.length;++i){var pair=chunk[i].split(/\s*=\s*/);if(pair[0]=='f5_cspm'&&pair[1]=='1234')
+{var d=new Date();d.setTime(d.getTime()-1000);window.document.cookie='f5_cspm=;expires='+d.toUTCString()+';path=/;';setTimeout(f5_cspm.wait_perf_data,100);}}}}
+f5_cspm.go();}());</script>

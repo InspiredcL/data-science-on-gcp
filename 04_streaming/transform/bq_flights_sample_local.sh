@@ -2,13 +2,8 @@
 
 # Crea la tabla "dsongcp.flights_sample" en base a "dsongcp.flights" y elegimos un porcentaje de 0.1%
 # Guarda la tabla "dsongcp.flights_sample" en el bucket
-if test "$#" -ne 1; then
-   echo "Usage: ./bq_flight_sample.sh bucket-name"
-   echo "   eg: ./bq_flight_sample.sh ${PROJECT}-dsongcp"
-   exit
-fi
 
-BUCKET=$1
+DIR=$HOME/data-science-on-gcp
 PROJECT=$(gcloud config get-value project)
 
 bq --project_id=$PROJECT query --destination_table dsongcp.flights_sample --replace --nouse_legacy_sql \
