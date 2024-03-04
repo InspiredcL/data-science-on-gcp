@@ -1,3 +1,5 @@
+ admin:org, repo, workflow
+
 Instrucciones:
 
 1- Descargamos:
