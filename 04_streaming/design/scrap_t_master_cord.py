@@ -1,53 +1,64 @@
 #!/usr/bin/env python3
 
-""" _summary_
+""" 
+    _summary_
 
-_extended_summary_
+    _extended_summary_
 """
-
-
+import os
+import zipfile
 import requests
 from bs4 import BeautifulSoup
 
-# URL del sitio
+# Obtiene la ruta del directorio actual del script
+script_directory = os.path.dirname(os.path.abspath(__file__))
+
+# Seleccionar de la tabla con los parámetros dataset: Aviation Support Tables
+# y la tabla: Master Coordinate
 URL = "https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FLL&QO_fu146_anzr=N8vn6v10+f722146+gnoyr5"
 
-# Realizar la solicitud GET al sitio
-response = requests.get(URL)
+session = requests.Session()
+headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Host': 'www.transtats.bts.gov',
+    'Referer': 'https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FLL&QO_fu146_anzr=N8vn6v10+f722146+gnoyr5',
+    'Origin': 'https://www.transtats.bts.gov'
+}
+session.headers.update(headers)
 
-# Verificar si la solicitud fue exitosa
-if response.status_code == 200:
-    # Utilizar BeautifulSoup para analizar el HTML
-    soup = BeautifulSoup(response.content, 'html.parser')
+# Obtener la página web con la sesión
+response = session.get(URL, verify=False)
+soup = BeautifulSoup(response.text, 'html.parser')
 
-    # Encontrar el valor del campo "__EVENTVALIDATION"
-    event_validation = soup.find(
-        'input', {'name': '__EVENTVALIDATION'})['value']
+# Encontrar el formulario con nombre "form1"
+form = soup.find('form', {'id': 'form1'})
 
-    # Encontrar el valor del campo "__VIEWSTATE"
-    view_state = soup.find('input', {'name': '__VIEWSTATE'})['value']
+# Establecer el valor de chkAllVars y btnDownload
+form.find('input', {'name': 'chkAllVars'})['value'] = 'on'
+form.find('input', {'name': 'btnDownload'})['value'] = 'Download'
 
-    # Parámetros para la solicitud POST
-    params = {
-        '__EVENTTARGET': '',
-        '__EVENTARGUMENT': '',
-        '__EVENTVALIDATION': event_validation,
-        '__VIEWSTATE': view_state,
-        'chkAllVars': 'on',  # Seleccionar todos los campos
-        'btnDownload': 'Download'
-    }
+# Construir la carga útil para la solicitud POST
+payload = {input_tag['name']: input_tag.get(
+    'value', '') for input_tag in form.find_all('input')}
 
-    # Realizar la solicitud POST para iniciar la descarga
-    download_response = requests.post(URL, data=params)
+# Enviar la solicitud POST con la sesión
+response = session.post(URL, data=payload, verify=False)
 
-    # Verificar si la descarga fue exitosa
-    if download_response.status_code == 200:
-        # Obtener el contenido del archivo zip y guardarlo localmente
-        with open('tabla.zip', 'wb') as f:
-            f.write(download_response.content)
+# Crear la ruta completa al archivo T_MASTER_CORD.zip en el directorio del script
+zip_file_path = os.path.join(script_directory, "T_MASTER_CORD.zip")
 
-        print("Descarga completada exitosamente.")
-    else:
-        print("Error al descargar el archivo.")
-else:
-    print("Error al acceder al sitio web.")
+# Guardar el archivo T_MASTER_CORD.zip
+with open(zip_file_path, "wb") as zip_file:
+    zip_file.write(response.content)
+
+# Ruta al directorio donde quieres extraer los archivos
+extracted_dir_path = script_directory
+
+try:
+    with zipfile.ZipFile(zip_file_path, "r") as zip_ref:
+        # Extraer todo el contenido del ZIP al directorio actual
+        zip_ref.extractall(extracted_dir_path)
+        print("Contenido del archivo ZIP extraído correctamente en:",
+              extracted_dir_path)
+except zipfile.BadZipFile:
+    print("El archivo descargado no es un archivo ZIP válido.")
