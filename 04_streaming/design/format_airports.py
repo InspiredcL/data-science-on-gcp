@@ -14,7 +14,7 @@ from datetime import datetime
 # Configurar el sistema de registro
 logging.basicConfig(level=logging.INFO)
 
-# directorio_destino =
+# Descomprime el archivo
 with zipfile.ZipFile("T_MASTER_CORD.zip", 'r') as zip_ref:
     zip_ref.extractall()
 csvfile = os.path.join(os.getcwd(), zip_ref.namelist()[0])
@@ -30,12 +30,22 @@ try:
             data.append(row)
 except Exception as e:
     logging.error("Error al leer el archivo CSV: %s", str(e))
-    # Puedes decidir qué hacer en caso de un error, como salir del programa o manejarlo de otra manera.
+
 
 # Transformamos al formato de entrada
 
 
 def transformar_fecha(row, columna):
+    """transformar_fecha _summary_
+
+    _extended_summary_
+
+    Arguments:
+        row -- _description_
+        columna -- _description_
+    """
+
+
     date_format = "%m/%d/%Y %I:%M:%S %p"
     try:
         if row[columna]:

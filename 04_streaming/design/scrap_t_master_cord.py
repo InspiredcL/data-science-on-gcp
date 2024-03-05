@@ -8,7 +8,9 @@
 import os
 import zipfile
 import requests
-from bs4 import BeautifulSoup
+from typing import Union
+from bs4 import BeautifulSoup, Tag, NavigableString
+
 
 # Obtiene la ruta del directorio actual del script
 script_directory = os.path.dirname(os.path.abspath(__file__))
@@ -31,15 +33,35 @@ response = session.get(URL, verify=False)
 soup = BeautifulSoup(response.text, 'html.parser')
 
 # Encontrar el formulario con nombre "form1"
-form = soup.find('form', {'id': 'form1'})
+form1 = soup.find('form', {'id': 'form1'})
 
-# Establecer el valor de chkAllVars y btnDownload
-form.find('input', {'name': 'chkAllVars'})['value'] = 'on'
-form.find('input', {'name': 'btnDownload'})['value'] = 'Download'
+# Verificar si se encontró el formulario antes de intentar acceder a los elementos
+if form1:
+    chkAllVars_input: Union[Tag, NavigableString, None] = form1.find(
+        name='input',
+        attrs={'name': 'chkAllVars'},
+    )
+    btnDownload_input: Union[Tag, NavigableString, None] = form1.find(
+        name='input',
+        attrs={'name': 'btnDownload'}
+        )  # Type: Union[Tag, NavigableString, None]
+
+    # Verificar si se encontraron los elementos antes de intentar acceder a ['value']
+    if chkAllVars_input:
+        chkAllVars_input['value'] = 'on'
+
+    if btnDownload_input:
+        btnDownload_input['value'] = 'Download'
+else:
+    print("¡Error! No se encontró el formulario con nombre 'form1'.")
+
+# # Establecer el valor de chkAllVars y btnDownload
+# form.find('input', {'name': 'chkAllVars'})['value'] = 'on'
+# form.find('input', {'name': 'btnDownload'})['value'] = 'Download'
 
 # Construir la carga útil para la solicitud POST
 payload = {input_tag['name']: input_tag.get(
-    'value', '') for input_tag in form.find_all('input')}
+    'value', '') for input_tag in form1.find_all('input')}
 
 # Enviar la solicitud POST con la sesión
 response = session.post(URL, data=payload, verify=False)
