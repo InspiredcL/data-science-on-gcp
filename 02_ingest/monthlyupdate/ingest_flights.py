@@ -106,7 +106,7 @@ def download(year: str, month: str, destdir: str) -> str:
         raise URLError(f"Error al descargar la URL '{url}': {e}") from e
 
 
-def zip_to_csv(archivo_zip, directorio_destino):
+def zip_to_csv_gz(archivo_zip, directorio_destino):
     """
     Extrae y comprime un archivo CSV desde un archivo ZIP.
 
@@ -132,7 +132,7 @@ def zip_to_csv(archivo_zip, directorio_destino):
         cwd = os.getcwd()
         os.chdir(directorio_destino)
         zip_ref.extractall()
-        
+
         os.chdir(cwd)
         csvfile = os.path.join(directorio_destino, zip_ref.namelist()[0])
         zip_ref.close()
@@ -224,7 +224,7 @@ def ingest(year, month, bucket):
     tempdir = tempfile.mkdtemp(prefix='ingest_flights')
     try:
         zip_file = download(year, month, tempdir)
-        bts_csv = zip_to_csv(zip_file, tempdir)
+        bts_csv = zip_to_csv_gz(zip_file, tempdir)
         gcsloc = f'flights/raw/{year}{month}.csv.gz'
         gcsloc = upload(bts_csv, bucket, gcsloc)
         return bqload(gcsloc, year, month)
@@ -294,10 +294,14 @@ if __name__ == '__main__':
         args = parser.parse_args()
         if args.debug:
             logging.basicConfig(
-                format='%(levelname)s: %(message)s', level=logging.DEBUG)
+                format='%(levelname)s: %(message)s',
+                level=logging.DEBUG
+            )
         else:
             logging.basicConfig(
-                format='%(levelname)s: %(message)s', level=logging.INFO)
+                format='%(levelname)s: %(message)s',
+                level=logging.INFO
+            )
 
         if args.year is None or args.month is None:
             year_, month_ = next_month(args.bucket)

@@ -32,10 +32,8 @@ except Exception as e:
     logging.error("Error al leer el archivo CSV: %s", str(e))
 
 
-# Transformamos al formato de entrada
-
-
-def transformar_fecha(row, columna):
+# Transformamos al formato de entrada, mediante la creación de una función
+def transformar_fecha(fila, columna):
     """transformar_fecha _summary_
 
     _extended_summary_
@@ -45,22 +43,24 @@ def transformar_fecha(row, columna):
         columna -- _description_
     """
 
-
     date_format = "%m/%d/%Y %I:%M:%S %p"
     try:
-        if row[columna]:
-            row[columna] = datetime.strptime(
-                row[columna], date_format).strftime('%Y-%m-%d')
+        if fila[columna]:
+            fila[columna] = datetime.strptime(
+                fila[columna], date_format).strftime('%Y-%m-%d')
             logging.info(
-                "Fecha en la columna %s formateada correctamente", header[columna])
+                "Fecha en la columna %s formateada correctamente",
+                header[columna]
+            )
         else:
             logging.warning(
                 "La fecha en la columna %s está vacía", header[columna])
-    except (IndexError, ValueError) as e:
+    except (IndexError, ValueError) as eerr:
         logging.warning(
-            "No se pudo formatear la fecha en la columna %s: %s", header[columna], str(e))
+            "No se pudo formatear la fecha en la columna %s: %s", header[columna], str(eerr))
 
 
+# Aplicamos la función transformar_fecha
 for row in data:
     transformar_fecha(row, header.index('AIRPORT_START_DATE'))
     transformar_fecha(row, header.index('AIRPORT_THRU_DATE'))

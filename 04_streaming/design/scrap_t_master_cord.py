@@ -7,8 +7,8 @@
 """
 import os
 import zipfile
-import requests
 from typing import Union
+import requests
 from bs4 import BeautifulSoup, Tag, NavigableString
 
 
@@ -19,6 +19,7 @@ script_directory = os.path.dirname(os.path.abspath(__file__))
 # y la tabla: Master Coordinate
 URL = "https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FLL&QO_fu146_anzr=N8vn6v10+f722146+gnoyr5"
 
+# Crear la sesión
 session = requests.Session()
 headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
@@ -26,6 +27,7 @@ headers = {
     'Referer': 'https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FLL&QO_fu146_anzr=N8vn6v10+f722146+gnoyr5',
     'Origin': 'https://www.transtats.bts.gov'
 }
+# Actualizar los encabezados
 session.headers.update(headers)
 
 # Obtener la página web con la sesión
@@ -37,7 +39,7 @@ form1 = soup.find('form', {'id': 'form1'})
 
 # Verificar si se encontró el formulario antes de intentar acceder a los elementos
 if form1:
-    chkAllVars_input: Union[Tag, NavigableString, None] = form1.find(
+    chkAllVars_input = form1.find(
         name='input',
         attrs={'name': 'chkAllVars'},
     )
@@ -54,10 +56,6 @@ if form1:
         btnDownload_input['value'] = 'Download'
 else:
     print("¡Error! No se encontró el formulario con nombre 'form1'.")
-
-# # Establecer el valor de chkAllVars y btnDownload
-# form.find('input', {'name': 'chkAllVars'})['value'] = 'on'
-# form.find('input', {'name': 'btnDownload'})['value'] = 'Download'
 
 # Construir la carga útil para la solicitud POST
 payload = {input_tag['name']: input_tag.get(
