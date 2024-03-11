@@ -8,4 +8,4 @@ schema.txt
 02_ingest/bq_test.sh
 02_ingest/schema (copia).txt
 02_ingest/noschema.sh
-
+04_streaming/design/format_airports_pandas.py

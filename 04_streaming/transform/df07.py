@@ -14,16 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import apache_beam as beam
+
 import logging
 import csv
 import json
+import apache_beam as beam
+
 
 DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
 
 
 def addtimezone(lat, lon):
-    '''
+    """
     Agrega la zona horaria correspondiente a las coordenadas proporcionadas.
     
     **Argumentos:**
@@ -37,18 +39,19 @@ def addtimezone(lat, lon):
     * `ValueError`: Si las coordenadas no son válidas.
     
     **Ejemplo:**
-    >>> addtimezone(-33.45, -70.66)
-    (-33.45, -70.66, 'America/Santiago')
+        addtimezone(-33.45, -70.66)
+        (-33.45, -70.66, 'America/Santiago')
     
     **Documentación adicional:**
-    * La función utiliza la librería `timezonefinder` para obtener la zona horaria correspondiente a las coordenadas proporcionadas.
+    * La función utiliza la librería `timezonefinder` para obtener la zona
+    horaria correspondiente a las coordenadas proporcionadas.
     * La función maneja la excepción `ValueError` en caso de que las coordenadas no sean válidas.
-    '''
-    
+    """
+
     try:
-        # Importar la librería timezonefinder
+        # Importar la librería timezonefinder (Recomendado por DataFlow)
         import timezonefinder
-        # Crear una instancia de TimezoneFinder
+        # Crear una instancia de TimezoneFinder, para reutilizar
         tf = timezonefinder.TimezoneFinder()
         # Convertir las coordenadas a números de punto flotante
         lat = float(lat)

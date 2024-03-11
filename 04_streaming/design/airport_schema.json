@@ -158,10 +158,5 @@
         "mode": "NULLABLE",
         "name": "AIRPORT_IS_LATEST",
         "type": "INTEGER"
-      }//,
-      // {
-      //   "mode": "NULLABLE",
-      //   "name": "string_field_32",
-      //   "type": "STRING"
-      // }
+      }
 ]
