@@ -38,5 +38,5 @@ if __name__ == '__main__':
         transformed_airports = (airports
                                 | beam.Map(lambda airport_data: '{},{}'.format(
                                     airport_data[0], ','.join(airport_data[1])))
-                                | WriteToText('extracted_airports')
+                                | WriteToText('df01_extracted_airports')
                                 )

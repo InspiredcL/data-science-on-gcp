@@ -42,5 +42,31 @@ import pandas as pd
 df_ap = pd.read_csv("airports.csv")
 df_ap_2024 = pd.read_csv("airports_2024.csv")
 
-print(df_ap.columns)
-print(df_ap_2024.columns)
+# Contar valores nulos en la columna 0
+numero_nulos_columna_0_ap_2024 = df_ap.isnull().sum().iloc[0]
+
+# Contar valores nulos en la columna 21
+numero_nulos_columna_21_ap_2024 = df_ap.isnull().sum().iloc[21]
+
+# Contar valores nulos en la columna 26
+numero_nulos_columna_26_ap_2024 = df_ap.isnull().sum().iloc[26]
+
+# Imprimir los resultados
+print(f"Columna 0 airports: {numero_nulos_columna_0_ap_2024}")
+print(f"Columna 21 airports: {numero_nulos_columna_21_ap_2024}")
+print(f"Columna 26 airports: {numero_nulos_columna_26_ap_2024}")
+
+# Contar valores nulos en la columna 0
+numero_nulos_columna_0_ap_2024 = df_ap_2024.isnull().sum().iloc[0]
+
+# Contar valores nulos en la columna 21
+numero_nulos_columna_21_ap_2024 = df_ap_2024.isnull().sum().iloc[21]
+
+# Contar valores nulos en la columna 26
+numero_nulos_columna_26_ap_2024 = df_ap_2024.isnull().sum().iloc[26]
+
+# Imprimir los resultados
+print(f"Columna 0 airports_2024: {numero_nulos_columna_0_ap_2024}")
+print(f"Columna 21 airports_2024: {numero_nulos_columna_21_ap_2024}")
+print(f"Columna 26 airports_2024: {numero_nulos_columna_26_ap_2024}")
+

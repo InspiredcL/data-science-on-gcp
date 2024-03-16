@@ -50,7 +50,8 @@ def addtimezone(lat, lon):
     **Documentación adicional:**
     * La función utiliza la librería `timezonefinder` para obtener la zona
     horaria correspondiente a las coordenadas proporcionadas.
-    * La función maneja la excepción `ValueError` en caso de que las coordenadas no sean válidas.
+    * La función maneja la excepción `UnknownTimeZoneError` en caso de que las
+    coordenadas no sean válidas.
     """
 
     try:
@@ -58,23 +59,31 @@ def addtimezone(lat, lon):
         tf = timezonefinder.TimezoneFinder()
         # Función por defecto para comprobar en qué zona horaria se encuentra un punto
         tz = tf.timezone_at(lng=float(lon), lat=float(lat))
+
         if tz is None:
             tz = 'UTC'
         return lat, lon, tz
-    except UnknownTimeZoneError:
+
+    except (ValueError, UnknownTimeZoneError):
         return lat, lon, 'TIMEZONE'  # header
 
 
 if __name__ == '__main__':
-    with beam.Pipeline('DirectRunner') as pipeline:
+    with beam.Pipeline('DirectRunner') as pipeline:  # pylint: disable=import-error
         airports = (pipeline
                     | beam.io.ReadFromText('airports_2024.csv.gz')
                     | beam.Filter(lambda line: "United States" in line)
                     | beam.Map(lambda line: next(csv.reader([line])))
-                    | beam.Map(lambda fields: (fields[0], addtimezone(fields[21], fields[26])))
+                    | beam.Map(
+                        lambda fields: (
+                            fields[0], addtimezone(fields[21], fields[26])
+                        )
+                    )
                     )
 
         airports_with_tz = (airports
                             | beam.Map(lambda f: f"{f[0]},{','.join(f[1])}")
-                            |beam.io.textio.WriteToText('airports_with_tz')
+                            | beam.io.textio.WriteToText(
+                                'df02_airports_with_tz'
+                            )
                             )
