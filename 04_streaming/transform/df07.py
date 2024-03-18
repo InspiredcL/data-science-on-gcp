@@ -1,5 +1,20 @@
 #!/usr/bin/env python3
 
+# Copyright 2016 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
 """
 Ejecuta un pipeline de Apache Beam en la nube para procesar datos de
 vuelos y generar eventos simulados.
@@ -36,21 +51,6 @@ trabajo de Dataflow. Debe ser la misma región que la del bucket.
 incluyendo la lectura de datos, corrección de zonas horarias,
 escritura en archivos y BigQuery, y generación de eventos]
 """
-
-# Copyright 2016 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 
 import logging
 import csv
@@ -154,7 +154,7 @@ def as_utc(date, hhmm, tzone):
     except ValueError as e:
         # Manejar excepciones y registrar detalles
         logging.exception("%s %s %s, ValueError: %s", date, hhmm, tzone, e)
-        #raise e
+        # raise e
 
 
 def add_24h_if_before(arrtime, deptime):
@@ -300,7 +300,7 @@ def get_next_event(fields):
         event["EVENT_TIME"] = fields["DEP_TIME"]
         for f in [
             "TAXI_OUT", "WHEELS_OFF", "WHEELS_ON", "TAXI_IN", "ARR_TIME",
-            "ARR_DELAY", "DISTANCE"]:
+                "ARR_DELAY", "DISTANCE"]:
             event.pop(f, None)  # not knowable at departure time
         yield event
     if len(fields["WHEELS_OFF"]) > 0:
@@ -319,7 +319,7 @@ def get_next_event(fields):
 
 def create_event_row(fields):
     """
-    Crea una fila de evento para ser utilizada en un formato tabular.
+    Crea una fila de evento para optimizarlas consultas en bigquery.
 
     **Argumentos:**
 
@@ -434,13 +434,21 @@ if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser(description='Run pipeline on the cloud')
-    parser.add_argument('-p', '--project',
-                        help='Unique project ID', required=True)
-    parser.add_argument('-b', '--bucket', help='Bucket where gs://BUCKET/flights/airports/airports.csv.gz exists',
-                        required=True)
-    parser.add_argument('-r', '--region',
-                        help='Region in which to run the Dataflow job. Choose the same region as your bucket.',
-                        required=True)
+    parser.add_argument(
+        '-p', '--project',
+        help='Unique project ID',
+        required=True
+    )
+    parser.add_argument(
+        '-b', '--bucket',
+        help='Bucket where gs://BUCKET/flights/airports/airports.csv.gz exists',
+        required=True
+    )
+    parser.add_argument(
+        '-r', '--region',
+        help='Region in which to run the Dataflow job. Choose the same region as your bucket.',
+        required=True
+    )
 
     args = vars(parser.parse_args())
 

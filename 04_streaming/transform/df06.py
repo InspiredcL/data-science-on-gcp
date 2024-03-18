@@ -45,6 +45,7 @@ import apache_beam as beam
 # pyright: reportUnusedExpression=false
 # pyright: reportOptionalMemberAccess=false
 # pyright: reportAttributeAccessIssue=false
+# pyright: reportGeneralTypeIssues =false
 
 DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
 

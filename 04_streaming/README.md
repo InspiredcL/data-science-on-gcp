@@ -1,76 +1,77 @@
-## Catch up until Chapter 3 if necessary
+# 4. Streaming de datos: publicación e ingesta
 
-- Go to the Storage section of the GCP web console and create a new bucket
-- Open CloudShell and git clone this repo:
+## Póngase al día hasta el capítulo 3 si es necesario
 
-  ```sh
-  git clone https://github.com/InspiredcL/data-science-on-gcp
-  ```
-
-- Then, run:
-
-  ```sh
-  cd data-science-on-gcp/02_ingest
-  ./ingest_from_crsbucket bucketname
-  ```
-
-- Run:
-
-  ```sh
-  cd ../03_sqlstudio
-  ./create_views.sh
-  ```
-
-# 4. Streaming data: publication and ingest
-
-## Batch processing transformation in DataFlow
-
-### Make a table definition for the federated source
-
-    ```sh
-    cd design; ./mktbl.sh
-    ```
-
-    Los cuales ejecutan el siguiente comando:
-
-    ```sh
-    bq mk --table --external_table_definition=./airport_schemas.json@JSON=gs://data-science-on-gcp/edition2/raw/airports.csv dsongcp.airports_gcs
-    ```
-
-### Setup:
-
-```SH
-  cd transform; ./install_packages.sh
-```
-
-- upgrade pip
-- pip cache purge
-- upgrade the packets: timezonefinder, pytz, 'apache-beam[gcp]' </li>
-
-#### If this script fails, please try installing it in a virtualenv
+- Ve a la seccion de almacenamiento de la consola de GCP y crea un nuevo bucket
+- Abre CloudShell y clona el siguiente repositorio.
 
 ```sh
-  virtualenv ~/beam_env
-  source ~/beam_env/bin/activate
-  ./install_packages.sh
+git clone https://github.com/InspiredcL/data-science-on-gcp
 ```
 
-### Parsing airports data:
+- Entonces, ejecuta el script para copiar los archivos desde el bucket del curso:
+
+```sh
+cd data-science-on-gcp/02_ingest
+./ingest_from_crsbucket bucketname
+```
+
+- y luego creamos la vista de bigquery:
+
+```sh
+cd ../03_sqlstudio
+./create_views.sh
+```
+
+## Transformación de procesamiento por lotes en DataFlow
+
+### Definir una tabla para el origen federado (bucket)
+
+```sh
+cd design; ./mktbl.sh
+```
+
+Los cuales ejecutan el siguiente comando:
+
+```sh
+bq mk --table --external_table_definition=./airport_schemas.json@JSON=gs://data-science-on-gcp/edition2/raw/airports.csv dsongcp.airports_gcs
+```
+
+### Configuración
+
+```sh
+cd transform; ./install_packages.sh
+```
+
+- pip install --upgrade pip
+- pip cache purge
+- pip install 'apache-beam[gcp]' timezonefinder[pytz] timezonefinder[numba]
+- pip install --upgrade apache-beam[gcp]
+
+#### Si este script falla, por favor intente instalarlo en un ambiente virtual
+
+```sh
+virtualenv ~/beam_env
+source ~/beam_env/bin/activate
+./install_packages.sh
+```
+
+### Análisis de datos de aeropuertos (df01.py)
 
 ```sh
 ./df01.py
 head extracted_airports-00000*
-rm extracted_airports-*
+rm extracted_airports-00000*
 ```
 
 - Lee el archivo 'airports.csv.gz'
 - A las lineas devueltas por ReadFromText, les aplicamos "next(csv.reader([line]))"
-- Selecconamos las columnas de indices 0, 21 y 26 agrupadas de la siguiente manera (AIRPORT_SEQ_ID,(LATITUDE, LONGITUDE))
+- Seleccionamos las columnas de indices 0, 21 y 26 agrupadas de la siguiente manera (AIRPORT_SEQ_ID,(LATITUDE, LONGITUDE))
 
 - Selecciona las columnas, columna 1 y columna 2 y las separa por una coma
 - Dicha selección se extrae en un archiivo llamado "extracted_airports"
 
-### \* Adding timezone information:
+### Añadir información de zona horaria (df02.py)
 
 ```sh
 ./df02.py
@@ -80,15 +81,14 @@ rm airports_with_tz-*
 
 - Función que calcula la zona de tiempo dadas las coordenadas
 - Lee el archivo 'airports.csv.gz'
-- Filtra los elementos de la fila que conciden con "United States"
+- Filtra los elementos de la fila que coinciden con "United States"
 - A las lineas devueltas por ReadFromText, les aplicamos "next(csv.reader([line]))"
-- -
-- De las columnas devuelve la tupla (AIRPORT_SEQ_ID, adddtimezone(LATITUDE, LONGITUDE))
-- Escribe al archivo "airports_wwith_tz"
+- De las columnas devuelve la tupla (AIRPORT_SEQ_ID, addtimezone(LATITUDE, LONGITUDE))
+- Escribe al archivo "airports_with_tz"
 
-- BigQuery sample.sh
+BigQuery sample.sh
 
-- Es llamada en el script stage_airports_file </li>
+- Es llamada en el script stage_airports_file
 
 ```sh
  ./bqsample.sh <bucket_name>
@@ -98,9 +98,9 @@ rm airports_with_tz-*
 - Exporta a un archivo json
 - Crea un archivo llamado "flight_sample.json" en el directorio actual
 
-### Converting times to UTC:
+### Conversión de horas a UTC (df03.py)
 
-```SH
+```sh
 ./df03.py
 head -3 all_flights-00000*
 ```
@@ -111,7 +111,7 @@ head -3 all_flights-00000*
 - airports : Lee "airports.csv.gz", Filtra "Estados Unidos", Siguiente linea y tupla de (AIRPORT_SEQ_ID, adddtimezone(LATITUDE, LONGITUDE))
 - flights : Lee "flights_sample.json", Aplica FlatMap a tz_correct y beam.pvalue.AsDict(airports) finalmente Escribe al archivo "all_flights"
 
-### Correcting dates:
+### Corrección de fechas (df04.py)
 
 ```sh
 ./df04.py
@@ -126,15 +126,15 @@ rm all_flights-*
 - airports : Lee "airports.csv.gz", Filtra "Estados Unidos", Siguiente linea y tupla de (AIRPORT_SEQ_ID, adddtimezone(LATITUDE, LONGITUDE))
 - flights : Lee "flights_sample.json", Aplica FlatMap a tz_correct y beam.pvalue.AsDict(airports) finalmente Escribe al archivo "all_flights"
 
-### Create events:
+### Crear eventos (df05.py)
 
-```SH
+```sh
 ./df05.py
 head -3 all_events-00000*
 rm all_events-*
 ```
 
-    * Funciones anteriores
+#### Funciones anteriores (corrección de fechas)
 
 - Función que obtiene el siguiente evento dado el campo
 - Función Run() para encapsular el pipeline y llamarlo de **main**
@@ -142,20 +142,20 @@ rm all_events-*
 - flights: Lee y aplica "json.load(line)" antes de FlatMap, tostring "json.dumps(field)", se escribe a "all_flights"
 - events: events = flights | flatmap(get_next_event), se aplica json.dumps(fields) y se escribe a "all_events"
 
-### Read/write to Cloud:
+### Lectura/escritura en la nube (df06.py)
 
-```SH
- ./stage_airports_file.sh BUCKETNAME
+```sh
+./stage_airports_file.sh BUCKETNAME
 ```
 
 - Copia el archivo con las coordenadas en el bucket de nuestro proyecto
 - Carga los datos en el archivo airports.csv, en la tabla dsongcp.airports
 
-```SH
+```sh
 ./df06.py --project PROJECT --bucket BUCKETNAME
 ```
 
-    * Funciones anteriores
+#### Funciones anteriores (crear eventos)
 
 - función para crear fila de evento
 - Función Run() para encapsular el pipeline y llamarlo de **main**
@@ -165,58 +165,60 @@ rm all_events-*
 - Se crea una nueva fila de evento para finalmente escribir a "dsongcp.flights_simevents"
 - **main** : analizador de argumentos, función run()
 
+Buscar la nueva tabla en BigQuery (flights_simevents)
 
-    Look for new tables in BigQuery (flights_simevents)
+### Ejecutar en la nube (df07.py)
 
-### Run on Cloud:
-
-```SH
+```sh
 ./df07.py --project PROJECT --bucket BUCKETNAME --region southamerica-west1
 ```
 
-- Funciones anteriores
+#### Funciones anteriores (lectura/escritura en la nube)
+
 - Función Run() para encapsular el pipeline y llamarlo de **main**
 - airports:
   - flights: lee dsongcp.flights, FlatMap(), json.dumps(fields), escribe a "flights_output", flights_schema, escribe a "dsongcp.flights_tzcorr"
 - events: se aplica a flights FlatMap(get_next_event), se agrega "events_schema"
 
-  - Se crea una nueva fila de evento para finalmente escribir a "dsongcp.flights_simevents"
+  - Se crea una nueva fila de evento para finalmente escribir a la tabla "dsongcp.flights_simevents"
   - **main** : analizador de argumentos, función run()
 
-- Test the Data:
-- Go to the GCP web console and wait for the Dataflow ch04timecorr job to finish. It might take between 30 minutes and 2+ hours depending on the quota associated with your project (you can change the quota by going to <https://console.cloud.google.com/iam-admin/quotas>).
-- Then, navigate to the BigQuery console and type in:
+### Comprobar los datos obtenidos
 
-```SQL
-       SELECT
-         ORIGIN,
-         DEP_TIME,
-         DEST,
-         ARR_TIME,
-         ARR_DELAY,
-         EVENT_TIME,
-         EVENT_TYPE
-       FROM
-         dsongcp.flights_simevents
-       WHERE
-         (DEP_DELAY > 15 and ORIGIN = 'SEA') or
-         (ARR_DELAY > 15 and DEST = 'SEA')
-       ORDER BY EVENT_TIME ASC
-       LIMIT
-         5
+- Vaya a la consola web de GCP y espere a que finalice el trabajo Dataflow ch04timecorr. Puede tardar entre 30 minutos y más de 2 horas, dependiendo de la cuota asociada a su proyecto (puede cambiar la cuota accediendo a <https://console.cloud.google.com/iam-admin/quotas>).
+- A continuación, navegue a la consola de BigQuery y escriba:
+
+```sql
+SELECT
+    ORIGIN,
+    DEP_TIME,
+    DEST,
+    ARR_TIME,
+    ARR_DELAY,
+    EVENT_TIME,
+    EVENT_TYPE
+FROM
+    dsongcp.flights_simevents
+WHERE
+    (DEP_DELAY > 15 and ORIGIN = 'SEA') or
+    (ARR_DELAY > 15 and DEST = 'SEA')
+ORDER BY
+    EVENT_TIME ASC
+LIMIT
+    5
 ```
 
-### Simulate event stream
+## Simulate event stream
 
-- In CloudShell, run
+En CloudShell, ejecuta:
 
-```SH
+```sh
  cd simulate
 python3 ./simulate.py --startTime '2015-05-01 00:00:00 UTC' --endTime '2015-05-04 00:00:00 UTC' --speedFactor=30 --project $DEVSHELL_PROJECT_ID
 ```
 
 - Función publish(), para publicar
-- Función notify(), la cual consiste en acumular las filas por lotes, publicando y durmienddo hasta que sea necesario publicar otro lote
+- Función notify(), la cual consiste en acumular las filas por lotes, publicando y durmiendo hasta que sea necesario publicar otro lote
 - **main** : analizador de argumentos, configuracion de bigquery, jitter, query EVENT_TYPE, TIMESTAMP_ADD, EVENT_DATA, create one Pub/Sub notification topic for each type of event, notify about each row in the dataset
 
 ### Real-time Stream Processing
