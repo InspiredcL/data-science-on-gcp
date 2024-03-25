@@ -86,18 +86,6 @@ rm airports_with_tz-*
 - De las columnas devuelve la tupla (AIRPORT_SEQ_ID, addtimezone(LATITUDE, LONGITUDE))
 - Escribe al archivo "airports_with_tz"
 
-BigQuery sample.sh
-
-- Es llamada en el script stage_airports_file
-
-```sh
- ./bqsample.sh <bucket_name>
-```
-
-- Consulta que crea "dsongcp.flights_sample" a partir de "dsongcp.flights"
-- Exporta a un archivo json
-- Crea un archivo llamado "flight_sample.json" en el directorio actual
-
 ### Conversión de horas a UTC (df03.py)
 
 ```sh
@@ -210,11 +198,16 @@ LIMIT
 
 ## Simulate event stream
 
-En CloudShell, ejecuta:
+En la consola, ejecuta:
+
+<!---
+TODO cambiar las fechas para poder replicar en nuestros datos
+-->
 
 ```sh
- cd simulate
-python3 ./simulate.py --startTime '2015-05-01 00:00:00 UTC' --endTime '2015-05-04 00:00:00 UTC' --speedFactor=30 --project $DEVSHELL_PROJECT_ID
+PROJECT_ID = $(gcloud config get project)
+cd simulate
+python3 ./simulate.py --startTime '2015-05-01 00:00:00 UTC' --endTime '2015-05-04 00:00:00 UTC' --speedFactor=30 --project $PROJECT_ID
 ```
 
 - Función publish(), para publicar
@@ -225,7 +218,7 @@ python3 ./simulate.py --startTime '2015-05-01 00:00:00 UTC' --endTime '2015-05-0
 
 - In another CloudShell tab, run avg01.py:
 
-```SH
+```sh
 cd realtime
 ./avg01.py --project PROJECT --bucket BUCKETNAME --region southamerica-west1
 ```
@@ -233,35 +226,39 @@ cd realtime
 - Función run() : argumentos, Pipeline: diccionario eventos, para cada tipo de evento asignarle un nombre de tópico, y a los eventos aplicamos ReadFromPubSub luego parseamos, definimos "all_events" y escribimos los resultados aa una tabla de BigQuery
 - **main** : analizamos argumentos, run()
 
-- In about a minute, you can query events from the BigQuery console:
+- En aproximadamente un minuto, podrás consultar los eventos desde la consola de BigQuery:
 
-```SQL
-SELECT * FROM dsongcp.streaming_events
-ORDER BY EVENT_TIME DESC
-   LIMIT 5
-```
+  ```sql
+  SELECT *
+  FROM
+      dsongcp.streaming_events
+  ORDER BY
+      EVENT_TIME DESC
+  LIMIT
+      5
+  ```
 
-- Stop avg01.py by hitting Ctrl+C
-- Run avg02.py:
+- Detén avg01.py pulsando Ctrl+C
+- Ejecuta avg02.py:
 
-```SH
-./avg02.py --project PROJECT --bucket BUCKETNAME --region southamerica-west1
-```
+  ```sh
+  ./avg02.py --project PROJECT --bucket BUCKETNAME --region southamerica-west1
+  ```
 
 - Función: calcular estadísticas
 - Función: por aeropuerto
 - Función run(): argumentos, Pipeline: eventos, para embarcado arribado leer desde Pub/Sub y analizar con json.loads, definir "all_events", stats como filtrar por aeropuerto, poner una sliding window, agrupar por xxxx y calcular las estadísticas, para así definir los esquemas de las estadísticas para finalmente escribirlo por Bigquery a "dsongcp.streaming_delays"
 - **main** : analizador de argumentos, función run()
 
-- In about 5 min, you can query from the BigQuery console:
+- En unos 5 minutos podrás realizar consultas desde la consola de BigQuery:
 
-```SQL
-SELECT * FROM dsongcp.streaming_delays
-ORDER BY END_TIME DESC
-   LIMIT 5
-```
+  ```SQL
+  SELECT * FROM dsongcp.streaming_delays
+  ORDER BY END_TIME DESC
+    LIMIT 5
+  ```
 
-- Look at how often the data is coming in:
+- Mira con qué frecuencia llegan los datos:
 
 ```SQL
    SELECT END_TIME, num_flights
@@ -270,24 +267,24 @@ ORDER BY END_TIME DESC
    LIMIT 5
 ```
 
-- It's likely that the pipeline will be stuck. You need to run this on Dataflow.
-- Stop avg02.py by hitting Ctrl+C
-- In BigQuery, truncate the table:
+- Es probable que el pipeline se atasque. Necesitas ejecutar este código en Dataflow.
+- Detén avg02.py pulsando Ctrl+C
+- En BigQuery, trunca la tabla:
 
-```SQL
+```sql
 TRUNCATE TABLE dsongcp.streaming_delays
 ```
 
 - Run avg03.py:
 
-```SH
+```sh
 ./avg03.py --project PROJECT --bucket BUCKETNAME --region southamerica-west1
 ```
 
 - Cambiamos solo --runner=DataflowRunner
 
-- Go to the GCP web console in the Dataflow section and monitor the job.
-- Once the job starts writing to BigQuery, run this query and save this as a view:
+- En la consola web de GCP ve a la sección Dataflow y monitoriza el trabajo.
+- Una vez que el trabajo comience a escribir en BigQuery, ejecuta esta consulta y guárdala como vista:
 
 ```SQL
 SELECT * FROM dsongcp.streaming_delays
@@ -295,28 +292,28 @@ SELECT * FROM dsongcp.streaming_delays
    ORDER BY END_TIME DESC
 ```
 
-- Create a view of the latest arrival delay by airport:
+- Crear una vista del último retraso de llegada por aeropuerto:
 
 ```SQL
-   CREATE OR REPLACE VIEW dsongcp.airport_delays AS
-   WITH delays AS (
-       SELECT d.*, a.LATITUDE, a.LONGITUDE
-       FROM dsongcp.streaming_delays d
-       JOIN dsongcp.airports a USING(AIRPORT)
-       WHERE a.AIRPORT_IS_LATEST = 1
+  CREATE OR REPLACE VIEW dsongcp.airport_delays AS
+  WITH delays AS (
+      SELECT d.*, a.LATITUDE, a.LONGITUDE
+      FROM dsongcp.streaming_delays d
+      JOIN dsongcp.airports a USING(AIRPORT)
+      WHERE a.AIRPORT_IS_LATEST = 1
    )
 
-   SELECT
-       AIRPORT,
-       CONCAT(LATITUDE, ',', LONGITUDE) AS LOCATION,
-       ARRAY_AGG(
-           STRUCT(AVG_ARR_DELAY, AVG_DEP_DELAY, NUM_FLIGHTS, END_TIME)
-           ORDER BY END_TIME DESC LIMIT 1) AS a
-   FROM delays
-   GROUP BY AIRPORT, LONGITUDE, LATITUDE
+  SELECT
+      AIRPORT,
+      CONCAT(LATITUDE, ',', LONGITUDE) AS LOCATION,
+      ARRAY_AGG(
+          STRUCT(AVG_ARR_DELAY, AVG_DEP_DELAY, NUM_FLIGHTS, END_TIME)
+          ORDER BY END_TIME DESC LIMIT 1) AS a
+  FROM delays
+  GROUP BY AIRPORT, LONGITUDE, LATITUDE
 
 ```
 
-- Follow the steps in the chapter to connect to Data Studio and create a GeoMap.
-- Stop the simulation program in CloudShell.
-- From the GCP web console, stop the Dataflow streaming pipeline.
+- Siga los pasos del capítulo para conectarse a Looker Studio y crear un GeoMap.
+- Detenga el programa de simulación en CloudShell (o su consola local).
+- Desde la consola web de GCP, detenga la canalización de flujo de datos.

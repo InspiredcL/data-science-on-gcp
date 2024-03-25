@@ -8,7 +8,7 @@ if test "$#" -ne 1; then
 fi
 
 BUCKET=$1
-PROJECT=$(gcloud config get-value project)
+PROJECT=$(gcloud config get project)
 
 gsutil cp airports.csv.gz gs://${BUCKET}/flights/airports/airports.csv.gz
 

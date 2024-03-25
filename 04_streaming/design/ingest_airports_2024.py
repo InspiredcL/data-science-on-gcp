@@ -286,7 +286,7 @@ def main():
 
     # Llamar a la función download y obtener la ruta del archivo descargado
     archivo_descargado = download(destdir=directorio_destino)
-    
+
     # Descomprimir el archivo
     archivo_csv = descomprimir_archivo(archivo_descargado, directorio_destino)
 
