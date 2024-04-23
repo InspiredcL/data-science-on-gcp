@@ -1,6 +1,7 @@
 .ipynb_checkpoints
 .vscode
 schema.txt
+dsongcp/
 02_ingest/raw_data
 02_ingest/raw_zipped_data
 02_ingest/for_loop_test.sh
