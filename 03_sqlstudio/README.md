@@ -1,73 +1,91 @@
-### Catch up to Chapter 2
-If you have not already done so, load the raw data into a BigQuery dataset:
-* Go to the Storage section of the GCP web console and create a new bucket
-* Open CloudShell and git clone this repo:
-    ```
-    git clone https://github.com/InspiredcL/data-science-on-gcp
-    ```
-* Then, run:
-    ```
-    cd data-science-on-gcp/02_ingest
-    ./ingest.sh bucketname
-    ```
+# 3. Diseñando dashboards convincentes
 
+## Ponte al día con el capítulo 2
 
-### Optional: Load the data into PostgreSQL
-* Navigate to https://console.cloud.google.com/sql
-* Select Create Instance
-* Choose PostgreSQL and then fill out the form as follows:
-  * Call the instance flights
-  * Generate a strong password by clicking GENERATE
-  * Choose the default PostgreSQL version
-  * Choose the region where your bucket of CSV data exists
-  * Choose a single zone instance
-  * Choose a standard machine type with 2 vCPU
-  * Click Create Instance
-*  Type (change bucket as necessary):
+Si aún no lo ha hecho, cargue los datos sin procesar en un conjunto de
+datos de BigQuery:
+
+- Ve a la sección Almacenamiento de la consola web de GCP y crea un nuevo bucket
+- Abre CloudShell y clona con git este repositorio:
+
+  ```sh
+  git clone https://github.com/InspiredcL/data-science-on-gcp
   ```
-   gsutil cp create_table.sql \
-    gs://cloud-training-demos-ml/flights/ch3/create_table.sql
+
+- Luego, ejecuta:
+
+  ```sh
+  cd data-science-on-gcp/02_ingest
+  ./ingest.sh bucketname
   ```
-* Create empty table using web console:
-  * navigate to databases section of Cloud SQL and create a new database called bts
-  * navigate to flights instance and select IMPORT
-  * Specify location of create_table.sql in your bucket
-  * Specify that you want to create a table in the database bts
-* Load the CSV files into this table:
-  * Browse to 201501.csv in your bucket
-  * Specify CSV as the format
-  * bts as the database
-  * flights as the table
-* In Cloud Shell, connect to database and run queries
-  * Connect to the database using one of these two commands (the first if you don't need a SQL proxy, the second if you do -- you'll typically need a SQL proxy if your organization has set up a security rule to allow access only to authorized networks):
-    * ```gcloud sql connect flights --user=postgres```
-    * OR ```gcloud beta sql connect flights --user=postgres```
-  * In the prompt, type ```\c bts;```
-  * Type in the following query:
-  ``` 
-  SELECT "Origin", COUNT(*) AS num_flights 
-  FROM flights GROUP BY "Origin" 
-  ORDER BY num_flights DESC 
+
+## Opcional: Cargar los datos en PostgreSQL
+
+- Vaya a <https://console.cloud.google.com/sql>
+- Seleccione crear instancia
+- Elija PostgreSQL y, a continuación, rellene el formulario de la siguiente
+  manera:
+  - Llame a los vuelos de instancia
+  - Genere una contraseña segura haciendo clic en GENERAR
+  - Elija la versión PostgreSQL por defecto
+  - Elija la región en la que se encuentra su cubo de datos CSV
+  - Elija una instancia de zona única
+  - Elija un tipo de máquina estándar con 2 vCPU
+  - Haga clic en Crear instancia
+- Tipo (cambie el bucket según sea necesario):
+
+  ```sh
+  gsutil cp create_table.sql \
+  gs://cloud-training-demos-ml/flights/ch3/create_table.sql
+  ```
+
+- Cree una tabla vacía utilizando la consola web:
+  - navegue a la sección de bases de datos de Cloud SQL y cree una nueva
+  base de datos llamada bts
+  - navegue hasta la instancia de vuelos y seleccione IMPORTAR
+  - Especifique la ubicación de create_table.sql en su bucket
+  - Especifique que desea crear una tabla en la base de datos bts
+
+- Cargue los archivos CSV en esta tabla:
+  - Busque 201501.csv en su bucket
+  - Especifique CSV como formato
+  - bts como base de datos
+  - flights como tabla
+
+- En Cloud Shell, conéctese a la base de datos y ejecute las consultas
+
+  - Conéctese a la base de datos utilizando uno de estos dos comandos
+  (el primero si no necesita un proxy SQL, el segundo si lo necesita --
+  normalmente necesitará un proxy SQL si su organización ha establecido
+  una regla de seguridad para permitir el acceso sólo a redes autorizadas):
+    1. `gcloud sql connect flights --user=postgres`.
+    2. `gcloud beta sql connect flights --user=postgres`.
+  - En la línea de comandos, escriba `\c bts;`.
+  - Escriba la siguiente consulta:
+
+  ```SQL
+  SELECT "Origin", COUNT(*) AS num_flights
+  FROM flights GROUP BY "Origin"
+  ORDER BY num_flights DESC
   LIMIT 5;
   ```
-* Add more months of CSV data and notice that the performance degrades.
-Once you are done, delete the Cloud SQL instance since you will not need it for the rest of the book.
 
-# 3. Creating compelling dashboards
+- Add more months of CSV data and notice that the performance degrades.
+  Once you are done, delete the Cloud SQL instance since you will not need it for the rest of the book.
 
-### Creating view in BigQuery
-* Run the script 
-  ```./create_views.sh```
-* Compute the contingency table for various thresholds by running the script 
-  ```
-  ./contingency.sh
-  ```
+## Creando una vista en BigQuery
 
-### Building a dashboard
+- Ejecuta el script `./create_views.sh`
+- Calcule la tabla de contingencia para varios umbrales ejecutando el script
+  `./contingency.sh`
 
-Sigue los pasos del texto principal del capítulo para configurar un dashboard de Looker Studio y crear gráficos.
+## Creando un dashboard
 
-Crearemos el panel con Looker pero lo haremos a través de la API de looker studio con el SDK de python
+Sigue los pasos del texto principal del capítulo para configurar un dashboard
+de Looker Studio y crear gráficos.
+
+Crearemos el panel con Looker pero lo haremos a través de la API de looker
+studio con el SDK de python
 
 Para esto debemos habilitar la API de looker studio a través del comando
 

@@ -1,7 +1,5 @@
--- CREATE MATERIALIZED VIEW dsongcp.flights
--- PARTITION BY DATE_TRUNC(FL_DATE, MONTH)
 CREATE
-OR REPLACE VIEW dsongcp.flights AS
+OR REPLACE TABLE dsongcp.flights AS
 SELECT
     FlightDate AS FL_DATE,
     Reporting_Airline AS UNIQUE_CARRIER,
@@ -34,7 +32,7 @@ FROM
 -- Resultado de consultas entre 01-Nov-2022 y 31-Oct-2023
 -- 1.743.880 Vuelos de un total de 6.817.233
 CREATE
-OR REPLACE VIEW dsongcp.delayed_10 AS
+OR REPLACE TABLE dsongcp.delayed_10 AS
 SELECT
     *
 FROM
@@ -44,7 +42,7 @@ WHERE
 
 -- 1.457.459 Vuelos de un total de 6.817.233
 CREATE
-OR REPLACE VIEW dsongcp.delayed_15 AS
+OR REPLACE TABLE dsongcp.delayed_15 AS
 SELECT
     *
 FROM
@@ -54,7 +52,7 @@ WHERE
 
 -- 1.243.758 Vuelos de un total de 6.817.233
 CREATE
-OR REPLACE VIEW dsongcp.delayed_20 AS
+OR REPLACE TABLE dsongcp.delayed_20 AS
 SELECT
     *
 FROM

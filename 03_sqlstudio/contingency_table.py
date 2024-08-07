@@ -8,7 +8,7 @@ Doc_string
 """
 
 from google.cloud import bigquery
-from tabulate import tabulate # ignore
+from tabulate import tabulate  # pylint: disable=import-error
 
 
 # Construct a BigQuery client object.

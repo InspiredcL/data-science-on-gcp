@@ -34,23 +34,20 @@ SOURCE = "https://transtats.bts.gov/PREZIP"
 
 
 def urlopen(url):
-    '''
+    """
     Abre una URL con un contexto SSL personalizado que deshabilita la
     verificación de certificados.
-
     Esta función es similar a `urllib.request.urlopen()`, pero permite
     ignorar los errores de verificación de certificados. Úselo con
     precaución, ya que puede exponer la comunicación a ataques de intermediario.
-
     Args:
         url (str): La URL que se abrirá.
-
     Returns:
-        _UrlOpenRet: Un objeto similar a un archivo que se puede usar para leer la respuesta.
-
+        _UrlOpenRet: Un objeto similar a un archivo que se puede usar para
+        leer la respuesta.
     Raises:
         URLError: Si hay un error al abrir la URL.
-    '''
+    """
 
     ctx_no_secure = ssl.create_default_context()
     ctx_no_secure.set_ciphers('HIGH:!DH:!aNULL')
@@ -63,20 +60,17 @@ def urlopen(url):
 
 
 def download(year: str, month: str, destdir: str) -> str:
-    '''    
+    '''
     Descarga datos de la tabla `on-time performance` de la BTS
 
     Args:
         year (str): Año a procesar, en formato YYYY. Ejemplo: '2023'
         month (str): Mes a procesar, en formato MM. Ejemplo: '05' para Mayo
         destdir (str): Directorio donde se guardará el archivo descargado.
-
     Returns:
         str: Nombre del archivo descargado.
-
     Raises:
         URLError: Si ocurre un error al descargar el archivo desde la URL.
-
     Notas:
         - El archivo descargado tendrá el formato YYYYMM.zip.
         - La función utiliza el módulo `logging` para registrar mensajes de

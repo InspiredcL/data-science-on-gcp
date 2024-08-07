@@ -8,7 +8,7 @@ if [ "$#" -ne 1 ]; then
     exit
 fi
 
-# Exportamos el parámetro a la variable BUCKET
+# Exportamos el parámetro a la variable global BUCKET
 export BUCKET=$1
 
 # Obtén los archivos zip desde el sitio de la BTS (), para luego extraerlos.

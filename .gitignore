@@ -9,4 +9,6 @@ dsongcp/
 02_ingest/bq_test.sh
 02_ingest/schema (copia).txt
 02_ingest/noschema.sh
+02_ingest/local_bqload_sandbox.sh
+02_ingest/python_query_test.py
 04_streaming/design/format_airports_pandas.py

@@ -2,7 +2,7 @@
 
 ## Póngase al día hasta el capítulo 3 si es necesario
 
-- Ve a la seccion de almacenamiento de la consola de GCP y crea un nuevo bucket
+- Ve a la sección de almacenamiento de la consola de GCP y crea un nuevo bucket
 - Abre CloudShell y clona el siguiente repositorio.
 
 ```sh
@@ -210,9 +210,12 @@ cd simulate
 python3 ./simulate.py --startTime '2015-05-01 00:00:00 UTC' --endTime '2015-05-04 00:00:00 UTC' --speedFactor=30 --project $PROJECT_ID
 ```
 
-- Función publish(), para publicar
-- Función notify(), la cual consiste en acumular las filas por lotes, publicando y durmiendo hasta que sea necesario publicar otro lote
-- **main** : analizador de argumentos, configuracion de bigquery, jitter, query EVENT_TYPE, TIMESTAMP_ADD, EVENT_DATA, create one Pub/Sub notification topic for each type of event, notify about each row in the dataset
+- Función **publish()**, para publicar
+- Función **notify()**, la cual consiste en acumular las filas por lotes,
+  publicando y durmiendo hasta que sea necesario publicar otro lote
+- Función **main** : analizador de argumentos, configuracion de bigquery, jitter,
+  query EVENT_TYPE, TIMESTAMP_ADD, EVENT_DATA, create one Pub/Sub notification
+  topic for each type of event, notify about each row in the dataset
 
 ### Real-time Stream Processing
 
@@ -223,12 +226,16 @@ cd realtime
 ./avg01.py --project PROJECT --bucket BUCKETNAME --region southamerica-west1
 ```
 
-- Función run() : argumentos, Pipeline: diccionario eventos, para cada tipo de evento asignarle un nombre de tópico, y a los eventos aplicamos ReadFromPubSub luego parseamos, definimos "all_events" y escribimos los resultados aa una tabla de BigQuery
+- Función **run()** : argumentos, Pipeline: diccionario eventos, para
+  cada tipo de evento asignarle un nombre de tópico, y a los eventos
+  aplicamos ReadFromPubSub luego parseamos, definimos "all_events" y
+  escribimos los resultados aa una tabla de BigQuery
 - **main** : analizamos argumentos, run()
 
-- En aproximadamente un minuto, podrás consultar los eventos desde la consola de BigQuery:
+- En aproximadamente un minuto, podrás consultar los eventos desde la consola
+  de BigQuery:
 
-  ```sql
+  ```SQL
   SELECT *
   FROM
       dsongcp.streaming_events

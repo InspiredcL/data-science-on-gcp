@@ -4,25 +4,41 @@
 
 - Asegúrate que tienes una cuenta en google cloud.
 
-- Existen maneras de replicar este proyecto sin costo, google asigna 300 créditos de computo (disponibles por 3 meses) para clientes nuevos solo necesitas agregar un método de pago, se recomienda al lector que indague sobre limites de cuotas para no incurrir en cargos.
+  ```sh
+  gcloud auth init;
+  gcloud auth list
+  ```
+
+- Existen maneras de replicar este proyecto sin costo, google asigna 300
+  créditos de computo (disponibles por 3 meses) para clientes nuevos solo
+  necesitas agregar un método de pago, se recomienda al lector que indague
+  sobre limites de cuotas para no incurrir en cargos.
+
+- Ejecuta el siguiente comando para conocer más.
+
+  ```sh
+  gcloud cheat-sheet
+  ```
 
 - Los nombres están encerrados en [].
 
 ## Crear un proyecto en google cloud
 
-- El nombre del proyecto "ds-on-gcp" es una sugerencia, reemplaza el valor de [PROJECT] por ds-on-gcp.
+- El nombre del proyecto "ds-on-gcp" es una sugerencia, reemplaza el valor de
+  [PROJECT] por ds-on-gcp.
 
   ```sh
   gcloud projects create [PROJECT]
   ```
 
-- Lista los proyectos existentes para ver el "Project ID" el cual es un identificador único que no se puede modificar.
+- Lista los proyectos existentes para ver el "Project ID" el cual es un
+  identificador único que no se puede modificar.
 
   ```sh
   gcloud projects list
   ```
 
-- Establece en tu configuración [Default] el proyecto deseado.
+- Establece en tu configuración (Default) el proyecto deseado.
 
   ```sh
   gcloud config set project NOMBRE_DEL_PROYECTO
@@ -30,9 +46,14 @@
 
 ## Crea un bucket
 
-- Un bucket es un contenedor de datos utilizado en servicios de almacenamiento en la nube, tienen un nombre único y son accesibles a través de una URI única y específica, para poder acceder a los archivos almacenados en ellos desde cualquier lugar con conexión a internet.
+- Un bucket es un contenedor de datos utilizado en servicios de almacenamiento
+  en la nube, tienen un nombre único y son accesibles a través de una URI única
+  y específica, para poder acceder a los archivos almacenados en ellos desde
+  cualquier lugar con conexión a internet.
 
-- Almacenamos la ID del proyecto y el nombre del BUCKET para su uso posterior, se utiliza la concatenación del ID del proyecto y una descripción del bucket para el nombre del bucket, en este caso utilizamos 'ds-on-gcp'.
+- Almacenamos la ID del proyecto y el nombre del BUCKET para su uso posterior,
+  se utiliza la concatenación del ID del proyecto y una descripción del bucket
+  para el nombre del bucket, en este caso utilizamos 'ds-on-gcp'.
 
   ```sh
   PROJECT=$(gcloud config get-value project)
@@ -48,10 +69,13 @@
   REGION=southamerica-west1
   ```
 
-- Creamos el BUCKET utilizando las variables anteriores, donde mb crea el nuevo bucket (make bucket), el flag -l especifica la ubicación de la región (location), para luego crear en la ubicación indicada en google storage.
+- Creamos el BUCKET utilizando las variables anteriores, donde ´gsutil storage
+  buckets create´ crea el nuevo bucket, el flag --location especifica la
+  ubicación de la región (-l), para luego crear en la ubicación indicada en
+  google storage.
 
   ```sh
-  gsutil mb -l $REGION gs://$BUCKET
+  gsutil storage buckets create gs://$BUCKET --location $REGION
   ```
 
 ## Añade al almacenamiento (Bucket) los datos necesarios para el proyecto del libro
@@ -68,26 +92,33 @@
   cd data-science-on-gcp/02_ingest
   ```
 
-- Edita el script `ingest.sh` para reflejar los años que quieres procesar (al menos necesitas el año 2015)
+- Edita el script `ingest.sh` para reflejar los años que quieres procesar
+  (al menos necesitas el año 2015)
 
 - Ejecuta `./ingest.sh "bucketname"` o por ejemplo _"gs://ds-on-gcp-394717-dsongcp/"_
 
 ## [Opcional] Programar descargas mensuales
 
-- Creamos un ambiente virtual, en este caso usaremos virtualenv para crear un ambiente llamado dsongcp
+- Creamos un ambiente virtual, en este caso usaremos virtualenv para crear un
+  ambiente llamado dsongcp (opcionalmente podemos anteponer un punto . para
+  ocultar el ambiente)
 
   ```sh
   virtualenv ~/dsongcp
   source ~/dsongcp/bin/activate
   ```
 
-- Ejecuta el comando, para instalar las bibliotecas de google cloud, storage y bigquery (técnicamente proporcionan una interfaz para acceder a los servicios de google cloud platform por ende se catalogarían como API).
+- Ejecuta el comando, para instalar las bibliotecas de google cloud, storage
+  y bigquery (técnicamente proporcionan una interfaz para acceder a los
+  servicios de google cloud platform por ende se catalogarían como API).
 
   ```py
   pip3 install google-cloud-storage google-cloud-bigquery
   ```
 
-- Ejecuta el siguiente comando, para utilizar tus propias credenciales de usuario para que tu aplicación acceda a una API, esto sirve para ir probando el código.
+- Ejecuta el siguiente comando, para utilizar tus propias credenciales de
+  usuario para que tu aplicación acceda a una API, esto sirve para ir
+  probando el código.
 
   ```sh
   gcloud auth application-default login
@@ -134,14 +165,14 @@
   **Descripción de la tarea:**
 
   - Creamos la cuenta de servicio:
-  
+
     Si es que no ha ejecutado el script anterior o lo ejecuto en otra sesión de shell que no tenga las variables locales, ejecuta el primero.
 
     ```sh
     SVC_ACCT=svc-monthly-ingest; PROJECT_ID=$(gcloud config get-value project)
     ```
 
-    Ahora creamos la nueva clave en formato JSON para la cuenta de servicio especificada (formato por default, ya que p12 esta disponible por razones de compatibilidad con versiones anteriores), ejecutando los sub comandos de gcloud tales como  iam, service-accounts, keys
+    Ahora creamos la nueva clave en formato JSON para la cuenta de servicio especificada (formato por default, ya que p12 esta disponible por razones de compatibilidad con versiones anteriores), ejecutando los sub comandos de gcloud tales como iam, service-accounts, keys
 
     ```sh
     gcloud iam service-accounts keys create tempkey.json --iam-account=$SVC_ACCT@$PROJECT_ID.iam.gserviceaccount.com --project_id=$PROJECT_ID
@@ -223,7 +254,7 @@
 
     `URL=$(gcloud run services describe $SERVICE --format 'value(status.url)')`:
 
-    Utiliza gcloud run services describe para recuperar la URL del servicio  y almacenar la URL en la variable URL.
+    Utiliza gcloud run services describe para recuperar la URL del servicio y almacenar la URL en la variable URL.
 
   - Crea un mensaje de datos:
 
@@ -348,7 +379,7 @@ A grandes rasgos primero debemos verificar que los términos de uso del sitio we
 
 - Para poder hacer la descarga mas fácil lo ideal es llamar al archivo download.sh y descargar lo necesario, leer los comentarios para satisfacer sus necesidades, dentro de 02_ingest (o donde el usuario estime conveniente) creamos una carpeta para la descarga de los datos y llamamos al siguiente script desde ahi.
 
-- En nuestro caso (deseamos meses de 2 años distintos) podemos hacerlo en  2 partes o crear un script que indique el año/mes de inicio y fin
+- En nuestro caso (deseamos meses de 2 años distintos) podemos hacerlo en 2 partes o crear un script que indique el año/mes de inicio y fin
 
   ```sh
   START_YEAR=2022
