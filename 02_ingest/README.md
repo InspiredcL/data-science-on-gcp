@@ -63,7 +63,9 @@
   BUCKET=${PROJECT}-dsongcp
   ```
 
-- Definimos la variable REGION, podemos ver las ubicaciones de los buckets en el enlace [Ubicaciones](https://cloud.google.com/storage/docs/locations#available-locations)
+- Definimos la variable REGION, podemos ver las ubicaciones de los buckets
+  en el enlace
+  [Ubicaciones](https://cloud.google.com/storage/docs/locations#available-locations)
 
   ```sh
   REGION=southamerica-west1
@@ -80,7 +82,8 @@
 
 ## Añade al almacenamiento (Bucket) los datos necesarios para el proyecto del libro
 
-- Abre CloudShell (o tu entorno local con las herramientas instaladas) y clona este repositorio con git:
+- Abre CloudShell (o tu entorno local con las herramientas instaladas)
+  y clona este repositorio con git:
 
   ```sh
   git clone https://github.com/InspiredcL/data-science-on-gcp
@@ -97,7 +100,7 @@
 
 - Ejecuta `./ingest.sh "bucketname"` o por ejemplo _"gs://ds-on-gcp-394717-dsongcp/"_
 
-## [Opcional] Programar descargas mensuales
+## [Opcional - Producción] Programar descargas mensuales
 
 - Creamos un ambiente virtual, en este caso usaremos virtualenv para crear un
   ambiente llamado dsongcp (opcionalmente podemos anteponer un punto . para
@@ -144,21 +147,31 @@
 
   **Explicación del script en detalle:**
 
-  - Crea un bucket de Cloud Storage: Si no existe un bucket con el nombre especificado, lo crea en la región configurada.
+  - Crea un bucket de Cloud Storage: Si no existe un bucket con el nombre
+  especificado, lo crea en la región configurada.
 
-  - Habilita la protección de acceso uniforme a nivel de bucket (Uniform Bucket Level Access, UBLA): Esta medida de seguridad garantiza que todos los objetos del bucket tengan políticas de acceso explícitas.
+  - Habilita la protección de acceso uniforme a nivel de bucket
+  (Uniform Bucket Level Access, UBLA): Esta medida de seguridad garantiza
+  que todos los objetos del bucket tengan políticas de acceso explícitas.
 
-  - Crea una cuenta de servicio: Asigna un nombre a la cuenta de servicio y la asocia a la función de ingesta de datos.
+  - Crea una cuenta de servicio: Asigna un nombre a la cuenta de servicio
+  y la asocia a la función de ingesta de datos.
 
   - Otorga permisos a la cuenta de servicio:
 
-    - Otorga a la cuenta de servicio el rol de administrador del bucket de Cloud Storage, lo que le permite leer, escribir, listar y eliminar objetos en el bucket.
+    - Otorga a la cuenta de servicio el rol de administrador del bucket
+    de Cloud Storage, lo que le permite leer, escribir, listar y eliminar
+    objetos en el bucket.
 
-    - Otorga a la cuenta de servicio el rol de propietario de datos en el esquema BigQuery especificado, lo que le permite crear y eliminar particiones en las tablas de BigQuery.
+    - Otorga a la cuenta de servicio el rol de propietario de datos en
+    el esquema BigQuery especificado, lo que le permite crear y eliminar
+    particiones en las tablas de BigQuery.
 
-    - Otorga a la cuenta de servicio el rol de usuario de BigQuery, lo que le permite ejecutar trabajos de BigQuery.
+    - Otorga a la cuenta de servicio el rol de usuario de BigQuery, lo
+    que le permite ejecutar trabajos de BigQuery.
 
-    - Otorga a la cuenta de servicio el rol de invocador de Cloud Functions, lo que le permite invocar funciones de Cloud Functions.
+    - Otorga a la cuenta de servicio el rol de invocador de Cloud Functions,
+    lo que le permite invocar funciones de Cloud Functions.
 
 - Ahora, intenta ejecutar el script de importación como una cuenta de servicio:
 
@@ -166,19 +179,25 @@
 
   - Creamos la cuenta de servicio:
 
-    Si es que no ha ejecutado el script anterior o lo ejecuto en otra sesión de shell que no tenga las variables locales, ejecuta el primero.
+    Si es que no ha ejecutado el script anterior o lo ejecuto en otra
+    sesión de shell que no tenga las variables locales, ejecuta el primero.
 
     ```sh
     SVC_ACCT=svc-monthly-ingest; PROJECT_ID=$(gcloud config get-value project)
     ```
 
-    Ahora creamos la nueva clave en formato JSON para la cuenta de servicio especificada (formato por default, ya que p12 esta disponible por razones de compatibilidad con versiones anteriores), ejecutando los sub comandos de gcloud tales como iam, service-accounts, keys
+    Ahora creamos la nueva clave en formato JSON para la cuenta de servicio
+    especificada (formato por default, ya que p12 esta disponible por
+    razones de compatibilidad con versiones anteriores), ejecutando los
+    sub comandos de gcloud tales como iam, service-accounts, keys
 
     ```sh
     gcloud iam service-accounts keys create tempkey.json --iam-account=$SVC_ACCT@$PROJECT_ID.iam.gserviceaccount.com --project_id=$PROJECT_ID
     ```
 
-  - Nos autenticamos con la cuenta de servicio usando la llave en formato JSON creada anteriormente, asi autorizamos acceso a Google cloud con la cuenta de servicio.
+  - Nos autenticamos con la cuenta de servicio usando la llave en formato
+    JSON creada anteriormente, asi autorizamos acceso a Google cloud con
+    la cuenta de servicio.
 
     ```sh
     gcloud auth activate-service-account --key-file tempkey.json
@@ -208,11 +227,14 @@
 
     El script define algunas variables importantes:
 
-    `SERVICE`: Nombre del servicio a desplegar (URL que llama una función que se desplegará) (ingest-flights-monthly).
+    `SERVICE`: Nombre del servicio a desplegar (URL que llama una función
+    que se desplegará) (ingest-flights-monthly).
 
-    `SVC_ACCT`: Nombre de la cuenta de servicio que se utilizará (svc-monthly-ingest).
+    `SVC_ACCT`: Nombre de la cuenta de servicio que se utilizará
+    (svc-monthly-ingest).
 
-    `PROJECT_ID`: ID del proyecto actual de Google Cloud Platform (obtenido de la configuración).
+    `PROJECT_ID`: ID del proyecto actual de Google Cloud Platform
+    (obtenido de la configuración).
 
     `REGION`: Región donde se desplegará la función (southamerica-west1).
 
@@ -220,21 +242,25 @@
 
   - Cloud Run:
 
-    Se utiliza gcloud run deploy para desplegar un servicio en Cloud Run, en este caso una función.
+    Se utiliza gcloud run deploy para desplegar un servicio en Cloud Run,
+    en este caso una función.
 
     `--region`: Región donde se desplegará
 
-    `--source=$(pwd)`: Directorio de origen del código de la función (directorio actual).
+    `--source=$(pwd)`: Directorio de origen del código de la función
+    (directorio actual).
 
-    `--platform=managed`: Plataforma gestionada (sin necesidad de configuración manual).
+    `--platform=managed`: Plataforma gestionada (sin necesidad de
+    configuración manual).
 
-    `--service-account ${SVC_EMAIL}`: Cuenta de servicio asociada a la revision del servicio.
+    `--service-account ${SVC_EMAIL}`: Cuenta de servicio asociada a la
+    revision del servicio.
 
     `--no-allow-unauthenticated`: No permite acceso sin autenticación.
 
     `--timeout`: Establece el tiempo máximo de ejecución de la petición.
 
-- Prueba que puedes invocar la función usando Cloud Run. Test that you can invoke the function using Cloud Run:
+- Prueba que puedes invocar la función usando Cloud Run:
 
   ```sh
   ./03_call_cr.sh

@@ -1,6 +1,6 @@
 DECLARE THRESH INT64;
 SET THRESH = 15;
- 
+
 SELECT 
     COUNTIF(dep_delay < THRESH AND arr_delay < 15) AS true_positives,
     COUNTIF(dep_delay < THRESH AND arr_delay >= 15) AS false_positives,
