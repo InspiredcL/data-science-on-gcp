@@ -1,6 +1,6 @@
 # 4. Streaming de datos: publicación e ingesta
 
-## Póngase al día hasta el capítulo 3 si es necesario
+## Ponte al día con el capítulo 3 si es necesario
 
 - Ve a la sección de almacenamiento de la consola de GCP y crea un nuevo bucket
 - Abre CloudShell y clona el siguiente repositorio.
@@ -9,7 +9,8 @@
 git clone https://github.com/InspiredcL/data-science-on-gcp
 ```
 
-- Entonces, ejecuta el script para copiar los archivos desde el bucket del curso:
+- Entonces, ejecuta el script para copiar los archivos desde el bucket del
+  curso (Obs. los archivos copiados son del año 2015 y enero 2016):
 
 ```sh
 cd data-science-on-gcp/02_ingest
@@ -31,11 +32,18 @@ cd ../03_sqlstudio
 cd design; ./mktbl.sh
 ```
 
-Los cuales ejecutan el siguiente comando:
+El script crea una tabla llamada airports_gcs en bigquery de una
+definición externa en este caso el bucket del curso con el esquema del
+archivo local airport_schemas.json
 
-```sh
-bq mk --table --external_table_definition=./airport_schemas.json@JSON=gs://data-science-on-gcp/edition2/raw/airports.csv dsongcp.airports_gcs
-```
+#### [Opcional] obtener una versión actualizada de los aeropuertos
+
+Para poder obtener una version actualizada de la tabla airports que
+concuerde con nuestros datos podemos descargarla del sitio de la BTS de
+manera manual, pero creamos un script para que haga este trabajo
+
+- Ejecuta el script para descargar la tabla y procesarla con
+  `python3 ingest_airports_2024.py`
 
 ### Configuración
 

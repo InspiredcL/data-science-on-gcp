@@ -10,7 +10,8 @@ WITH contingency_table AS (
     WHERE arr_delay IS NOT NULL AND dep_delay IS NOT NULL
     GROUP BY THRESH
 )
-
+-- Los valores comentados son complementarios a los que siguen ejemplo
+-- tpr+fnr=1
 SELECT
     ROUND((true_positives + true_negatives) / total, 2) AS accuracy,
     -- ROUND(true_positives /(true_positives + false_negatives),2) AS tpr,

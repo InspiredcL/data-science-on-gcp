@@ -21,10 +21,8 @@ def procesar_respuesta_get(response: requests.Response) -> dict:
 
     Args:
         response (requests.Response): Respuesta de la solicitud GET.
-
     Returns:
         dict: Diccionario con los datos extraídos de la respuesta.
-
     Raises:
         ValueError: Si no se encuentra el formulario con nombre "form1".
     """
@@ -68,27 +66,24 @@ def procesar_respuesta_get(response: requests.Response) -> dict:
 
 
 def download(destdir: str) -> str:
-    '''
-    Descarga datos de la tabla `Aviation Support Tables : Master Coordinate` de la BTS
+    """
+    Descarga datos de la tabla `Aviation Support Tables : Master Coordinate`
+    de la BTS
 
     Args:
         destdir (str): Directorio donde se guardará el archivo descargado.
-
     Returns:
         str: Ruta absoluta del archivo descargado.
-
     Raises:
         URLError: Si ocurre un error al descargar el archivo desde la URL.
-
     Notas:
         - El archivo descargado tendrá el nombre T_MASTER_CORD.zip
         - La función utiliza el módulo `logging` para registrar mensajes de
           información y depuración.
-    '''
+    """
 
     # URL de la página para descargar los datos
     URL = "https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FLL&QO_fu146_anzr=N8vn6v10+f722146+gnoyr5"
-
     # Crear la sesión
     session = requests.Session()
     headers = {
@@ -99,25 +94,19 @@ def download(destdir: str) -> str:
     }
     # Actualizar los encabezados
     session.headers.update(headers)
-
     # Obtener la página web con la sesión, para seleccionar los campos
     # a descargar
     response = session.get(URL, verify=False)
-
     ##########################################################################
     # Procesar la respuesta y obtener la carga útil
     payload = procesar_respuesta_get(response)
-
     # Construir la ruta completa al archivo T_MASTER_CORD.zip en el directorio de destino
     zip_file_path = os.path.join(destdir, "T_MASTER_CORD.zip")
-
     # Enviar la solicitud POST con la sesión
     response = session.post(URL, data=payload, verify=False)
-
     # Guardar el archivo T_MASTER_CORD.zip
     with open(zip_file_path, "wb") as zip_file:
         zip_file.write(response.content)
-
     return os.path.abspath(zip_file_path)
 
 
@@ -128,14 +117,11 @@ def descomprimir_archivo(nombre_archivo_zip, directorio_destino):
 
     Extrae el archivo CSV del archivo ZIP especificado y lo guarda en el
     directorio de destino.
-
     Args:
         nombre_archivo_zip (str): Ruta al archivo ZIP que contiene el archivo CSV.
         directorio_destino (str): Directorio donde se extraerá el archivo CSV.
-
     Returns:
         str: Ruta del archivo CSV descomprimido.
-
     Raises:
         BadZipFile: Si ocurre un error al abrir o extraer el archivo ZIP.
         OSError: Si hay problemas al manipular los archivos o directorios.
@@ -149,7 +135,6 @@ def descomprimir_archivo(nombre_archivo_zip, directorio_destino):
                 directorio_destino, zip_ref.namelist()[0])
             logging.info("Archivo %s descomprimido", archivo_csv)
             return archivo_csv
-
     except zipfile.BadZipFile as e:
         raise zipfile.BadZipFile(
             f"Error al abrir o extraer el archivo ZIP {archivo_zip}: {e}"
@@ -167,7 +152,6 @@ def leer_csv(archivo_csv):
 
     Args:
         archivo_csv (str): Ruta al archivo CSV.
-
     Returns:
         tuple: Un tuple que contiene dos elementos:
         - data (list): Lista de listas que representan las filas y columnas del archivo CSV.
@@ -193,9 +177,10 @@ def transformar_fechas(data, header):
     """Transforma las fechas en las columnas especificadas de un conjunto de datos.
 
     Args:
-        data (list): Lista de listas que representan las filas y columnas del archivo CSV.
-        header (list): Lista que representa la primera fila (encabezado) del archivo CSV.
-
+        data (list): Lista de listas que representan las filas y columnas
+        del archivo CSV.
+        header (list): Lista que representa la primera fila (encabezado)
+        del archivo CSV.
     Returns:
         None
     """
@@ -204,7 +189,6 @@ def transformar_fechas(data, header):
     date_format = "%m/%d/%Y %I:%M:%S %p"
     # Conocemos cuales son las columnas con fecha
     columnas_fecha = ['AIRPORT_START_DATE', 'AIRPORT_THRU_DATE']
-
     for row in data:
         for columna in columnas_fecha:
             indice_columna = header.index(columna)
@@ -213,7 +197,8 @@ def transformar_fechas(data, header):
                     row[indice_columna] = datetime.strptime(
                         row[indice_columna], date_format).strftime('%Y-%m-%d')
                     logging.info(
-                        "Fecha en la columna %s formateada correctamente", columna)
+                        "Fecha en la columna %s formateada correctamente",
+                        columna)
                 else:
                     logging.warning(
                         "La fecha en la columna %s está vacía", columna)
@@ -230,7 +215,6 @@ def escribir_csv(data, header, directorio_destino):
         data (list): Lista de listas que representan las filas y columnas del archivo CSV.
         header (list): Lista que representa la primera fila (encabezado) del archivo CSV.
         output_file (str): Ruta al archivo CSV de salida.
-
     Returns:
         str: Ruta al archivo CSV creado.
     """
@@ -248,17 +232,16 @@ def escribir_csv(data, header, directorio_destino):
         logging.error("Error al escribir el archivo CSV: %s", str(e_csv))
         return None
 
-# Escribimos a csv.gz
-
 
 def escribir_csv_gz(data, header, directorio_destino):
     """Escribe una lista de datos a un archivo CSV comprimido con gzip y retorna el archivo.
 
     Args:
-        data (list): Lista de listas que representan las filas y columnas del archivo CSV.
-        header (list): Lista que representa la primera fila (encabezado) del archivo CSV.
+        data (list): Lista de listas que representan las filas y columnas
+        del archivo CSV.
+        header (list): Lista que representa la primera fila (encabezado)
+        del archivo CSV.
         gz_output_file (str): Ruta al archivo CSV comprimido de salida.
-
     Returns:
         str: Ruta al archivo CSV comprimido creado, o None en caso de error.
     """
@@ -282,29 +265,22 @@ def main():
     """Función principal que ejecuta el procesamiento del script."""
 
     # Directorio de destino para la descarga
-    directorio_destino = "/home/inspired/data-science-on-gcp/04_streaming/transform"
-
+    # directorio_destino = "/home/inspired/data-science-on-gcp/04_streaming/transform"
+    directorio_destino = "/home/inspired/data-science-on-gcp/04_streaming/design"
     # Llamar a la función download y obtener la ruta del archivo descargado
     archivo_descargado = download(destdir=directorio_destino)
-
     # Descomprimir el archivo
     archivo_csv = descomprimir_archivo(archivo_descargado, directorio_destino)
-
     # Leer el archivo CSV
     data, header = leer_csv(archivo_csv)
-
     # Transformar las fechas
     transformar_fechas(data, header)
-
     # Escribir a CSV sin comprimir
     escribir_csv(data, header, directorio_destino)
-
     # Escribir a CSV.gz
     escribir_csv_gz(data, header, directorio_destino)
-
     # Eliminar archivo csv temporal
     os.remove(archivo_csv)
-
     # Eliminar archivo zip descargado sin procesar
     os.remove(archivo_descargado)
 
