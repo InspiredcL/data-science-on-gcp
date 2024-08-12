@@ -280,7 +280,7 @@ def main():
     # Escribir a CSV.gz
     escribir_csv_gz(data, header, directorio_destino)
     # Eliminar archivo csv temporal
-    os.remove(archivo_csv)
+    # os.remove(archivo_csv)
     # Eliminar archivo zip descargado sin procesar
     os.remove(archivo_descargado)
 

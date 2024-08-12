@@ -46,58 +46,92 @@ import apache_beam as beam
 DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
 
 
-def addtimezone(lat, lon):
-    """
-    Agrega la zona horaria correspondiente a las coordenadas proporcionadas.
+def addtimezone(lat: str, lon: str) -> tuple[float,float,str | None]:
+    """Agrega la zona horaria correspondiente a las coordenadas proporcionadas.
 
-    **Argumentos:**
-    * `lat`: Latitud en grados decimales.
-    * `lon`: Longitud en grados decimales.
+    * La función utiliza la librería `timezonefinder` para obtener
+    la zona horaria correspondiente a las coordenadas proporcionadas.
+    * La función maneja la excepción `ValueError` en caso de que las
+    coordenadas no sean válidas.
 
-    **Devuelve:**
-    Una tupla con las coordenadas y la zona horaria correspondiente.
+    Args:
+        ``lat`` (str): Latitud en grados decimales.
+        ``lon`` (str): Longitud en grados decimales.
 
-    **Excepción:**
-    * `ValueError`: Si las coordenadas no son válidas.
+    Returns:
+        ``tuple``:
+            Una tupla con las coordenadas y la zona horaria correspondiente.
+            Por ejemplo:
+            addtimezone(-33.45, -70.66)
+            (-33.45, -70.66, 'America/Santiago')
 
-    **Ejemplo:**
-        addtimezone(-33.45, -70.66)
-        (-33.45, -70.66, 'America/Santiago')
-
-    **Documentación adicional:**
-    * La función utiliza la librería `timezonefinder` para obtener la zona
-    horaria correspondiente a las coordenadas proporcionadas.
-    * La función maneja la excepción `ValueError` en caso de que las coordenadas no sean válidas.
+    Raises:
+        `ValueError`: Si las coordenadas no son válidas.
     """
 
     try:
         import timezonefinder  # pylint: disable=import-outside-toplevel
         tf = timezonefinder.TimezoneFinder()
-        lat = float(lat)
-        lon = float(lon)
-        return lat, lon, tf.timezone_at(lng=lon, lat=lat)
+        lat_f = float(lat)
+        lon_f = float(lon)
+        return lat_f, lon_f, tf.timezone_at(lng=lat_f, lat=lon_f)
     except ValueError:
-        return lat, lon, 'TIMEZONE'  # header
+        return lat_f, lon_f, 'TIMEZONE'  # header
+
+
+# def fetch_smalltable_rows(
+#     table_handle: smalltable.Table,
+#     keys: Sequence[bytes | str],
+#     require_all_keys: bool = False,
+# ) -> Mapping[bytes, tuple[str, ...]]:
+#     """Fetches rows from a Smalltable.
+
+#     Retrieves rows pertaining to the given keys from the Table instance
+#     represented by table_handle.  String keys will be UTF-8 encoded.
+
+#     Args:
+#       table_handle:
+#         An open smalltable.Table instance.
+#       keys:
+#         A sequence of strings representing the key of each table row to
+#         fetch.  String keys will be UTF-8 encoded.
+#       require_all_keys:
+#         If True only rows with values set for all keys will be returned.
+
+#     Returns:
+#       A dict mapping keys to the corresponding table row data
+#       fetched. Each row is represented as a tuple of strings. For
+#       example:
+
+#       {b'Serak': ('Rigel VII', 'Preparer'),
+#        b'Zim': ('Irk', 'Invader'),
+#        b'Lrrr': ('Omicron Persei 8', 'Emperor')}
+
+#       Returned keys are always bytes.  If a key from the keys argument is
+#       missing from the dictionary, then that row was not found in the
+#       table (and require_all_keys must have been False).
+
+#     Raises:
+#       IOError: An error occurred accessing the smalltable.
+#     """
+#     pass
 
 
 def as_utc(date, hhmm, tzone):
     """
     Convierte una fecha y hora en formato UTC a la hora corregida para una zona horaria específica.
 
-    **Argumentos:**
+    Args:
+        `date`: Fecha en formato `YYYY-MM-DD`.
+        `hhmm`: Hora en formato `HH:MM`.
+        `tzone`: Zona horaria en formato `TZ`.
 
-    * `date`: Fecha en formato `YYYY-MM-DD`.
-    * `hhmm`: Hora en formato `HH:MM`.
-    * `tzone`: Zona horaria en formato `TZ`.
+    Returns:
+        `utc_dt`: Objeto de fecha y hora en formato `YYYY-MM-DDTHH:MM:SS+00:00`.
+        `tz_offset`: Desplazamiento de la zona horaria en segundos.
 
-    **Devuelve:**
-
-    * `utc_dt`: Objeto de fecha y hora en formato `YYYY-MM-DDTHH:MM:SS+00:00`.
-    * `tz_offset`: Desplazamiento de la zona horaria en segundos.
-
-    **Excepción:**
-
-    * `ValueError`: Si la fecha, la hora o la zona horaria no son válidas.
+    Raises:
+    `ValueError`: Si la fecha, la hora o la zona horaria no son válidas.
     """
 
     try:
@@ -132,18 +166,17 @@ def add_24h_if_before(arrtime, deptime):
     Agrega 24 horas a la hora de llegada (arrtime) si es anterior a la
     hora de salida (deptime).
 
-    **Argumentos:**
-
+    **Args:**
     * `arrtime`: Hora de llegada en formato `YYYY-MM-DDTHH:MM:SS`.
     * `deptime`: Hora de salida en formato `YYYY-MM-DDTHH:MM:SS`.
 
-    **Devuelve:**
+    **Returns:**
 
     * `arrtime` si la hora de llegada es posterior o igual a la hora de salida.
     * `arrtime` más 24 horas si la hora de llegada es anterior a la hora
     de salida.
 
-    **Excepción:**
+    **Raises:**
 
     * `ValueError`: Si las horas de llegada o salida no están en formato válido.
     """
@@ -162,19 +195,14 @@ def tz_correct(fields, airport_timezones):
     Realiza un ajuste de zonas horarias para los campos de fecha y hora de un
     diccionario de datos de vuelo.
 
-    **Argumentos:**
-
+    **Args:**
     * `fields`: Diccionario que contiene los datos de vuelo, incluyendo
     campos de fecha y hora.
     * `airport_timezones`: Diccionario que mapea los identificadores de
     aeropuerto a sus respectivas zonas horarias.
-
-    **Devuelve:**
-
+    **Returns:**
     * Un generador que produce un diccionario con los campos de fecha y hora ajustados a UTC.
-
     **Proceso:**
-
     1. Convierte la fecha de vuelo a una cadena en formato `YYYY-MM-DD`.
     2. Obtiene las zonas horarias de los aeropuertos de salida y llegada.
     3. Convierte los tiempos de salida a UTC.
@@ -226,21 +254,16 @@ def tz_correct(fields, airport_timezones):
 
 def get_next_event(fields):
     """
-    Determina el siguiente evento de un vuelo a partir de los campos de datos disponibles.
+    Determina el siguiente evento a partir de los campos disponibles.
 
-    **Argumentos:**
-
+    **Args:**
     * `fields`: Diccionario que contiene los datos de vuelo, incluyendo campos de fecha y hora.
-
-    **Devuelve:**
-
+    **Returns:**
     * Un generador que produce un diccionario con los siguientes elementos:
         - `EVENT_TYPE`: Tipo de evento ('departed', 'wheelsoff' o 'arrived').
         - `EVENT_TIME`: Hora del evento en formato UTC.
         - Otros campos de datos de vuelo relevantes.
-
     **Proceso:**
-
     1. Verifica la disponibilidad de los campos `DEP_TIME`, `WHEELS_OFF` y `ARR_TIME`.
     2. Si `DEP_TIME` está disponible, genera un evento de tipo "departed".
     3. Si `WHEELS_OFF` está disponible, genera un evento de tipo "wheelsoff".
@@ -276,7 +299,7 @@ def run():
         * Genera eventos simulados a partir de los vuelos corregidos.
         * Escribe los eventos simulados en BigQuery.
 
-    **Argumentos:**
+    **:**
 
     * `project`: Nombre del proyecto de Google Cloud Platform.
     * `bucket`: Nombre del bucket de Google Cloud Storage para almacenar archivos intermedios.
@@ -317,7 +340,7 @@ def run():
              lambda fields: json.dumps(fields)
          )
          | 'flights:out' >> beam.io.textio.WriteToText(
-             'df_06_all_flights'
+             'df_05_all_flights'
          )
          )
 
