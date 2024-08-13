@@ -18,12 +18,6 @@
 """ _summary_
 
 _extended_summary_
-
-Returns:
-    _description_
-
-Yields:
-    _description_
 """
 
 import logging
@@ -55,11 +49,11 @@ def addtimezone(lat: str, lon: str) -> tuple[float,float,str | None]:
     coordenadas no sean válidas.
 
     Args:
-        ``lat`` (str): Latitud en grados decimales.
-        ``lon`` (str): Longitud en grados decimales.
+        `lat` (str): Latitud en grados decimales.
+        `lon` (str): Longitud en grados decimales.
 
     Returns:
-        ``tuple``:
+        `tuple`:
             Una tupla con las coordenadas y la zona horaria correspondiente.
             Por ejemplo:
             addtimezone(-33.45, -70.66)

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
 """ 
-_summary_
+Descarga archivo airports desde el sitio de la BTS.
 
-_extended_summary_
+Después de descargar procesa el archivo para obtener un formato adecuado
+con respecto al archivo original del bucket.
 """
 from datetime import datetime
 import gzip
@@ -14,33 +15,34 @@ import logging
 import requests
 import bs4
 
+# pyright: reportCallIssue=false
+# pyright: reportIndexIssue=false
+# pyright: reportAttributeAccessIssue=false
+
 
 def procesar_respuesta_get(response: requests.Response) -> dict:
     """
     Procesa la respuesta de la solicitud GET y retorna los datos (payload)
 
     Args:
-        response (requests.Response): Respuesta de la solicitud GET.
+        `response` (requests.Response): Respuesta de la solicitud GET.
     Returns:
-        dict: Diccionario con los datos extraídos de la respuesta.
+        `dict`: Diccionario con los datos extraídos de la respuesta.
     Raises:
-        ValueError: Si no se encuentra el formulario con nombre "form1".
+        `ValueError`: Si no se encuentra el formulario con nombre `form1`.
     """
 
     # Analizar la respuesta
     soup = bs4.BeautifulSoup(response.text, 'html.parser')
-
     # Encontrar el formulario con nombre "form1"
     form1 = soup.find(
         name='form',
         attrs={'id': 'form1'}
     )
-
     # Verificar si se encontró el formulario antes de intentar acceder a los elementos
     if not form1:
         raise ValueError(
             "¡Error! No se encontró el formulario con nombre 'form1'.")
-
     # Modificar las variables chkAllVars y btnDownload
     chkallvars_input = form1.find(
         name='input',
@@ -48,20 +50,17 @@ def procesar_respuesta_get(response: requests.Response) -> dict:
     )
     if chkallvars_input:
         chkallvars_input['value'] = 'on'
-
     btndownload_input = form1.find(
         name='input',
         attrs={'name': 'btnDownload'},
     )
     if btndownload_input:
         btndownload_input['value'] = 'Download'
-
     # Construir la carga útil para la solicitud POST
     payload = {
         input_tag['name']: input_tag.get('value', '')
         for input_tag in form1.find_all(name='input')
     }
-
     return payload
 
 
@@ -261,29 +260,29 @@ def escribir_csv_gz(data, header, directorio_destino):
         return None
 
 
-def main():
+def run():
     """Función principal que ejecuta el procesamiento del script."""
 
     # Directorio de destino para la descarga
-    # directorio_destino = "/home/inspired/data-science-on-gcp/04_streaming/transform"
-    directorio_destino = "/home/inspired/data-science-on-gcp/04_streaming/design"
-    # Llamar a la función download y obtener la ruta del archivo descargado
+    directorio_destino = "/home/inspired/data-science-on-gcp/04_streaming/transform"
+    # directorio_destino = "/home/inspired/data-science-on-gcp/04_streaming/design"
+    # Obtener la ruta del archivo descargado (T_MASTER_CORD.zip)
     archivo_descargado = download(destdir=directorio_destino)
-    # Descomprimir el archivo
+    # Descomprimir el archivo (T_MASTER_CORD.zip)
     archivo_csv = descomprimir_archivo(archivo_descargado, directorio_destino)
-    # Leer el archivo CSV
+    # Leer el archivo CSV (T_MASTER_CORD.csv)
     data, header = leer_csv(archivo_csv)
     # Transformar las fechas
     transformar_fechas(data, header)
-    # Escribir a CSV sin comprimir
+    # [Opcional] Escribir a CSV sin comprimir
     escribir_csv(data, header, directorio_destino)
     # Escribir a CSV.gz
     escribir_csv_gz(data, header, directorio_destino)
-    # Eliminar archivo csv temporal
+    # Eliminar archivo T_MASTER_CORD.csv temporal
     # os.remove(archivo_csv)
-    # Eliminar archivo zip descargado sin procesar
+    # Eliminar archivo T_MASTER_CORD.zip descargado sin procesar
     os.remove(archivo_descargado)
 
 
 if __name__ == "__main__":
-    main()
+    run()

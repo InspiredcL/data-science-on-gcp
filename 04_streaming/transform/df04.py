@@ -14,11 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+""" _summary_
+
+_extended_summary_
+"""
+
 import logging
 import csv
 import json
 from pytz.exceptions import UnknownTimeZoneError
 import apache_beam as beam
+
+# pylint: disable=import-outside-toplevel
+# pyright: reportOptionalMemberAccess=false
+# pyright: reportPrivateImportUsage=false
+# pyright: reportAttributeAccessIssue=false
 
 
 def addtimezone(lat, lon):
@@ -46,7 +57,7 @@ def addtimezone(lat, lon):
     """
 
     try:
-        import timezonefinder  # pylint: disable=import-outside-toplevel
+        import timezonefinder
         tf = timezonefinder.TimezoneFinder()
         lat = float(lat)
         lon = float(lon)
@@ -77,8 +88,8 @@ def as_utc(date, hhmm, tzone):
 
     try:
         if len(hhmm) > 0 and tzone is not None:
-            import datetime  # pylint: disable=import-outside-toplevel
-            import pytz  # pylint: disable=import-outside-toplevel
+            import datetime
+            import pytz
             loc_tz = pytz.timezone(tzone)
             loc_dt = loc_tz.localize(
                 datetime.datetime.strptime(date, '%Y-%m-%d'),
@@ -102,14 +113,13 @@ def as_utc(date, hhmm, tzone):
         return None
 
 
-
 def add_24h_if_before(arrtime, deptime):
     """
     add_24h_if_before 
 
     _extended_summary_
 
-    Arguments:
+    Args:
         arrtime -- _description_
         deptime -- _description_
 
@@ -117,7 +127,7 @@ def add_24h_if_before(arrtime, deptime):
         _description_
     """
 
-    import datetime  # pylint: disable=import-outside-toplevel
+    import datetime
     if len(arrtime) > 0 and len(deptime) > 0 and arrtime < deptime:
         adt = datetime.datetime.strptime(arrtime, '%Y-%m-%d %H:%M:%S')
         adt += datetime.timedelta(hours=24)
@@ -224,10 +234,10 @@ if __name__ == '__main__':
                    | 'flights:tzcorr' >> beam.FlatMap(
                        tz_correct,
                        beam.pvalue.AsDict(
-                           airports)  #type: ignore
+                           airports)  # type: ignore
                    )
                    )
 
         all_flights = (flights
-                       | beam.io.textio.WriteToText('df04_all_flights')  # pylint: disable=reportAttributeAccessIssue
+                       | beam.io.textio.WriteToText('df04_all_flights')
                        )

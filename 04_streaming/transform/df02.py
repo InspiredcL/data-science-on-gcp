@@ -1,13 +1,7 @@
 #!/usr/bin/env python3
 
 
-""" _summary_
-
-_extended_summary_
-
-Returns:
-    _description_
-"""
+"""Pipeline para aeropuertos con zona horaria"""
 
 # Copyright 2016 Google Inc.
 #
@@ -28,48 +22,29 @@ import timezonefinder
 from pytz.exceptions import UnknownTimeZoneError
 import apache_beam as beam
 
+# pyright: reportPrivateImportUsage=false
+# pyright: reportAttributeAccessIssue=false
+
 
 def addtimezone(lat, lon):
     """
     Agrega la zona horaria correspondiente a las coordenadas proporcionadas.
-
-    **Argumentos:**
-    * `lat`: Latitud en grados decimales.
-    * `lon`: Longitud en grados decimales.
-
-    **Devuelve:**
-    Una tupla con las coordenadas y la zona horaria correspondiente.
-
-    **Excepción:**
-    * `ValueError`: Si las coordenadas no son válidas.
-
-    **Ejemplo:**
-        addtimezone(-33.45, -70.66)
-        (-33.45, -70.66, 'America/Santiago')
-
-    **Documentación adicional:**
-    * La función utiliza la librería `timezonefinder` para obtener la zona
-    horaria correspondiente a las coordenadas proporcionadas.
-    * La función maneja la excepción `UnknownTimeZoneError` en caso de que las
-    coordenadas no sean válidas.
     """
 
     try:
         # Creamos una instancia de la clase para que sea re-usada
         tf = timezonefinder.TimezoneFinder()
-        # Función por defecto para comprobar en qué zona horaria se encuentra un punto
+        # Comprobar en qué zona horaria se encuentra un punto
         tz = tf.timezone_at(lng=float(lon), lat=float(lat))
-
         if tz is None:
             tz = 'UTC'
         return lat, lon, tz
-
     except (ValueError, UnknownTimeZoneError):
         return lat, lon, 'TIMEZONE'  # header
 
 
 if __name__ == '__main__':
-    with beam.Pipeline('DirectRunner') as pipeline:  # pylint: disable=import-error
+    with beam.Pipeline('DirectRunner') as pipeline:
         airports = (pipeline
                     | beam.io.ReadFromText('airports_2024.csv.gz')
                     | beam.Filter(lambda line: "United States" in line)
