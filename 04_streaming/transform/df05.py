@@ -27,10 +27,8 @@ import apache_beam as beam
 
 
 # pylint: disable=import-outside-toplevel
-# pylint: disable=multiple-imports
 # pylint: disable=expression-not-assigned
 # pylint: disable=unnecessary-lambda
-# pyright: reportUnusedImport=false
 # pyright: reportPrivateImportUsage=false
 # pyright: reportUnusedExpression=false
 # pyright: reportOptionalMemberAccess=false
@@ -40,7 +38,7 @@ import apache_beam as beam
 DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
 
 
-def addtimezone(lat: str, lon: str) -> tuple[float,float,str | None]:
+def addtimezone(lat: str, lon: str) -> tuple[float, float, str | None]:
     """Agrega la zona horaria correspondiente a las coordenadas proporcionadas.
 
     * La función utiliza la librería `timezonefinder` para obtener
@@ -175,7 +173,7 @@ def add_24h_if_before(arrtime, deptime):
     * `ValueError`: Si las horas de llegada o salida no están en formato válido.
     """
 
-    import datetime  # pylint: disable=import-outside-toplevel
+    import datetime
     if len(arrtime) > 0 and len(deptime) > 0 and arrtime < deptime:
         adt = datetime.datetime.strptime(arrtime, DATETIME_FORMAT)
         adt += datetime.timedelta(hours=24)
@@ -330,12 +328,8 @@ def run():
                    )
 
         (flights
-         | 'flights:tostring' >> beam.Map(
-             lambda fields: json.dumps(fields)
-         )
-         | 'flights:out' >> beam.io.textio.WriteToText(
-             'df_05_all_flights'
-         )
+         | 'flights:tostring' >> beam.Map(lambda fields: json.dumps(fields))
+         | 'flights:out' >> beam.io.textio.WriteToText('df05_all_flights')
          )
 
         events = flights | beam.FlatMap(get_next_event)

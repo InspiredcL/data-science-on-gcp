@@ -11,13 +11,15 @@ design/scrap_t_master_cord.py
 design/T_MASTER_CORD.csv
 design/T_MASTER_CORD.zip
 transform/airports*
-transform/df01_*
-transform/df02_*
-transform/df03_*
-transform/df04_*
-transform/df05_*
-transform/df06_*
-transform/df07_*
+transform/df01_all*
+transform/df02_all*
+transform/df03_all*
+transform/df04_all*
+transform/df05_all*
+transform/df06_all*
+transform/df06_local_all*
+transform/df07_all*
+transform/df07_local_all*
 transform/flights*
 transform/TEST.ipynb
 
