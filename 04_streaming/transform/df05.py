@@ -15,10 +15,7 @@
 # limitations under the License.
 
 
-""" _summary_
-
-_extended_summary_
-"""
+""" Desarrollo - Creación de Eventos. """
 
 import logging
 import csv
@@ -39,27 +36,7 @@ DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
 
 
 def addtimezone(lat: str, lon: str) -> tuple[float, float, str | None]:
-    """Agrega la zona horaria correspondiente a las coordenadas proporcionadas.
-
-    * La función utiliza la librería `timezonefinder` para obtener
-    la zona horaria correspondiente a las coordenadas proporcionadas.
-    * La función maneja la excepción `ValueError` en caso de que las
-    coordenadas no sean válidas.
-
-    Args:
-        `lat` (str): Latitud en grados decimales.
-        `lon` (str): Longitud en grados decimales.
-
-    Returns:
-        `tuple`:
-            Una tupla con las coordenadas y la zona horaria correspondiente.
-            Por ejemplo:
-            addtimezone(-33.45, -70.66)
-            (-33.45, -70.66, 'America/Santiago')
-
-    Raises:
-        `ValueError`: Si las coordenadas no son válidas.
-    """
+    """Agrega la zona horaria correspondiente."""
 
     try:
         import timezonefinder  # pylint: disable=import-outside-toplevel
@@ -71,60 +48,8 @@ def addtimezone(lat: str, lon: str) -> tuple[float, float, str | None]:
         return lat_f, lon_f, 'TIMEZONE'  # header
 
 
-# def fetch_smalltable_rows(
-#     table_handle: smalltable.Table,
-#     keys: Sequence[bytes | str],
-#     require_all_keys: bool = False,
-# ) -> Mapping[bytes, tuple[str, ...]]:
-#     """Fetches rows from a Smalltable.
-
-#     Retrieves rows pertaining to the given keys from the Table instance
-#     represented by table_handle.  String keys will be UTF-8 encoded.
-
-#     Args:
-#       table_handle:
-#         An open smalltable.Table instance.
-#       keys:
-#         A sequence of strings representing the key of each table row to
-#         fetch.  String keys will be UTF-8 encoded.
-#       require_all_keys:
-#         If True only rows with values set for all keys will be returned.
-
-#     Returns:
-#       A dict mapping keys to the corresponding table row data
-#       fetched. Each row is represented as a tuple of strings. For
-#       example:
-
-#       {b'Serak': ('Rigel VII', 'Preparer'),
-#        b'Zim': ('Irk', 'Invader'),
-#        b'Lrrr': ('Omicron Persei 8', 'Emperor')}
-
-#       Returned keys are always bytes.  If a key from the keys argument is
-#       missing from the dictionary, then that row was not found in the
-#       table (and require_all_keys must have been False).
-
-#     Raises:
-#       IOError: An error occurred accessing the smalltable.
-#     """
-#     pass
-
-
 def as_utc(date, hhmm, tzone):
-    """
-    Convierte una fecha y hora en formato UTC a la hora corregida para una zona horaria específica.
-
-    Args:
-        `date`: Fecha en formato `YYYY-MM-DD`.
-        `hhmm`: Hora en formato `HH:MM`.
-        `tzone`: Zona horaria en formato `TZ`.
-
-    Returns:
-        `utc_dt`: Objeto de fecha y hora en formato `YYYY-MM-DDTHH:MM:SS+00:00`.
-        `tz_offset`: Desplazamiento de la zona horaria en segundos.
-
-    Raises:
-    `ValueError`: Si la fecha, la hora o la zona horaria no son válidas.
-    """
+    """Convierte una fecha y hora en formato UTC."""
 
     try:
         if len(hhmm) > 0 and tzone is not None:
@@ -153,57 +78,20 @@ def as_utc(date, hhmm, tzone):
         return None
 
 
-def add_24h_if_before(arrtime, deptime):
-    """
-    Agrega 24 horas a la hora de llegada (arrtime) si es anterior a la
-    hora de salida (deptime).
-
-    **Args:**
-    * `arrtime`: Hora de llegada en formato `YYYY-MM-DDTHH:MM:SS`.
-    * `deptime`: Hora de salida en formato `YYYY-MM-DDTHH:MM:SS`.
-
-    **Returns:**
-
-    * `arrtime` si la hora de llegada es posterior o igual a la hora de salida.
-    * `arrtime` más 24 horas si la hora de llegada es anterior a la hora
-    de salida.
-
-    **Raises:**
-
-    * `ValueError`: Si las horas de llegada o salida no están en formato válido.
-    """
+def add_24h_if_before(arr_time, dep_time):
+    """Agrega 24 horas a la hora de llegada."""
 
     import datetime
-    if len(arrtime) > 0 and len(deptime) > 0 and arrtime < deptime:
-        adt = datetime.datetime.strptime(arrtime, DATETIME_FORMAT)
+    if len(arr_time) > 0 and len(dep_time) > 0 and arr_time < dep_time:
+        adt = datetime.datetime.strptime(arr_time, DATETIME_FORMAT)
         adt += datetime.timedelta(hours=24)
         return adt.strftime(DATETIME_FORMAT)
     else:
-        return arrtime
+        return arr_time
 
 
 def tz_correct(fields, airport_timezones):
-    """
-    Realiza un ajuste de zonas horarias para los campos de fecha y hora de un
-    diccionario de datos de vuelo.
-
-    **Args:**
-    * `fields`: Diccionario que contiene los datos de vuelo, incluyendo
-    campos de fecha y hora.
-    * `airport_timezones`: Diccionario que mapea los identificadores de
-    aeropuerto a sus respectivas zonas horarias.
-    **Returns:**
-    * Un generador que produce un diccionario con los campos de fecha y hora ajustados a UTC.
-    **Proceso:**
-    1. Convierte la fecha de vuelo a una cadena en formato `YYYY-MM-DD`.
-    2. Obtiene las zonas horarias de los aeropuertos de salida y llegada.
-    3. Convierte los tiempos de salida a UTC.
-    4. Convierte los tiempos de llegada a UTC.
-    5. Corrige los tiempos de llegada que sean anteriores a los tiempos
-    de salida, agregando 24 horas.
-    6. Agrega los desplazamientos de zona horaria de los aeropuertos de
-    salida y llegada al diccionario de datos.
-    """
+    """Realiza un ajuste de zonas horarias."""
 
     try:
         # convert all times to UTC
@@ -245,23 +133,7 @@ def tz_correct(fields, airport_timezones):
 
 
 def get_next_event(fields):
-    """
-    Determina el siguiente evento a partir de los campos disponibles.
-
-    **Args:**
-    * `fields`: Diccionario que contiene los datos de vuelo, incluyendo campos de fecha y hora.
-    **Returns:**
-    * Un generador que produce un diccionario con los siguientes elementos:
-        - `EVENT_TYPE`: Tipo de evento ('departed', 'wheelsoff' o 'arrived').
-        - `EVENT_TIME`: Hora del evento en formato UTC.
-        - Otros campos de datos de vuelo relevantes.
-    **Proceso:**
-    1. Verifica la disponibilidad de los campos `DEP_TIME`, `WHEELS_OFF` y `ARR_TIME`.
-    2. Si `DEP_TIME` está disponible, genera un evento de tipo "departed".
-    3. Si `WHEELS_OFF` está disponible, genera un evento de tipo "wheelsoff".
-    4. Si `ARR_TIME` está disponible, genera un evento de tipo "arrived".
-    5. Elimina los campos que no son relevantes para el evento actual.
-    """
+    """Determina el siguiente evento."""
 
     if len(fields["DEP_TIME"]) > 0:
         event = dict(fields)  # copia de linea json
@@ -280,32 +152,22 @@ def get_next_event(fields):
 
 
 def run():
-    """"
-    Ejecuta un pipeline de Apache Beam para procesar datos de vuelos y generar eventos simulados.
-        * Configura los parámetros del pipeline de Beam.
-        * Lee los datos de los aeropuertos desde un archivo CSV filtrado.
-        * Lee los datos de los vuelos desde BigQuery.
-        * Corrige las zonas horarias de los vuelos utilizando los datos de los aeropuertos.
-        * Escribe los vuelos corregidos en formato JSON a un archivo de texto en GCS.
-        * Escribe los vuelos corregidos en BigQuery.
-        * Genera eventos simulados a partir de los vuelos corregidos.
-        * Escribe los eventos simulados en BigQuery.
+    """" Ejecuta para procesar y generar eventos simulados. """
 
-    **:**
+    # Source
+    airports_file = "airports_2024.csv.gz"
+    # flights_file = "flights_sample_2024.json"
+    flights_file = "flights/chunks/flights_00000-of-00023.jsonl"
+    # Sink
+    flights_local_output = "df05_all_flights"
+    # flights_file = "flights/tzcorr/all_flights_00000-of-00023"
+    events_local_output = "df05_all_events"
+    # flights_file = "flights/events/flights_00000-of-00023"
 
-    * `project`: Nombre del proyecto de Google Cloud Platform.
-    * `bucket`: Nombre del bucket de Google Cloud Storage para almacenar archivos intermedios.
-    * `region`: Región de Google Cloud para ejecutar el pipeline.
-
-    **Ejecución independiente:**
-    python run.py --project=<project_id> --bucket=<bucket_name> --region=<region>
-    """
 
     with beam.Pipeline('DirectRunner') as pipeline:
         airports = (pipeline
-                    | 'airports:read' >> beam.io.ReadFromText(
-                        'airports_2024.csv.gz'
-                    )
+                    | 'airports:read' >> beam.io.ReadFromText(airports_file)
                     | beam.Filter(lambda line: "United States" in line)
                     | 'airports:fields' >> beam.Map(
                         lambda line: next(csv.reader([line]))
@@ -317,9 +179,7 @@ def run():
                     )
 
         flights = (pipeline
-                   | 'flights:read' >> beam.io.ReadFromText(
-                       'flights_sample_2024.json'
-                   )
+                   | 'flights:read' >> beam.io.ReadFromText(flights_file)
                    | 'flights:parse' >> beam.Map(lambda line: json.loads(line))
                    | 'flights:tzcorr' >> beam.FlatMap(
                        tz_correct,
@@ -329,14 +189,13 @@ def run():
 
         (flights
          | 'flights:tostring' >> beam.Map(lambda fields: json.dumps(fields))
-         | 'flights:out' >> beam.io.textio.WriteToText('df05_all_flights')
+         | 'flights:out' >> beam.io.textio.WriteToText(flights_local_output)
          )
 
         events = flights | beam.FlatMap(get_next_event)
-
         (events
          | 'events:tostring' >> beam.Map(lambda fields: json.dumps(fields))
-         | 'events:out' >> beam.io.textio.WriteToText('df05_all_events')
+         | 'events:out' >> beam.io.textio.WriteToText(events_local_output)
          )
 
 

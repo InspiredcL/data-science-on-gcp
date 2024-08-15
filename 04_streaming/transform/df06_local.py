@@ -54,8 +54,7 @@ def addtimezone(lat, lon):
         lon = float(lon)
         # Devolver las coordenadas y la zona horaria correspondiente
         return lat, lon, tf.timezone_at(lng=lon, lat=lat)
-    except ValueError:
-        # Manejo de excepción en caso de error de valor
+    except (ValueError, TypeError):
         return lat, lon, "TIMEZONE"  # Encabezado
 
 
@@ -194,7 +193,10 @@ def run(project, region):
     airports_table = bigquery.TableReference(
         projectId="bigquery-manu-407202", datasetId="dsongcp", tableId="airports"
     )
-    flights_query = "SELECT * FROM dsongcp.flights_sample"
+    flights_table = bigquery.TableReference(
+        projectId="bigquery-manu-407202", datasetId="dsongcp", tableId="flights_sample"
+    )
+    # flights_query = "SELECT * FROM dsongcp.flights_sample"
     # Sink
     flights_output = "df06_local_all_flights"
     events_output = "df06_local_all_events"
@@ -205,7 +207,8 @@ def run(project, region):
             pipeline
             | "airports:read"
             >> beam.io.ReadFromBigQuery(
-                method=beam.io.ReadFromBigQuery.Method.DIRECT_READ, table=airports_table
+                method=beam.io.ReadFromBigQuery.Method.DIRECT_READ,
+                table=airports_table
             )
             | "airports:onlyUSA" >> beam.Filter(
                 lambda field: field["AIRPORT_COUNTRY_NAME"] == "United States")
@@ -215,16 +218,19 @@ def run(project, region):
                 addtimezone(fields["LATITUDE"], fields["LONGITUDE"]))
             )
         )
-
+        # Source 2
         flights = (
             pipeline
             | "flights:read"
             >> beam.io.ReadFromBigQuery(
-                method="DIRECT_READ",
-                query=flights_query,
-                use_standard_sql=True,
+                method=beam.io.ReadFromBigQuery.Method.DIRECT_READ,
+                table=flights_table,
+                # query=flights_query,
+                # use_standard_sql=True,
             )
-            | "flights:tzcorr" >> beam.FlatMap(tz_correct, beam.pvalue.AsDict(airports))
+            | "flights:tzcorr" >> beam.FlatMap(
+                tz_correct, beam.pvalue.AsDict(airports)
+            )
         )
 
         # Solo a local
@@ -246,15 +252,19 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
         description="Ejecuta el pipeline localmente")
-    parser.add_argument("-p", "--project",
-                        help="ID único de proyecto", required=True)
+    parser.add_argument(
+        "-p", "--project", help="ID único de proyecto", required=True
+    )
     parser.add_argument(
         "-r",
         "--region",
-        help="Region para ejecutar el trabajo. Eligge la misma reggion que tu bucket.",
+        help="Region para ejecutar el trabajo. Elige la misma reggion que tu bucket.",
         required=True,
     )
     args = vars(parser.parse_args())
-    print("Corrigiendo marcas de tiempo y escribiendo a un archivo local")
+    print(
+        "Corrigiendo marcas de tiempo y escribiendo a un archivo local"
+        "los vuelos y los eventos"
+        )
     logging.getLogger().setLevel(logging.INFO)
     run(project=args["project"], region=args["region"])

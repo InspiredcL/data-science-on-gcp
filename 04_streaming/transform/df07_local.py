@@ -54,8 +54,7 @@ def addtimezone(lat, lon):
         lon = float(lon)
         # Devolver las coordenadas y la zona horaria correspondiente
         return lat, lon, tf.timezone_at(lng=lon, lat=lat)
-    except ValueError:
-        # Manejo de excepción en caso de error de valor
+    except (ValueError, TypeError):
         return lat, lon, "TIMEZONE"  # Encabezado
 
 
@@ -115,7 +114,7 @@ def airport_timezone(airport_id, airport_timezones):
 def tz_correct(fields, airport_timezones):
     """Realiza un ajuste de zonas horarias."""
 
-    # Compatibilidad con JSON y BigQuery
+    # Compatibilidad con JSON
     fields["FL_DATE"] = fields["FL_DATE"].strftime("%Y-%m-%d")
 
     # Convertir a UTC
@@ -196,8 +195,8 @@ def run(project, region):
     # Sink
     flights_local_output = "df07_local_all_flights"
     events_local_output = "df07_local_all_events"
-    flights_output = "dsongcp.flights_tzcorr"
-    events_output = "dsongcp.flights_simevents"
+    flights_output = f"{project}.dsongcp.flights_tzcorr"
+    events_output = f"{project}.dsongcp.flights_simevents"
 
     with beam.Pipeline(argv=argv) as pipeline:
         # Source 1
@@ -205,11 +204,16 @@ def run(project, region):
             pipeline
             | "airports:read"
             >> beam.io.ReadFromBigQuery(
-                method=beam.io.ReadFromBigQuery.Method.DIRECT_READ, table=airports_table
+                method=beam.io.ReadFromBigQuery.Method.DIRECT_READ,
+                table=airports_table
             )
-            | "airports:onlyUSA" >> beam.Filter(lambda field: field[7] == "United States")
+            | "airports:onlyUSA" >> beam.Filter(
+                lambda field: field["AIRPORT_COUNTRY_NAME"] == "United States")
             | "airports:tz"
-            >> beam.Map(lambda fields: (fields[0], addtimezone(fields[21], fields[26])))
+            >> beam.Map(lambda fields: (
+                fields["AIRPORT_SEQ_ID"],
+                addtimezone(fields["LATITUDE"], fields["LONGITUDE"]))
+            )
         )
         # Source 2
         flights = (

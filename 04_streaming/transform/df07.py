@@ -73,27 +73,26 @@ DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
 
 
 def addtimezone(lat, lon):
-    """
-    Agrega la zona horaria correspondiente a las coordenadas proporcionadas.
+    """Agrega la zona horaria correspondiente a las coordenadas proporcionadas.
 
-    **Argumentos:**
-    * `lat`: Latitud en grados decimales.
-    * `lon`: Longitud en grados decimales.
+    * La función utiliza la librería `timezonefinder` para obtener
+    la zona horaria correspondiente a las coordenadas proporcionadas.
+    * La función maneja la excepción `ValueError` en caso de que las
+    coordenadas no sean válidas.
 
-    **Devuelve:**
-    Una tupla con las coordenadas y la zona horaria correspondiente.
+    Args:
+        `lat` (str): Latitud en grados decimales.
+        `lon` (str): Longitud en grados decimales.
 
-    **Excepción:**
-    * `ValueError`: Si las coordenadas no son válidas.
+    Returns:
+        `tuple`:
+            Una tupla con las coordenadas y la zona horaria correspondiente.
+            Por ejemplo:
+            addtimezone(-33.45, -70.66)
+            (-33.45, -70.66, 'America/Santiago')
 
-    **Ejemplo:**
-        addtimezone(-33.45, -70.66)
-        (-33.45, -70.66, 'America/Santiago')
-
-    **Documentación adicional:**
-    * La función utiliza la librería `timezonefinder` para obtener la zona
-    horaria correspondiente a las coordenadas proporcionadas.
-    * La función maneja la excepción `ValueError` en caso de que las coordenadas no sean válidas.
+    Raises:
+        `ValueError`: Si las coordenadas no son válidas.
     """
 
     try:
