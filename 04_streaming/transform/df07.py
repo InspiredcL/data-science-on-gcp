@@ -145,7 +145,8 @@ def as_utc(date, hhmm, tzone):
             )
             # Agregar la diferencia de horas y minutos proporcionada a la fecha y hora local
             loc_dt += datetime.timedelta(
-                hours=int(hhmm[:2]), minutes=int(hhmm[2:]))
+                hours=int(hhmm[:2]), minutes=int(hhmm[2:])
+            )
             # Convertir la fecha y hora local a UTC
             utc_dt = loc_dt.astimezone(pytz.utc)
             # Devolver la fecha y hora en formato UTC y el desplazamiento de la zona horaria
@@ -398,10 +399,14 @@ def run(project, bucket, region):
         airports = (
             pipeline
             | "airports:read" >> beam.io.ReadFromText(airports_filename)
-            | "airports:onlyUSA" >> beam.Filter(lambda line: "United States" in line)
-            | "airports:fields" >> beam.Map(lambda line: next(csv.reader([line])))
+            | "airports:onlyUSA"
+            >> beam.Filter(lambda line: "United States" in line)
+            | "airports:fields"
+            >> beam.Map(lambda line: next(csv.reader([line])))
             | "airports:tz"
-            >> beam.Map(lambda fields: (fields[0], addtimezone(fields[21], fields[26])))
+            >> beam.Map(
+                lambda fields: (fields[0], addtimezone(fields[21], fields[26]))
+            )
         )
 
         flights = (
@@ -410,13 +415,14 @@ def run(project, bucket, region):
             >> beam.io.ReadFromBigQuery(
                 query="SELECT * FROM dsongcp.flights", use_standard_sql=True
             )
-            | "flights:tzcorr" >> beam.FlatMap(tz_correct, beam.pvalue.AsDict(airports))
+            | "flights:tzcorr"
+            >> beam.FlatMap(tz_correct, beam.pvalue.AsDict(airports))
         )
 
         (
             flights
             | "flights:tostring" >> beam.Map(lambda fields: json.dumps(fields))
-            | "flights:gcsout" >> beam.io.textio.WriteToText(flights_output)
+            | "flights:gcs_out" >> beam.io.textio.WriteToText(flights_output)
         )
 
         flights_schema = ",".join(
@@ -447,13 +453,17 @@ def run(project, bucket, region):
 
         events = flights | beam.FlatMap(get_next_event)
         events_schema = ",".join(
-            [flights_schema, "EVENT_TYPE:string,EVENT_TIME:timestamp,EVENT_DATA:string"]
+            [
+                flights_schema,
+                "EVENT_TYPE:string,EVENT_TIME:timestamp,EVENT_DATA:string",
+            ]
         )
 
         (
             events
-            | "events:totablerow" >> beam.Map(lambda fields: create_event_row(fields))
-            | "events:bqout"
+            | "events:to_tablerow"
+            >> beam.Map(lambda fields: create_event_row(fields))
+            | "events:bq_out"
             >> beam.io.WriteToBigQuery(
                 "dsongcp.flights_simevents",
                 schema=events_schema,
@@ -467,8 +477,9 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Run pipeline on the cloud")
-    parser.add_argument("-p", "--project",
-                        help="Unique project ID", required=True)
+    parser.add_argument(
+        "-p", "--project", help="Unique project ID", required=True
+    )
     parser.add_argument(
         "-b",
         "--bucket",
@@ -481,9 +492,6 @@ if __name__ == "__main__":
         help="Region in which to run the Dataflow job. Choose the same region as your bucket.",
         required=True,
     )
-
     args = vars(parser.parse_args())
-
     print("Correcting timestamps and writing to BigQuery dataset")
-
     run(project=args["project"], bucket=args["bucket"], region=args["region"])

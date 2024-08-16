@@ -126,9 +126,10 @@ def tz_correct(line, airport_timezones):
 def run(parte):
     """Ejecuta el pipeline."""
     # Source
-    airports_file = "airports_2024.csv.gz"
+    folder = "/home/inspired/data-science-on-gcp/04_streaming/transform/files"
+    airports_file = f"{folder}/airports_2024.csv.gz"
     # flights_file = "flights_sample_2024.json"
-    flights_file = f"flights/chunks/flights_000{parte}-of-00023.jsonl"
+    flights_file = f"{folder}/flights/chunks/flights_000{parte}-of-00023.jsonl"
     # Sink
     # flights_local_output = "df04_all_flights"
     flights_local_output = f"flights/tzcorr/all_flights_000{parte}-of-00023"
@@ -165,8 +166,8 @@ if __name__ == "__main__":
         description="Ejecuta el pipeline localmente")
     parser.add_argument("-p", "--part",
                         help="Parte del archivo a leer",
-                        default="01",  # Desde 0 a 22
-                        required=True)
+                        default="06",  # Desde 0 a 22
+                        )
     args = vars(parser.parse_args())
     print("Corrigiendo marcas de tiempo y escribiendo a un archivo local")
     run(parte=args["part"])

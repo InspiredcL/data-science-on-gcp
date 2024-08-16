@@ -81,7 +81,7 @@ def addtimezone(lat, lon):
         lat = float(lat)
         lon = float(lon)
         return lat, lon, tf.timezone_at(lng=lon, lat=lat)
-    except ValueError:
+    except (ValueError, TypeError):
         return lat, lon, "TIMEZONE"  # header
 
 
