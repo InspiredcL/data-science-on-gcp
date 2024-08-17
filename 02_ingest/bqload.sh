@@ -13,8 +13,8 @@ SCHEMA=Year:STRING,Quarter:STRING,Month:STRING,DayofMonth:STRING,DayOfWeek:STRIN
 # Creamos variable de proyecto
 PROJECT=$(gcloud config get project)
 
-# crear el dataset si es que no existe
 #bq --project_id $PROJECT rm -f ${PROJECT}:dsongcp.flights_raw
+# crear el dataset si es que no existe
 bq --project_id $PROJECT show dsongcp || bq mk --sync dsongcp
 
 for MONTH in $(seq -w 1 12); do

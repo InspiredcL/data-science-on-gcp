@@ -26,17 +26,24 @@ import apache_beam as beam
 from apache_beam.pipeline import Pipeline
 from apache_beam.io import WriteToText, ReadFromText
 
+FOLDER = "/home/inspired/data-science-on-gcp/04_streaming/transform/files"
+airports_file = f"{FOLDER}/airports_2024.csv.gz"
+if __name__ == "__main__":
+    with Pipeline("DirectRunner") as pipeline:
+        # Source
+        airports = (
+            pipeline
+            | ReadFromText(airports_file)
+            | beam.Map(lambda line: next(csv.reader([line])))
+            | beam.Map(lambda fields: (fields[0], (fields[21], fields[26])))
+        )
 
-if __name__ == '__main__':
-    with Pipeline('DirectRunner') as pipeline:
-        airports = (pipeline
-                    | ReadFromText('airports_2024.csv.gz')
-                    | beam.Map(lambda line: next(csv.reader([line])))
-                    | beam.Map(lambda fields: (fields[0], (fields[21], fields[26])))
-                    )
-
-        transformed_airports = (airports
-                                | beam.Map(lambda airport_data: '{},{}'.format(
-                                    airport_data[0], ','.join(airport_data[1])))
-                                | WriteToText('df01_extracted_airports')
-                                )
+        transformed_airports = (
+            airports
+            | beam.Map(
+                lambda airport_data: "{},{}".format(
+                    airport_data[0], ",".join(airport_data[1])
+                )
+            )
+            | WriteToText("df01_extracted_airports")
+        )

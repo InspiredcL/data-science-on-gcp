@@ -98,8 +98,7 @@ def add_24h_if_before(arrtime, deptime):
         adt = datetime.datetime.strptime(arrtime, DATETIME_FORMAT)
         adt += datetime.timedelta(hours=24)
         return adt.strftime(DATETIME_FORMAT)
-    else:
-        return arrtime
+    return arrtime
 
 
 def airport_timezone(airport_id, airport_timezones):
@@ -115,10 +114,10 @@ def airport_timezone(airport_id, airport_timezones):
 def tz_correct(fields, airport_timezones):
     """Realiza un ajuste de zonas horarias."""
 
-    # Compatibilidad con JSON
+    # Compatibilidad con SDK Beam
     fields["FL_DATE"] = fields["FL_DATE"].strftime("%Y-%m-%d")
 
-    # Convertir a UTC
+    # tz por airport_id
     dep_airport_id = fields["ORIGIN_AIRPORT_SEQ_ID"]
     arr_airport_id = fields["DEST_AIRPORT_SEQ_ID"]
     fields["DEP_AIRPORT_LAT"], fields["DEP_AIRPORT_LON"], dep_timezone = (
@@ -127,11 +126,12 @@ def tz_correct(fields, airport_timezones):
     fields["ARR_AIRPORT_LAT"], fields["ARR_AIRPORT_LON"], arr_timezone = (
         airport_timezone(arr_airport_id, airport_timezones)
     )
+    # Convertir a UTC
     for f in ["CRS_DEP_TIME", "DEP_TIME", "WHEELS_OFF"]:
         fields[f], deptz = as_utc(fields["FL_DATE"], fields[f], dep_timezone)
     for f in ["WHEELS_ON", "CRS_ARR_TIME", "ARR_TIME"]:
         fields[f], arrtz = as_utc(fields["FL_DATE"], fields[f], arr_timezone)
-    # Agrega 1 día a arr_time si arr_time < dep_time
+    # Corrige Hora
     for f in ["WHEELS_OFF", "WHEELS_ON", "CRS_ARR_TIME", "ARR_TIME"]:
         fields[f] = add_24h_if_before(fields[f], fields["DEP_TIME"])
     fields["DEP_AIRPORT_TZOFFSET"] = deptz
@@ -142,6 +142,7 @@ def tz_correct(fields, airport_timezones):
 def get_next_event(fields):
     """Determina el siguiente evento de un vuelo"""
 
+    # Salida
     if len(fields["DEP_TIME"]) > 0:
         event = dict(fields)  # copy
         event["EVENT_TYPE"] = "departed"
@@ -157,13 +158,15 @@ def get_next_event(fields):
         ]:
             event.pop(f, None)  # not knowable at departure time
         yield event
+    # Aterrizaje
     if len(fields["WHEELS_OFF"]) > 0:
         event = dict(fields)  # copy
         event["EVENT_TYPE"] = "wheelsoff"
         event["EVENT_TIME"] = fields["WHEELS_OFF"]
         for f in ["WHEELS_ON", "TAXI_IN", "ARR_TIME", "ARR_DELAY", "DISTANCE"]:
-            event.pop(f, None)  # not knowable at departure time
+            event.pop(f, None)  # not knowable at wheels off time
         yield event
+    # Llegada
     if len(fields["ARR_TIME"]) > 0:
         event = dict(fields)
         event["EVENT_TYPE"] = "arrived"
@@ -244,9 +247,10 @@ def run(project, region):
         )
 
         # Sink 1 bq
+        events = flights | beam.FlatMap(get_next_event)
         flights_schema = {
             "fields": [
-                {"mode": "NULLABLE", "name": "FL_DATE", "type": "STRING"},
+                {"mode": "NULLABLE", "name": "FL_DATE", "type": "DATE"},
                 {
                     "mode": "NULLABLE",
                     "name": "UNIQUE_CARRIER",
@@ -284,16 +288,16 @@ def run(project, region):
                 {"mode": "NULLABLE", "name": "ARR_DELAY", "type": "FLOAT"},
                 {"mode": "NULLABLE", "name": "CANCELLED", "type": "BOOLEAN"},
                 {"mode": "NULLABLE", "name": "DIVERTED", "type": "BOOLEAN"},
-                {"mode": "NULLABLE", "name": "DISTANCE", "type": "STRING"},
+                {"mode": "NULLABLE", "name": "DISTANCE", "type": "FLOAT"},
                 {
                     "mode": "NULLABLE",
                     "name": "DEP_AIRPORT_LAT",
-                    "type": "TIMESTAMP",
+                    "type": "FLOAT",
                 },
                 {
                     "mode": "NULLABLE",
                     "name": "DEP_AIRPORT_LON",
-                    "type": "TIMESTAMP",
+                    "type": "FLOAT",
                 },
                 {
                     "mode": "NULLABLE",
@@ -303,12 +307,12 @@ def run(project, region):
                 {
                     "mode": "NULLABLE",
                     "name": "ARR_AIRPORT_LAT",
-                    "type": "TIMESTAMP",
+                    "type": "FLOAT",
                 },
                 {
                     "mode": "NULLABLE",
                     "name": "ARR_AIRPORT_LON",
-                    "type": "TIMESTAMP",
+                    "type": "FLOAT",
                 },
                 {
                     "mode": "NULLABLE",

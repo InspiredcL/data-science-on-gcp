@@ -15,7 +15,7 @@
 # limitations under the License.
 
 
-"""Pipeline que transforma vuelos."""
+"""Pipeline que transforma vuelos y guarda al dispositivo local"""
 
 import logging
 import csv
@@ -126,8 +126,8 @@ def run():
     """Ejecuta el pipeline."""
 
     folder = "/home/inspired/data-science-on-gcp/04_streaming/transform/files"
-    start = 7
-    end = 8  # Inclusive
+    start = 0
+    end = 0  # Inclusive
     # Source
     airports_file = f"{folder}/airports_2024.csv.gz"
     flights_files = [

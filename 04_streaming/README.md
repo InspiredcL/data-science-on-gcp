@@ -59,8 +59,8 @@ cd transform; ./install_packages.sh
 #### Si este script falla, por favor intente instalarlo en un ambiente virtual
 
 ```sh
-virtualenv ~/beam_env
-source ~/beam_env/bin/activate
+virtualenv ~/.beam_env
+source ~/.beam_env/bin/activate
 ./install_packages.sh
 ```
 
