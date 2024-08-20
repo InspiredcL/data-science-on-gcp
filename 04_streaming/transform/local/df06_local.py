@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-# Copyright 2016 Google Inc.
-#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -14,12 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 """
 Ejecuta un pipeline de Apache Beam en la nube para procesar datos de
 vuelos y generar eventos simulados.
 """
 
+import time
+import argparse
 import logging
 import json
 import datetime
@@ -28,17 +27,16 @@ from apache_beam.io.gcp.internal.clients import bigquery
 import timezonefinder
 import pytz
 
-
 # pylint: disable=expression-not-assigned
-# pylint: disable=unnecessary-lambda
-# pyright: reportUnusedImport=false
-# pyright: reportPrivateImportUsage=false
+# pylint: disable=unused-variable
 # pyright: reportUnusedExpression=false
-# pyright: reportOptionalMemberAccess=false
-# pyright: reportAttributeAccessIssue=false
-# pyright: reportGeneralTypeIssues =false
 
-DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
+# pyright: reportPrivateImportUsage=false
+# pyright: reportAttributeAccessIssue=false
+
+
+RFC3339_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
+RFC3339_DATE_FORMAT = "%Y-%m-%d"
 
 
 def addtimezone(lat, lon):
@@ -58,50 +56,60 @@ def addtimezone(lat, lon):
         return lat, lon, "TIMEZONE"  # Encabezado
 
 
-def as_utc(date, hhmm, tzone):
+def as_utc(date: str, hh_mm: str, t_zone: str) -> tuple[str, float]:
     """Convierte una fecha y hora en formato UTC."""
 
     try:
         # Verificar si se proporcionó la hora y la zona horaria
-        if len(hhmm) > 0 and tzone is not None:
+        if len(hh_mm) > 0 and t_zone is not None:
             # Crear un objeto de zona horaria local
-            loc_tz = pytz.timezone(tzone)
+            loc_tz = pytz.timezone(t_zone)
             # Crear un objeto de fecha y hora local con la fecha proporcionada
             loc_dt = loc_tz.localize(
-                datetime.datetime.strptime(date, "%Y-%m-%d"), is_dst=False
+                datetime.datetime.strptime(date, RFC3339_DATE_FORMAT),
+                is_dst=False,
             )
             # Agregar la diferencia de horas y minutos proporcionada a la fecha y hora local
             loc_dt += datetime.timedelta(
-                hours=int(hhmm[:2]), minutes=int(hhmm[2:])
+                hours=int(hh_mm[:2]), minutes=int(hh_mm[2:])
             )
             # Convertir la fecha y hora local a UTC
             utc_dt = loc_dt.astimezone(pytz.utc)
-            # Devolver la fecha y hora en formato UTC y el desplazamiento de la zona horaria
+            offset = loc_dt.utcoffset()
+            if offset is None:
+                offset_seconds = offset.total_seconds()
+            else:
+                offset_seconds = 0.0
             return (
-                utc_dt.strftime(DATETIME_FORMAT),
-                loc_dt.utcoffset().total_seconds(),
+                utc_dt.strftime(RFC3339_DATETIME_FORMAT),
+                offset_seconds,
             )
+            # return (
+            #     utc_dt.strftime(RFC3339_DATETIME_FORMAT),
+            #     loc_dt.utcoffset().total_seconds(),
+            # )
         return "", 0  # Una cadena vacía corresponde a vuelos cancelados
     except ValueError as e:
-        logging.exception("%s %s %s, ValueError: %s", date, hhmm, tzone, e)
-        # raise e
+        logging.exception("%s %s %s, ValueError: %s", date, hh_mm, t_zone, e)
+        raise ValueError from e
+        # return "", 0
 
 
 def add_24h_if_before(arr_time, dep_time):
     """Agrega 24 horas a la hora de llegada"""
 
     if len(arr_time) > 0 and len(dep_time) > 0 and arr_time < dep_time:
-        adt = datetime.datetime.strptime(arr_time, DATETIME_FORMAT)
+        adt = datetime.datetime.strptime(arr_time, RFC3339_DATETIME_FORMAT)
         adt += datetime.timedelta(hours=24)
-        return adt.strftime(DATETIME_FORMAT)
+        return adt.strftime(RFC3339_DATETIME_FORMAT)
     return arr_time
 
 
 def tz_correct(fields, airport_timezones):
     """Realiza un ajuste de zonas horarias."""
 
-    # Compatibilidad con SDK Beam
-    fields["FL_DATE"] = fields["FL_DATE"].strftime("%Y-%m-%d")
+    # Compatibilidad con Json
+    fields["FL_DATE"] = fields["FL_DATE"].strftime(RFC3339_DATE_FORMAT)
     try:
         # tz por airport_id
         dep_airport_id = fields["ORIGIN_AIRPORT_SEQ_ID"]
@@ -128,8 +136,9 @@ def tz_correct(fields, airport_timezones):
         fields["ARR_AIRPORT_LON"] = airport_timezones[arr_airport_id][1]
         fields["ARR_AIRPORT_TZOFFSET"] = arrtz
         yield fields
-    except KeyError:
+    except KeyError as e:
         logging.exception("Aeropuerto no conocido")
+        raise KeyError from e
 
 
 def get_next_event(fields):
@@ -201,6 +210,7 @@ def run(project, region):
                 method=beam.io.ReadFromBigQuery.Method.DIRECT_READ,
                 table=airports_table,
             )
+            # Cambios para compatibilidad
             | "airports:onlyUSA"
             >> beam.Filter(
                 lambda field: field["AIRPORT_COUNTRY_NAME"] == "United States"
@@ -208,8 +218,8 @@ def run(project, region):
             | "airports:tz"
             >> beam.Map(
                 lambda fields: (
-                    fields["AIRPORT_SEQ_ID"],
-                    addtimezone(fields["LATITUDE"], fields["LONGITUDE"])
+                    str(fields["AIRPORT_SEQ_ID"]),
+                    addtimezone(fields["LATITUDE"], fields["LONGITUDE"]),
                 )
             )
         )
@@ -219,7 +229,6 @@ def run(project, region):
             | "flights:read"
             >> beam.io.ReadFromBigQuery(
                 method=beam.io.ReadFromBigQuery.Method.DIRECT_READ,
-                # table=flights_table,
                 query=flights_query,
                 use_standard_sql=True,
             )
@@ -229,37 +238,63 @@ def run(project, region):
         # Sink 1
         (
             flights
-            | "flights:tostring" >> beam.Map(lambda fields: json.dumps(fields))
+            | "flights:tostring" >> beam.Map(json.dumps)
             | "flights:f_out" >> beam.io.textio.WriteToText(flights_output)
         )
         # Sink 2
-        events = flights | beam.FlatMap(get_next_event)
+        events = flights | "events:next" >> beam.FlatMap(get_next_event)
         (
             events
-            | "events:tostring" >> beam.Map(lambda fields: json.dumps(fields))
+            | "events:tostring" >> beam.Map(json.dumps)
             | "events:e_out" >> beam.io.textio.WriteToText(events_output)
         )
 
 
 if __name__ == "__main__":
-    import argparse
+    # import argparse # En producción
 
     parser = argparse.ArgumentParser(
         description="Ejecuta el pipeline localmente"
     )
+    # Borrar default y poner required
     parser.add_argument(
-        "-p", "--project", help="ID único de proyecto", required=True
+        "-p",
+        "--project",
+        help="ID único de proyecto",
+        default="bigquery-manu-407202",
     )
     parser.add_argument(
         "-r",
         "--region",
-        help="Region para ejecutar el trabajo. Elige la misma reggion que tu bucket.",
-        required=True,
+        help="Region para ejecutar el trabajo. Elige la misma region que tu bucket.",
+        default="southamerica-west1",
     )
-    args = vars(parser.parse_args())
+    parser.add_argument(
+        "--debug", dest="debug", action="store_true", help="Mensaje de debug"
+    )
+    # args = vars(parser.parse_args())
+    args = parser.parse_args()
+    # logging.getLogger().setLevel(logging.INFO)
+    if args.debug:
+        logging.basicConfig(
+            format="%(levelname)s: %(message)s", level=logging.DEBUG
+        )
+    else:
+        logging.basicConfig(
+            format="%(levelname)s: %(message)s", level=logging.INFO
+        )
     print(
         "\nCorrigiendo marcas de tiempo y escribiendo a un archivo local"
         "los vuelos y los eventos\n"
     )
-    logging.getLogger().setLevel(logging.INFO)
-    run(project=args["project"], region=args["region"])
+    # Tiempo inicial
+    start_time = time.time()
+
+    # run(project=args["project"], region=args["region"])
+    run(project=args.project, region=args.region)
+
+    # Tiempo final
+    end_time = time.time()
+    # Tiempo total de ejecución
+    total_time = end_time - start_time
+    print(f"Tiempo de ejecución: {total_time} segundos")

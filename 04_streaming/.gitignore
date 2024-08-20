@@ -10,4 +10,5 @@ design/scrap_t_master_cord_notebook.ipynb
 design/scrap_t_master_cord.py
 design/T_MASTER_CORD.csv
 design/T_MASTER_CORD.zip
-transform/files/
+/transform/files/
+/transform/local/test/airports_bq_files/

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-
 """Pipeline que transforma vuelos (Json) y guarda al dispositivo local"""
 
 import logging
