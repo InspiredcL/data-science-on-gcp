@@ -83,7 +83,6 @@ def as_utc(date, hhmm, tzone):
             )
         return "", 0  # Una cadena vacía corresponde a vuelos cancelados
     except ValueError as e:
-        # Manejar excepciones y registrar detalles
         logging.exception("%s %s %s, ValueError: %s", date, hhmm, tzone, e)
         # raise e
 
@@ -103,7 +102,6 @@ def tz_correct(fields, airport_timezones):
 
     # Compatibilidad con SDK Beam
     fields["FL_DATE"] = fields["FL_DATE"].strftime("%Y-%m-%d")
-
     try:
         # tz por airport_id
         dep_airport_id = fields["ORIGIN_AIRPORT_SEQ_ID"]
@@ -211,7 +209,7 @@ def run(project, region):
             >> beam.Map(
                 lambda fields: (
                     fields["AIRPORT_SEQ_ID"],
-                    addtimezone(fields["LATITUDE"], fields["LONGITUDE"]),
+                    addtimezone(fields["LATITUDE"], fields["LONGITUDE"])
                 )
             )
         )
@@ -232,14 +230,14 @@ def run(project, region):
         (
             flights
             | "flights:tostring" >> beam.Map(lambda fields: json.dumps(fields))
-            | "flights:gcsout" >> beam.io.textio.WriteToText(flights_output)
+            | "flights:f_out" >> beam.io.textio.WriteToText(flights_output)
         )
         # Sink 2
         events = flights | beam.FlatMap(get_next_event)
         (
             events
             | "events:tostring" >> beam.Map(lambda fields: json.dumps(fields))
-            | "events:out" >> beam.io.textio.WriteToText(events_output)
+            | "events:e_out" >> beam.io.textio.WriteToText(events_output)
         )
 
 

@@ -16,6 +16,7 @@
 
 
 """Pipeline que transforma vuelos y guarda al dispositivo local"""
+# Basado en df04
 
 import logging
 import csv
@@ -72,15 +73,15 @@ def as_utc(date, hhmm, tzone):
         return None
 
 
-def add_24h_if_before(arrtime, deptime):
+def add_24h_if_before(arr_time, dep_time):
     """add_24h_if_before"""
 
-    if len(arrtime) > 0 and len(deptime) > 0 and arrtime < deptime:
-        adt = datetime.datetime.strptime(arrtime, "%Y-%m-%d %H:%M:%S")
+    if len(arr_time) > 0 and len(dep_time) > 0 and arr_time < dep_time:
+        adt = datetime.datetime.strptime(arr_time, "%Y-%m-%d %H:%M:%S")
         adt += datetime.timedelta(hours=24)
         return adt.strftime("%Y-%m-%d %H:%M:%S")
     else:
-        return arrtime
+        return arr_time
 
 
 def tz_correct(line, airport_timezones):

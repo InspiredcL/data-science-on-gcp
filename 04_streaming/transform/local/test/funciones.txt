@@ -1,0 +1,106 @@
+def run_csv():
+######### Función que lee aeropuertos como csv #########
+
+    """Ejecuta el pipeline."""
+
+    # Source
+    airports_file = "airports_test.csv"
+    flights_file = "flights_test.json"
+    # Sink
+    flights_output = "local_all_flights"
+    events_output = "local_all_events"
+
+    with beam.Pipeline("DirectRunner") as pipeline:
+        # Source 1
+        airports = (
+            pipeline
+            | "airports:read" >> beam.io.ReadFromText(airports_file)
+            | "airports:onlyUSA"
+            >> beam.Filter(lambda line: "United States" in line)
+            | "airports:fields"
+            >> beam.Map(lambda line: next(csv.reader([line])))
+            | "airports:tz"
+            >> beam.Map(
+                lambda fields: (
+                    fields[0],
+                    addtimezone(fields[21], fields[26]),
+                )
+            )
+        )
+        airports | beam.Map(print)
+        # Source 2
+        flights = (
+            pipeline
+            | "flights:read" >> beam.io.ReadFromText(flights_file)
+            | "flights:parse" >> beam.Map(json.loads)
+            | "flights:tzcorr"
+            >> beam.FlatMap(tz_correct, beam.pvalue.AsDict(airports))
+        )
+
+        # Sink 1
+        (
+            flights
+            | "flights:tostring" >> beam.Map(json.dumps)
+            | "flights:f_out" >> beam.io.textio.WriteToText(flights_output)
+        )
+        # Sink 2
+        events = flights | beam.FlatMap(get_next_event)
+        (
+            events
+            | "events:tostring" >> beam.Map(json.dumps)
+            | "events:e_out" >> beam.io.textio.WriteToText(events_output)
+        )
+
+######### Función que lee aeropuertos como json #########
+
+def run_json():
+    """Ejecuta el pipeline."""
+
+    # Source
+    airports_file = "airports_test.json"
+    flights_file = "flights_test.json"
+    # Sink
+    flights_output = "local_all_flights"
+    events_output = "local_all_events"
+
+    with beam.Pipeline("DirectRunner") as pipeline:
+        # Source 1
+        airports = (
+            pipeline
+            | "airports:read" >> beam.io.ReadFromText(airports_file)
+            | "airports:fields" >> beam.Map(json.loads)
+            # Compatibilidad con json
+            | "airports:onlyUSA"
+            >> beam.Filter(
+                lambda field: field["AIRPORT_COUNTRY_NAME"] == "United States"
+            )
+            | "airports:tz"
+            >> beam.Map(
+                lambda fields: (
+                    str(fields["AIRPORT_SEQ_ID"]),
+                    addtimezone(fields["LATITUDE"], fields["LONGITUDE"]),
+                )
+            )
+        )
+        airports | beam.Map(print)  # Depuración
+        # Source 2
+        flights = (
+            pipeline
+            | "flights:read" >> beam.io.ReadFromText(flights_file)
+            | "flights:parse" >> beam.Map(json.loads)
+            | "flights:tzcorr"
+            >> beam.FlatMap(tz_correct, beam.pvalue.AsDict(airports))
+        )
+        # Sink 1
+        (
+            flights
+            | "flights:tostring" >> beam.Map(json.dumps)
+            | "flights:f_out" >> beam.io.textio.WriteToText(flights_output)
+        )
+        # Sink 2
+        events = flights | beam.FlatMap(get_next_event)
+        (
+            events
+            | "events:tostring" >> beam.Map(json.dumps)
+            | "events:e_out" >> beam.io.textio.WriteToText(events_output)
+        )

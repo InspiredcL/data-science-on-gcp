@@ -1,89 +1,69 @@
 #!/usr/bin/env python3
 
-# Copyright 2016 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 
-
-""" Desarrollo - Creación de Eventos. """
+"""Pipeline que transforma vuelos (Json) y guarda al dispositivo local"""
 
 import logging
 import csv
 import json
 import datetime
-import apache_beam as beam
-from pytz.exceptions import UnknownTimeZoneError
-import timezonefinder
 import pytz
-
+from pytz.exceptions import UnknownTimeZoneError
+import apache_beam as beam
+import timezonefinder
 
 # pylint: disable=expression-not-assigned
-# pyright: reportPrivateImportUsage=false
-# pyright: reportUnusedExpression=false
 # pyright: reportOptionalMemberAccess=false
+# pyright: reportPrivateImportUsage=false
 # pyright: reportAttributeAccessIssue=false
-# pyright: reportGeneralTypeIssues =false
-
-DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
+# pyright: reportUnusedExpression=false
 
 
-def addtimezone(
-    lat: str, lon: str
-) -> tuple[float | str, float | str, str | None]:
-    """Agrega la zona horaria correspondiente."""
+def addtimezone(lat, lon):
+    """Agrega la zona horaria correspondiente"""
 
     try:
         tf = timezonefinder.TimezoneFinder()
-        lat_f = float(lat)
-        lon_f = float(lon)
-        return lat_f, lon_f, tf.timezone_at(lng=lat_f, lat=lon_f)
+        lat = float(lat)
+        lon = float(lon)
+        return lat, lon, tf.timezone_at(lng=lon, lat=lat)
     except (ValueError, UnknownTimeZoneError):
         return lat, lon, "TIMEZONE"  # header
 
 
-def as_utc(date, hhmm, tzone):
-    """Convierte una fecha y hora en formato UTC."""
+def as_utc(date, hh_mm, t_zone):
+    """Convierte una fecha y hora en formato UTC"""
 
     try:
-        if len(hhmm) > 0 and tzone is not None:
-            loc_tz = pytz.timezone(tzone)
+        if len(hh_mm) > 0 and t_zone is not None:
+            loc_tz = pytz.timezone(t_zone)
             loc_dt = loc_tz.localize(
                 datetime.datetime.strptime(date, "%Y-%m-%d"), is_dst=False
             )
-            # Considera las horas 2400 y 0000
+            # Considera 2400 y 0000
             loc_dt += datetime.timedelta(
-                hours=int(hhmm[:2]), minutes=int(hhmm[2:])
+                hours=int(hh_mm[:2]), minutes=int(hh_mm[2:])
             )
             utc_dt = loc_dt.astimezone(pytz.utc)
             return (
-                utc_dt.strftime(DATETIME_FORMAT),
+                utc_dt.strftime("%Y-%m-%d %H:%M:%S"),
                 loc_dt.utcoffset().total_seconds(),
             )
         # Vuelos cancelados y offset de 0
         return "", 0
-    except ValueError as e:
-        logging.exception("%s %s %s ValueError: %s", date, hhmm, tzone, e)
+    except (ValueError, UnknownTimeZoneError) as e:
+        logging.exception("%s %s %s ValueError: %s", date, hh_mm, t_zone, e)
         print("Exception occurred in as_utc:", e)
-        return None
+        return "", 0
 
 
 def add_24h_if_before(arr_time, dep_time):
-    """Agrega 24 horas a la hora de llegada."""
+    """add_24h_if_before"""
 
     if len(arr_time) > 0 and len(dep_time) > 0 and arr_time < dep_time:
-        adt = datetime.datetime.strptime(arr_time, DATETIME_FORMAT)
+        adt = datetime.datetime.strptime(arr_time, "%Y-%m-%d %H:%M:%S")
         adt += datetime.timedelta(hours=24)
-        return adt.strftime(DATETIME_FORMAT)
+        return adt.strftime("%Y-%m-%d %H:%M:%S")
     return arr_time
 
 
@@ -125,10 +105,11 @@ def tz_correct(fields, airport_timezones):
 
 
 def get_next_event(fields):
-    """Determina el siguiente evento."""
+    """Determina el siguiente evento de un vuelo"""
 
+    # Salida
     if len(fields["DEP_TIME"]) > 0:
-        event = dict(fields)  # PColletions son inmutables lógicamente
+        event = dict(fields)  # copy
         event["EVENT_TYPE"] = "departed"
         event["EVENT_TIME"] = fields["DEP_TIME"]
         for f in [
@@ -140,8 +121,17 @@ def get_next_event(fields):
             "ARR_DELAY",
             "DISTANCE",
         ]:
-            event.pop(f, None)  # No se conoce el dato a la hora de embarque
+            event.pop(f, None)  # not knowable at departure time
         yield event
+    # Aterrizaje
+    if len(fields["WHEELS_OFF"]) > 0:
+        event = dict(fields)  # copy
+        event["EVENT_TYPE"] = "wheelsoff"
+        event["EVENT_TIME"] = fields["WHEELS_OFF"]
+        for f in ["WHEELS_ON", "TAXI_IN", "ARR_TIME", "ARR_DELAY", "DISTANCE"]:
+            event.pop(f, None)  # not knowable at wheels off time
+        yield event
+    # Llegada
     if len(fields["ARR_TIME"]) > 0:
         event = dict(fields)
         event["EVENT_TYPE"] = "arrived"
@@ -149,21 +139,15 @@ def get_next_event(fields):
         yield event
 
 
-def run():
-    """ " Ejecuta para procesar y generar eventos simulados."""
+def run_csv():
+    """Ejecuta el pipeline."""
 
-    parte = "00"
-    folder = "/home/inspired/data-science-on-gcp/04_streaming/transform/files"
     # Source
-    airports_file = f"{folder}/airports_2024.csv.gz"
-    # flights_file = f"{folder}/flights_sample_2024.json"
-    flights_file = f"{folder}/data/flights/flights_000{parte}-of-00023.jsonl"
+    airports_file = "airports_test.csv"
+    flights_file = "flights_test.json"
     # Sink
-    flights_local_output = (
-        f"{folder}/data/tzcorr/all_flights_000{parte}-of-00023"
-    )
-    events_local_output = f"{folder}/data/events/all_events_000{parte}-of-00023"
-
+    flights_output = "local_all_flights"
+    events_output = "local_all_events"
     with beam.Pipeline("DirectRunner") as pipeline:
         # Source 1
         airports = (
@@ -175,7 +159,62 @@ def run():
             >> beam.Map(lambda line: next(csv.reader([line])))
             | "airports:tz"
             >> beam.Map(
-                lambda fields: (fields[0], addtimezone(fields[21], fields[26]))
+                lambda fields: (
+                    fields[0],
+                    addtimezone(fields[21], fields[26]),
+                )
+            )
+        )
+        airports | beam.Map(print)
+        # Source 2
+        flights = (
+            pipeline
+            | "flights:read" >> beam.io.ReadFromText(flights_file)
+            | "flights:parse" >> beam.Map(json.loads)
+            | "flights:tzcorr"
+            >> beam.FlatMap(tz_correct, beam.pvalue.AsDict(airports))
+        )
+        # Sink 1
+        (
+            flights
+            | "flights:tostring" >> beam.Map(json.dumps)
+            | "flights:f_out" >> beam.io.textio.WriteToText(flights_output)
+        )
+        # Sink 2
+        events = flights | beam.FlatMap(get_next_event)
+        (
+            events
+            | "events:tostring" >> beam.Map(json.dumps)
+            | "events:e_out" >> beam.io.textio.WriteToText(events_output)
+        )
+
+
+def run_json():
+    """Ejecuta el pipeline."""
+
+    # Source
+    airports_file = "airports_test.json"
+    flights_file = "flights_test.json"
+    # Sink
+    flights_output = "local_all_flights"
+    events_output = "local_all_events"
+    with beam.Pipeline("DirectRunner") as pipeline:
+        # Source 1
+        airports = (
+            pipeline
+            | "airports:read" >> beam.io.ReadFromText(airports_file)
+            | "airports:fields" >> beam.Map(json.loads)
+            # Compatibilidad con json
+            | "airports:onlyUSA"
+            >> beam.Filter(
+                lambda field: field["AIRPORT_COUNTRY_NAME"] == "United States"
+            )
+            | "airports:tz"
+            >> beam.Map(
+                lambda fields: (
+                    str(fields["AIRPORT_SEQ_ID"]),
+                    addtimezone(fields["LATITUDE"], fields["LONGITUDE"]),
+                )
             )
         )
         airports | beam.Map(print)  # Depuración
@@ -191,17 +230,22 @@ def run():
         (
             flights
             | "flights:tostring" >> beam.Map(json.dumps)
-            | "flights:out" >> beam.io.textio.WriteToText(flights_local_output)
+            | "flights:f_out" >> beam.io.textio.WriteToText(flights_output)
         )
         # Sink 2
         events = flights | beam.FlatMap(get_next_event)
         (
             events
             | "events:tostring" >> beam.Map(json.dumps)
-            | "events:out" >> beam.io.textio.WriteToText(events_local_output)
+            | "events:e_out" >> beam.io.textio.WriteToText(events_output)
         )
 
 
 if __name__ == "__main__":
     logging.getLogger().setLevel(logging.INFO)
-    run()
+    logging.info(
+        " Corrigiendo marcas de tiempo y escribiendo a un archivo local"
+        "los vuelos y los eventos\n"
+    )
+    # run_csv()
+    run_json()

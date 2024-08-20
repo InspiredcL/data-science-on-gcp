@@ -19,7 +19,7 @@
 
 import csv
 import timezonefinder
-from pytz.exceptions import UnknownTimeZoneError
+# from pytz.exceptions import UnknownTimeZoneError
 import apache_beam as beam
 
 # pyright: reportPrivateImportUsage=false
@@ -39,14 +39,15 @@ def addtimezone(lat, lon):
         if tz is None:
             tz = 'UTC'
         return lat, lon, tz
-    except (ValueError, UnknownTimeZoneError):
+    except ValueError:
+    # except (ValueError, UnknownTimeZoneError):
         return lat, lon, 'TIMEZONE'  # header
 
 
 if __name__ == '__main__':
     with beam.Pipeline('DirectRunner') as pipeline:
         airports = (pipeline
-                    | beam.io.ReadFromText('airports_2024.csv.gz')
+                    | beam.io.ReadFromText('./files/airports_2024.csv.gz')
                     | beam.Filter(lambda line: "United States" in line)
                     | beam.Map(lambda line: next(csv.reader([line])))
                     | beam.Map(
