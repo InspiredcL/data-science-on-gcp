@@ -18,6 +18,7 @@ vuelos y generar eventos simulados.
 """
 
 import time
+
 import argparse
 import logging
 import json
@@ -39,7 +40,9 @@ RFC3339_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
 RFC3339_DATE_FORMAT = "%Y-%m-%d"
 
 
-def addtimezone(lat, lon):
+def addtimezone(
+    lat: str, lon: str
+) -> tuple[float | str, float | str, str | None]:
     """
     Agrega la zona horaria correspondiente a las coordenadas proporcionadas.
     """
@@ -48,10 +51,11 @@ def addtimezone(lat, lon):
         # Crear una instancia de TimezoneFinder, para reutilizar
         tf = timezonefinder.TimezoneFinder()
         # Convertir las coordenadas a números de punto flotante
-        lat = float(lat)
-        lon = float(lon)
+        lat_f = float(lat)
+        lon_f = float(lon)
         # Devolver las coordenadas y la zona horaria correspondiente
-        return lat, lon, tf.timezone_at(lng=lon, lat=lat)
+        return lat_f, lon_f, tf.timezone_at(lng=lon_f, lat=lat_f)
+    # TypeError por el aeropuerto desconocido de Alaska
     except (ValueError, TypeError):
         return lat, lon, "TIMEZONE"  # Encabezado
 
@@ -76,7 +80,7 @@ def as_utc(date: str, hh_mm: str, t_zone: str) -> tuple[str, float]:
             # Convertir la fecha y hora local a UTC
             utc_dt = loc_dt.astimezone(pytz.utc)
             offset = loc_dt.utcoffset()
-            if offset is None:
+            if offset is not None:
                 offset_seconds = offset.total_seconds()
             else:
                 offset_seconds = 0.0
@@ -118,11 +122,11 @@ def tz_correct(fields, airport_timezones):
         arr_timezone = airport_timezones[arr_airport_id][2]
         # Convertir a UTC
         for f in ["CRS_DEP_TIME", "DEP_TIME", "WHEELS_OFF"]:
-            fields[f], deptz = as_utc(
+            fields[f], dep_tz = as_utc(
                 fields["FL_DATE"], fields[f], dep_timezone
             )
         for f in ["WHEELS_ON", "CRS_ARR_TIME", "ARR_TIME"]:
-            fields[f], arrtz = as_utc(
+            fields[f], arr_tz = as_utc(
                 fields["FL_DATE"], fields[f], arr_timezone
             )
         # Corrige Hora
@@ -131,10 +135,10 @@ def tz_correct(fields, airport_timezones):
         # Crea columnas
         fields["DEP_AIRPORT_LAT"] = airport_timezones[dep_airport_id][0]
         fields["DEP_AIRPORT_LON"] = airport_timezones[dep_airport_id][1]
-        fields["DEP_AIRPORT_TZOFFSET"] = deptz
+        fields["DEP_AIRPORT_TZOFFSET"] = dep_tz
         fields["ARR_AIRPORT_LAT"] = airport_timezones[arr_airport_id][0]
         fields["ARR_AIRPORT_LON"] = airport_timezones[arr_airport_id][1]
-        fields["ARR_AIRPORT_TZOFFSET"] = arrtz
+        fields["ARR_AIRPORT_TZOFFSET"] = arr_tz
         yield fields
     except KeyError as e:
         logging.exception("Aeropuerto no conocido")
@@ -183,6 +187,8 @@ def run(project, region):
         f"--project={project}",
         f"--region={region}",
         "--runner=DirectRunner",
+        "--direct_num_workers=0", # Default 1
+        "--direct_running_mode=multi_threading", # Default in_memory
     ]
 
     # Source
@@ -191,15 +197,11 @@ def run(project, region):
         datasetId="dsongcp",
         tableId="airports",
     )
-    # flights_table = bigquery.TableReference(
-    #     projectId="bigquery-manu-407202",
-    #     datasetId="dsongcp",
-    #     tableId="flights_sample",
-    # )
-    flights_query = "SELECT * FROM dsongcp.flights WHERE rand() < 0.001"
+    flights_query = "SELECT * FROM dsongcp.flights"
+    # flights_query = "SELECT * FROM dsongcp.flights WHERE rand() < 0.001"
     # Sink
-    flights_output = "df06_local_all_flights"
-    events_output = "df06_local_all_events"
+    flights_output = "../files/temp_output/bq_local_all_flights"
+    events_output = "../files/temp_output/bq_local_all_events"
 
     with beam.Pipeline(argv=argv) as pipeline:
         # Source 1

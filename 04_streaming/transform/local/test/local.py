@@ -9,6 +9,7 @@ import datetime
 import pytz
 from pytz.exceptions import UnknownTimeZoneError
 import apache_beam as beam
+from apache_beam.options.pipeline_options import DirectOptions
 import timezonefinder
 
 # pylint: disable=expression-not-assigned
@@ -191,13 +192,17 @@ def run_csv():
 def run_json():
     """Ejecuta el pipeline."""
 
+    # Options
+    beam_options = DirectOptions(
+        direct_num_workers=6, direct_running_mode="multi_threading"
+    )
     # Source
     airports_file = "airports_test.json"
     flights_file = "flights_test.json"
     # Sink
-    flights_output = "local_all_flights"
-    events_output = "local_all_events"
-    with beam.Pipeline("DirectRunner") as pipeline:
+    flights_output = "../../files/temp_output/local_all_flights"
+    events_output = "../../files/temp_output/local_all_events"
+    with beam.Pipeline(runner="DirectRunner",options=beam_options) as pipeline:
         # Source 1
         airports = (
             pipeline

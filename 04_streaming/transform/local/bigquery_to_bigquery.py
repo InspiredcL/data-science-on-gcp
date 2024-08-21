@@ -30,8 +30,6 @@ import pytz
 
 
 # pylint: disable=expression-not-assigned
-# pylint: disable=unnecessary-lambda
-# pyright: reportUnusedImport=false
 # pyright: reportPrivateImportUsage=false
 # pyright: reportUnusedExpression=false
 # pyright: reportOptionalMemberAccess=false
@@ -50,11 +48,12 @@ def addtimezone(lat, lon):
         # Crear una instancia de TimezoneFinder, para reutilizar
         tf = timezonefinder.TimezoneFinder()
         # Convertir las coordenadas a números de punto flotante
-        lat = float(lat)
-        lon = float(lon)
+        lat_f = float(lat)
+        lon_f = float(lon)
         # Devolver las coordenadas y la zona horaria correspondiente
-        return lat, lon, tf.timezone_at(lng=lon, lat=lat)
-    except (ValueError, TypeError):
+        return lat_f, lon_f, tf.timezone_at(lng=lon_f, lat=lat_f)
+    # except (ValueError, TypeError):
+    except ValueError:
         return lat, lon, "TIMEZONE"  # Encabezado
 
 
@@ -106,9 +105,8 @@ def airport_timezone(airport_id, airport_timezones):
 
     if airport_id in airport_timezones:
         return airport_timezones[airport_id]
-    else:
-        # Eliminamos u ya que los strings en python son unicode por defecto
-        return "37.41", "-92.35", "America/Chicago"
+    # Imputamos el centro de población
+    return "37.41", "-92.35", "America/Chicago"
 
 
 def tz_correct(fields, airport_timezones):
@@ -134,6 +132,7 @@ def tz_correct(fields, airport_timezones):
     # Corrige Hora
     for f in ["WHEELS_OFF", "WHEELS_ON", "CRS_ARR_TIME", "ARR_TIME"]:
         fields[f] = add_24h_if_before(fields[f], fields["DEP_TIME"])
+    # Crea columnas
     fields["DEP_AIRPORT_TZOFFSET"] = deptz
     fields["ARR_AIRPORT_TZOFFSET"] = arrtz
     yield fields
@@ -189,6 +188,8 @@ def run(project, region):
         f"--project={project}",
         f"--region={region}",
         "--runner=DirectRunner",
+        "--direct_num_workers=0",  # Default 1
+        "--direct_running_mode=multi_threading",  # Default in_memory
     ]
 
     # Source
@@ -220,7 +221,7 @@ def run(project, region):
             | "airports:tz"
             >> beam.Map(
                 lambda fields: (
-                    fields["AIRPORT_SEQ_ID"],
+                    str(fields["AIRPORT_SEQ_ID"]),
                     addtimezone(fields["LATITUDE"], fields["LONGITUDE"]),
                 )
             )
@@ -241,8 +242,8 @@ def run(project, region):
         # Sink 1 local
         (
             flights
-            | "flights:tostring" >> beam.Map(lambda fields: json.dumps(fields))
-            | "flights:gcsout"
+            | "flights:tostring" >> beam.Map(json.dumps)
+            | "flights:gcs_out"
             >> beam.io.textio.WriteToText(flights_local_output)
         )
 
@@ -333,8 +334,9 @@ def run(project, region):
         events = flights | beam.FlatMap(get_next_event)
         (
             events
-            | "events:tostring" >> beam.Map(lambda fields: json.dumps(fields))
-            | "events:out" >> beam.io.textio.WriteToText(events_local_output)
+            | "events:tostring" >> beam.Map(json.dumps)
+            | "events:gcs_out"
+            >> beam.io.textio.WriteToText(events_local_output)
         )
         # Sink 2 bq
         events_schema = {
@@ -348,9 +350,8 @@ def run(project, region):
         events_schema["fields"][:0] = flights_schema["fields"]
         (
             events
-            | "events:totablerow"
-            >> beam.Map(lambda fields: create_event_row(fields))
-            | "events:bqout"
+            | "events:to_tablerow" >> beam.Map(create_event_row)
+            | "events:bq_out"
             >> beam.io.WriteToBigQuery(
                 events_output,
                 schema=events_schema,
@@ -368,13 +369,16 @@ if __name__ == "__main__":
         description="Ejecuta el pipeline localmente"
     )
     parser.add_argument(
-        "-p", "--project", help="ID único de proyecto", required=True
+        "-p",
+        "--project",
+        help="ID único de proyecto",
+        default="bigquery-manu-407202",
     )
     parser.add_argument(
         "-r",
         "--region",
         help="Region para ejecutar el trabajo. Elige la misma region que tu bucket.",
-        required=True,
+        default="bigquery-manu-407202",
     )
     args = vars(parser.parse_args())
     print("Corrigiendo marcas de tiempo y escribiendo a un archivo local")
