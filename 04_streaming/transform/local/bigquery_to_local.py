@@ -18,6 +18,7 @@ vuelos y generar eventos simulados.
 """
 
 import time
+from typing import Iterator
 
 import argparse
 import logging
@@ -28,12 +29,12 @@ from apache_beam.io.gcp.internal.clients import bigquery
 import timezonefinder
 import pytz
 
-# pylint: disable=expression-not-assigned
-# pylint: disable=unused-variable
-# pyright: reportUnusedExpression=false
 
+# pyright: reportUnusedExpression=false
 # pyright: reportPrivateImportUsage=false
 # pyright: reportAttributeAccessIssue=false
+
+# pylint: disable=expression-not-assigned
 
 
 RFC3339_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
@@ -99,7 +100,7 @@ def as_utc(date: str, hh_mm: str, t_zone: str) -> tuple[str, float]:
         # return "", 0
 
 
-def add_24h_if_before(arr_time, dep_time):
+def add_24h_if_before(arr_time: str, dep_time: str) -> str:
     """Agrega 24 horas a la hora de llegada"""
 
     if len(arr_time) > 0 and len(dep_time) > 0 and arr_time < dep_time:
@@ -109,7 +110,7 @@ def add_24h_if_before(arr_time, dep_time):
     return arr_time
 
 
-def tz_correct(fields, airport_timezones):
+def tz_correct(fields: dict, airport_timezones: dict) -> Iterator[dict]:
     """Realiza un ajuste de zonas horarias."""
 
     # Compatibilidad con Json
@@ -145,7 +146,7 @@ def tz_correct(fields, airport_timezones):
         raise KeyError from e
 
 
-def get_next_event(fields):
+def get_next_event(fields: dict) -> Iterator[dict]:
     """Determina el siguiente evento de un vuelo"""
 
     # Salida
@@ -180,15 +181,15 @@ def get_next_event(fields):
         yield event
 
 
-def run(project, region):
+def run(project: str, region: str) -> None:
     """Ejecuta un pipeline de Apache Beam para procesar datos de vuelos"""
 
     argv = [
         f"--project={project}",
         f"--region={region}",
         "--runner=DirectRunner",
-        "--direct_num_workers=0", # Default 1
-        "--direct_running_mode=multi_threading", # Default in_memory
+        "--direct_num_workers=0",  # Default 1
+        "--direct_running_mode=multi_threading",  # Default in_memory
     ]
 
     # Source
