@@ -33,33 +33,31 @@ def procesar_respuesta_get(response: requests.Response) -> dict:
     """
 
     # Analizar la respuesta
-    soup = bs4.BeautifulSoup(response.text, 'html.parser')
+    soup = bs4.BeautifulSoup(response.text, "html.parser")
     # Encontrar el formulario con nombre "form1"
-    form1 = soup.find(
-        name='form',
-        attrs={'id': 'form1'}
-    )
+    form1 = soup.find(name="form", attrs={"id": "form1"})
     # Verificar si se encontró el formulario antes de intentar acceder a los elementos
     if not form1:
         raise ValueError(
-            "¡Error! No se encontró el formulario con nombre 'form1'.")
+            "¡Error! No se encontró el formulario con nombre 'form1'."
+        )
     # Modificar las variables chkAllVars y btnDownload
     chkallvars_input = form1.find(
-        name='input',
-        attrs={'name': 'chkAllVars'},
+        name="input",
+        attrs={"name": "chkAllVars"},
     )
     if chkallvars_input:
-        chkallvars_input['value'] = 'on'
+        chkallvars_input["value"] = "on"
     btndownload_input = form1.find(
-        name='input',
-        attrs={'name': 'btnDownload'},
+        name="input",
+        attrs={"name": "btnDownload"},
     )
     if btndownload_input:
-        btndownload_input['value'] = 'Download'
+        btndownload_input["value"] = "Download"
     # Construir la carga útil para la solicitud POST
     payload = {
-        input_tag['name']: input_tag.get('value', '')
-        for input_tag in form1.find_all(name='input')
+        input_tag["name"]: input_tag.get("value", "")
+        for input_tag in form1.find_all(name="input")
     }
     return payload
 
@@ -86,10 +84,10 @@ def download(destdir: str) -> str:
     # Crear la sesión
     session = requests.Session()
     headers = {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Host': 'www.transtats.bts.gov',
-        'Referer': 'https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FLL&QO_fu146_anzr=N8vn6v10+f722146+gnoyr5',
-        'Origin': 'https://www.transtats.bts.gov'
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Host": "www.transtats.bts.gov",
+        "Referer": "https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FLL&QO_fu146_anzr=N8vn6v10+f722146+gnoyr5",
+        "Origin": "https://www.transtats.bts.gov",
     }
     # Actualizar los encabezados
     session.headers.update(headers)
@@ -128,10 +126,11 @@ def descomprimir_archivo(nombre_archivo_zip, directorio_destino):
 
     try:
         archivo_zip = os.path.join(directorio_destino, nombre_archivo_zip)
-        with zipfile.ZipFile(archivo_zip, 'r') as zip_ref:
+        with zipfile.ZipFile(archivo_zip, "r") as zip_ref:
             zip_ref.extractall(directorio_destino)
             archivo_csv = os.path.join(
-                directorio_destino, zip_ref.namelist()[0])
+                directorio_destino, zip_ref.namelist()[0]
+            )
             logging.info("Archivo %s descomprimido", archivo_csv)
             return archivo_csv
     except zipfile.BadZipFile as e:
@@ -139,9 +138,7 @@ def descomprimir_archivo(nombre_archivo_zip, directorio_destino):
             f"Error al abrir o extraer el archivo ZIP {archivo_zip}: {e}"
         ) from e
     except OSError as e:
-        raise OSError(
-            f"Error al manipular archivos o directorios: {e}"
-        ) from e
+        raise OSError(f"Error al manipular archivos o directorios: {e}") from e
 
 
 # Leemos el CSV con el módulo csv a dos listas una con los encabezados
@@ -159,7 +156,7 @@ def leer_csv(archivo_csv):
 
     data = []
     try:
-        with open(archivo_csv, 'r', encoding="utf-8") as file:
+        with open(archivo_csv, "r", encoding="utf-8") as file:
             csv_reader = csv.reader(file)
             header = next(csv_reader)  # Leer la primera fila como encabezado
             for row in csv_reader:
@@ -187,23 +184,29 @@ def transformar_fechas(data, header):
     # Por inspección previa conocemos el formato de origen
     date_format = "%m/%d/%Y %I:%M:%S %p"
     # Conocemos cuales son las columnas con fecha
-    columnas_fecha = ['AIRPORT_START_DATE', 'AIRPORT_THRU_DATE']
+    columnas_fecha = ["AIRPORT_START_DATE", "AIRPORT_THRU_DATE"]
     for row in data:
         for columna in columnas_fecha:
             indice_columna = header.index(columna)
             try:
                 if row[indice_columna]:
                     row[indice_columna] = datetime.strptime(
-                        row[indice_columna], date_format).strftime('%Y-%m-%d')
+                        row[indice_columna], date_format
+                    ).strftime("%Y-%m-%d")
                     logging.info(
                         "Fecha en la columna %s formateada correctamente",
-                        columna)
+                        columna,
+                    )
                 else:
                     logging.warning(
-                        "La fecha en la columna %s está vacía", columna)
+                        "La fecha en la columna %s está vacía", columna
+                    )
             except (IndexError, ValueError) as e:
                 logging.warning(
-                    "No se pudo formatear la fecha en la columna %s: %s", columna, str(e))
+                    "No se pudo formatear la fecha en la columna %s: %s",
+                    columna,
+                    str(e),
+                )
 
 
 # Escribimos a csv sin comprimir para revisión rápida
@@ -221,7 +224,7 @@ def escribir_csv(data, header, directorio_destino):
     archivo_csv = "airports_2024.csv"
     try:
         csv_output_file = os.path.join(directorio_destino, archivo_csv)
-        with open(csv_output_file, 'w', newline='', encoding='utf-8') as file:
+        with open(csv_output_file, "w", newline="", encoding="utf-8") as file:
             csv_writer = csv.writer(file)
             csv_writer.writerow(header)
             csv_writer.writerows(data)
@@ -248,7 +251,7 @@ def escribir_csv_gz(data, header, directorio_destino):
     archivo_gzip = "airports_2024.csv.gz"
     try:
         gz_output_file = os.path.join(directorio_destino, archivo_gzip)
-        with gzip.open(gz_output_file, 'wt', newline='') as file:
+        with gzip.open(gz_output_file, "wt", newline="") as file:
             csv_writer = csv.writer(file)
             csv_writer.writerow(header)
             csv_writer.writerows(data)
@@ -256,7 +259,8 @@ def escribir_csv_gz(data, header, directorio_destino):
         return gz_output_file
     except gzip.BadGzipFile as e_gzip:
         logging.error(
-            "Error al escribir el archivo CSV comprimido: %s", str(e_gzip))
+            "Error al escribir el archivo CSV comprimido: %s", str(e_gzip)
+        )
         return None
 
 
@@ -264,7 +268,9 @@ def run():
     """Función principal que ejecuta el procesamiento del script."""
 
     # Directorio de destino para la descarga
-    directorio_destino = "/home/inspired/data-science-on-gcp/04_streaming/transform"
+    directorio_destino = (
+        "/home/inspired/data-science-on-gcp/04_streaming/transform"
+    )
     # directorio_destino = "/home/inspired/data-science-on-gcp/04_streaming/design"
     # Obtener la ruta del archivo descargado (T_MASTER_CORD.zip)
     archivo_descargado = download(destdir=directorio_destino)

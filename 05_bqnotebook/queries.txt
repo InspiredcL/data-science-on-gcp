@@ -39,7 +39,6 @@ WITH all_airports AS (
   GROUP BY
     ORIGIN
 )
-
 SELECT * FROM all_airports WHERE num_flights > 310
 ORDER BY dep_delay DESC
 
@@ -52,7 +51,7 @@ SELECT
    COUNT(ARR_DELAY) AS num_flights
 FROM
    dsongcp.flights_tzcorr
-WHERE EXTRACT(MONTH RFOM FL_DATE) = 1
+WHERE EXTRACT(MONTH FROM FL_DATE) = 1
 GROUP BY
    ORIGIN
 HAVING num_flights > 310

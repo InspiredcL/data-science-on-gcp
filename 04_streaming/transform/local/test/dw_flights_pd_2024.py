@@ -24,17 +24,31 @@ FROM bigquery-manu-407202.dsongcp.flights_sample
 # """
 df: pd.DataFrame = client.query_and_wait(SQL).to_dataframe()
 df["FL_DATE"] = pd.to_datetime(df["FL_DATE"])
-df["FL_DATE"] = df["FL_DATE"].dt.strftime('%Y-%m-%d')
+df["FL_DATE"] = df["FL_DATE"].dt.strftime("%Y-%m-%d")
 
 # Transformar columnas no numericas a string
-not_string_cols = ['FL_DATE', 'DEP_DELAY', 'TAXI_OUT',
-                'TAXI_IN', 'ARR_DELAY', 'CANCELLED', 'DIVERTED']
+not_string_cols = [
+    "FL_DATE",
+    "DEP_DELAY",
+    "TAXI_OUT",
+    "TAXI_IN",
+    "ARR_DELAY",
+    "CANCELLED",
+    "DIVERTED",
+]
 string_cols = [col for col in df.columns if col not in not_string_cols]
 for col in string_cols:
     df[col] = df[col].astype(str)
 
 # Completar con ceros a la izquierda las columnas con formato "hhmm"
-for col in ["CRS_DEP_TIME", "DEP_TIME", "WHEELS_OFF", "WHEELS_ON", "CRS_ARR_TIME", "ARR_TIME"]:
+for col in [
+    "CRS_DEP_TIME",
+    "DEP_TIME",
+    "WHEELS_OFF",
+    "WHEELS_ON",
+    "CRS_ARR_TIME",
+    "ARR_TIME",
+]:
     df[col] = df[col].str.zfill(4)
 
 # Eliminamos los vuelos cancelados y desviados con fines de desarrollo

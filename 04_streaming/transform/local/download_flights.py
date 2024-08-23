@@ -10,7 +10,8 @@ import pandas as pd
 SQL = """
 SELECT
     *
-FROM bigquery-manu-407202.dsongcp.flights
+FROM
+    bigquery-manu-407202.dsongcp.flights
 """
 
 # Descarga y transforma la tabla
@@ -27,3 +28,10 @@ for i in range(0, len(df), CHUNK_SIZE):
         orient="records",
         lines=True,
     )
+
+# Guarda la tabla
+df.to_json(
+    f"flights/chunks/flights_{str(i // CHUNK_SIZE).zfill(5)}-of-{str(num_chunks).zfill(5)}.jsonl",
+    orient="records",
+    lines=True,
+)
