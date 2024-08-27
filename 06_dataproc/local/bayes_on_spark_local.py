@@ -6,13 +6,14 @@
 """ Modelo de Bayes en Spark"""
 
 import logging
+import argparse
 import pandas as pd
 import numpy as np
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
 
 
-def run_bayes(bucket):
+def run_bayes(bucket: str):
     """Ejecuta el modelo en pyspark"""
     # Inicia sesión en Spark
     spark = SparkSession.builder.appName(
@@ -99,8 +100,6 @@ def run_bayes(bucket):
 
 
 if __name__ == "__main__":
-    import argparse
-
     parser = argparse.ArgumentParser(description="Create Bayes lookup table")
     parser.add_argument(
         "--bucket", help="GCS bucket to read/write data", required=True
@@ -111,7 +110,6 @@ if __name__ == "__main__":
         action="store_true",
         help="Specify if you want debug messages",
     )
-
     args = parser.parse_args()
     if args.debug:
         logging.basicConfig(
